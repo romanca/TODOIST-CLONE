@@ -20,7 +20,7 @@ const Input = styled.input`
   display: inline-block;
   text-align: start;
 `;
-const IconContainer = styled.div`
+const IconSearchContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,6 +28,20 @@ const IconContainer = styled.div`
   padding-right: ${(props) => props.theme.spaces[3]};
   color: ${(props) => props.theme.colors.text};
   background: ${(props) => props.theme.colors.background};
+`;
+const IconCrossContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: ${(props) => props.theme.spaces[3]};
+  padding-right: ${(props) => props.theme.spaces[3]};
+  color: ${(props) => props.theme.colors.text};
+  background: ${(props) => props.theme.colors.background};
+  :hover {
+    background: ${(props) => props.theme.colors.muted2};
+    border-radius: ${(props) => props.theme.spaces[9]};
+    cursor: pointer;
+  }
 `;
 const SearchInput = () => {
   const [expand, setExpand] = React.useState(false);
@@ -54,9 +68,9 @@ const SearchInput = () => {
   };
   return (
     <SearchContainer style={{ width: expand ? 450 : "" }}>
-      <IconContainer>
+      <IconSearchContainer>
         <Icon name="search" />
-      </IconContainer>
+      </IconSearchContainer>
       <Input
         placeholder="Find"
         onFocus={handleExpand}
@@ -64,9 +78,9 @@ const SearchInput = () => {
         ref={inputRef}
       />
       {visible ? (
-        <IconContainer>
+        <IconCrossContainer>
           <Icon name="cross" />
-        </IconContainer>
+        </IconCrossContainer>
       ) : (
         ""
       )}

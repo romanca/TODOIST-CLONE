@@ -29,6 +29,10 @@ const LeftIconButtonsContainer = styled.div`
   width: ${(props) => props.theme.spaces[5]};
   height: ${(props) => props.theme.spaces[5]};
   font-weight: ${(props) => props.theme.spaces[7]};
+  :hover {
+    background: ${(props) => props.theme.colors.muted2};
+    border-radius: ${(props) => props.theme.spaces[9]};
+    cursor: pointer;
 `;
 
 const Header = () => {
