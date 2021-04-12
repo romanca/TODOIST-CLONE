@@ -38,3 +38,4 @@ export default SideBar;
 
 // min-width: 220
 // max-width: 420
+// "homepage": "https://romanca.github.io/todoist-clone",
