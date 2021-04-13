@@ -4,14 +4,14 @@ import SearchInput from "./SearchInput";
 import Icon from "../shared/Icon";
 
 const Container = styled.div`
-  height: 44px;
+  height: ${(props) => props.theme.spaces[17]};
   display: flex;
   justify-content: flex-start;
   align-items: center;
   border-color: ${(props) => props.theme.colors.muted1};
   background-color: ${(props) => props.theme.colors.muted};
-  padding-left: 42px;
-  padding-right: 42px;
+  padding-left: ${(props) => props.theme.spaces[18]};
+  padding-right: ${(props) => props.theme.spaces[18]};
 `;
 const LeftSideButtonsContainer = styled.div`
   display: flex;

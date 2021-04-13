@@ -1,23 +1,24 @@
 import React from "react";
 import styled from "styled-components";
-import Filters from "./Filters";
-import Projects from "./Projects";
+import Favorites from "./Favorites/Favorites";
+import Filters from "./Filters/Filters";
+import Projects from "./Projects/Projects";
 import StaticProjects from "./StaticProjects";
 
 const SideBarContainer = styled.div`
   height: calc(100vh - 44px);
-  width: 220px;
-  border-right: 1px solid grey;
-  background-color: #fafafa;
+  width: ${(props) => props.theme.spaces[19]};
+  border-right: ${(props) => props.theme.spaces[8]} solid grey;
+  background-color: ${(props) => props.theme.colors.muted6};
+  overflow: scroll;
 `;
 const MenuContainer = styled.div`
   box-sizing: border-box;
-  padding-top: 30px;
-  padding-left: 35px;
-  position: fixed;
+  padding-top: ${(props) => props.theme.spaces[20]};
+  padding-left: ${(props) => props.theme.spaces[21]};
 `;
 const Space = styled.div`
-  height: 12px;
+  height: ${(props) => props.theme.spaces[15]};
 `;
 
 const SideBar = () => {
@@ -25,6 +26,8 @@ const SideBar = () => {
     <SideBarContainer>
       <MenuContainer>
         <StaticProjects />
+        <Space />
+        <Favorites />
         <Space />
         <Projects />
         <Space />

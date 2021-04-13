@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Icon from "../shared/Icon";
+import Icon from "../../shared/Icon";
 
 const ItemsContainer = styled.div`
   height: ${(props) => props.theme.spaces[10]};
@@ -13,7 +13,6 @@ const ItemsContainer = styled.div`
     border-radius: ${(props) => props.theme.spaces[1]};
   }
 `;
-
 const CounterContainer = styled.div`
   display: flex;
   align-items: center;
@@ -21,14 +20,18 @@ const CounterContainer = styled.div`
   color: ${(props) => props.theme.colors.muted4};
   font-size: ${(props) => props.theme.spaces[15]};
 `;
-
+const Title = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 const ContentTitleContainer = styled.div`
   display: flex;
   align-items: center;
   word-break: break-all;
   padding: ${(props) => props.theme.spaces[1]};
   justify-content: space-between;
-  width: ${(props) => props.theme.spaces[22]};
+  width: ${(props) => props.theme.spaces[16]};
   height: ${(props) => props.theme.spaces[12]};
   font-size: ${(props) => props.theme.spaces[14]};
   color: ${(props) => props.theme.colors.muted5};
@@ -40,37 +43,31 @@ const ContentIconContainer = styled.div`
   align-items: center;
 `;
 
-const StaticProjects = () => {
+const ProjectItem = ({ handleToggleButtons, toggle, project }) => {
   return (
-    <div>
-      <ItemsContainer>
+    <div style={{ display: "flex" }}>
+      {/* <ContentIconContainer>
+  <Icon name="th" color="rgba(0,0,0,.54);" />
+</ContentIconContainer> */}
+      <ItemsContainer
+        onMouseEnter={handleToggleButtons}
+        onMouseLeave={handleToggleButtons}
+      >
         <ContentIconContainer>
-          <Icon name="inbox" color="#246fe0" />
+          <Icon name="dot" color="grey" style={{ fontSize: 12 }} />
         </ContentIconContainer>
         <ContentTitleContainer>
-          <span>Inbox</span>
-          <CounterContainer>6</CounterContainer>
+          <Title>{project.title}</Title>
         </ContentTitleContainer>
-      </ItemsContainer>
-      <ItemsContainer>
-        <ContentIconContainer>
-          <Icon name="today" color="#058527" />
-        </ContentIconContainer>
-        <ContentTitleContainer>
-          <span>Today</span>
-          <CounterContainer>3</CounterContainer>
-        </ContentTitleContainer>
-      </ItemsContainer>
-      <ItemsContainer>
-        <ContentIconContainer>
-          <Icon name="calendar" color="#692fc2" />
-        </ContentIconContainer>
-        <ContentTitleContainer>
-          <span>Upcoming</span>
-          <CounterContainer>9</CounterContainer>
-        </ContentTitleContainer>
+        {!toggle ? (
+          <CounterContainer>{project.number}</CounterContainer>
+        ) : (
+          <CounterContainer>
+            <Icon name="horizontalDots" color="grey" style={{ fontSize: 12 }} />
+          </CounterContainer>
+        )}
       </ItemsContainer>
     </div>
   );
 };
-export default StaticProjects;
+export default ProjectItem;
