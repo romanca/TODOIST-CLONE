@@ -1,10 +1,12 @@
 export const theme = {
   colors: {
-    text: "#909090",
-    background: "white",
-    primary: "#07c",
-    secondary: "#05a",
-    accent: "#609",
+    text: "#202020", //dark grey
+    text1: "black",
+    background: "white", //white
+    background1: "#fff",
+    primary: "#07c", //strong blue
+    secondary: "#05a", //green
+    accent: "#db4c3f", //bright red
     muted: "#f7f7f7", //grey
     muted1: "#f1f1f1",
     muted2: "#D3D3D3",
@@ -12,6 +14,8 @@ export const theme = {
     muted4: "#aaa",
     muted5: "#333",
     muted6: "#fafafa;",
+    muted7: "#ddd",
+    muted8: "#f3f3f3", // very light grey
   },
   spaces: [
     "3px", //0
@@ -37,5 +41,23 @@ export const theme = {
     "30px", //20
     "35px", //21
     "125px", //22
+    "400px", //23
+    0, //24
+    "50%", //25
+    400, //26
+    "100%", //27
+    "0px", //28
+    "7px", //29
+    "10px", //30
+    "32px", //31
+    "18px", //32
+    "20px", //33
+    700, //34
+    1, //35
+    "13px", //36
+    "16px", //37
+    "300px", //38
+    "2px", //39
+    450, //40
   ],
 };

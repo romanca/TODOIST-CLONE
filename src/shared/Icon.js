@@ -16,6 +16,8 @@ const IconNamesMap = {
   th: "fa fa-th", //in todo items for D&D functionality
   drop: "fa fa-tint", //icon in filters
   horizontalDots: "fa fa-ellipsis-h",
+  questionMark: "fa fa-question-circle-o",
+  check: "fa fa-check",
 };
 
 const Icon = ({ name, style, color }) => {

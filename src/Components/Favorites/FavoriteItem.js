@@ -45,16 +45,31 @@ const Title = styled.div`
   text-overflow: ellipsis;
 `;
 
-const FavoriteItem = ({ favorite }) => {
+const FavoriteItem = ({ item }) => {
+  const [toggle, setToggle] = React.useState(false);
+
+  const handleToggleButtons = () => {
+    setToggle((current) => !current);
+  };
+
   return (
-    <ItemsContainer>
+    <ItemsContainer
+      onMouseEnter={handleToggleButtons}
+      onMouseLeave={handleToggleButtons}
+    >
       <ContentIconContainer>
         <Icon name="dot" color="grey" style={{ fontSize: 12 }} />
       </ContentIconContainer>
       <ContentTitleContainer>
-        <Title>{favorite.title}</Title>
+        <Title>{item.title}</Title>
       </ContentTitleContainer>
-      <CounterContainer>{favorite.number}</CounterContainer>
+      {!toggle ? (
+        <CounterContainer>{item.number}</CounterContainer>
+      ) : (
+        <CounterContainer>
+          <Icon name="horizontalDots" color="grey" style={{ fontSize: 12 }} />
+        </CounterContainer>
+      )}
     </ItemsContainer>
   );
 };

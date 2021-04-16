@@ -13,12 +13,12 @@ const favorites = [
 const FavoritesList = () => {
   return (
     <div>
-      {favorites.map((i) => (
+      {favorites.map((item) => (
         <div style={{ display: "flex" }}>
           {/* <ContentIconContainer>
             <Icon name="th" color="rgba(0,0,0,.54);" />
           </ContentIconContainer> */}
-          <FavoriteItem favorite={i} />
+          <FavoriteItem item={item} key={item.id} />
         </div>
       ))}
     </div>

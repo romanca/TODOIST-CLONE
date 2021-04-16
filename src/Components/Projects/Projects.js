@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useProjectsDialog } from "../../Providers/ModalProvider";
 import Icon from "../../shared/Icon";
 import ProjectsList from "./ProjectsList";
 
@@ -43,15 +44,11 @@ const ContentIconContainer = styled.div`
 `;
 
 const Projects = () => {
-  const [toggle, setToggle] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [switchIcon, setSwitchIcon] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
+  const openProjectModal = useProjectsDialog();
 
-  //Toggles CounterButton and DotButton
-  const handleToggleButtons = () => {
-    setToggle((current) => !current);
-  };
   const handleOpenClose = () => {
     setOpen((current) => !current);
     handleSwitchIcon();
@@ -91,7 +88,7 @@ const Projects = () => {
             Projects
           </div>
           {visible ? (
-            <PlusButtonContainer>
+            <PlusButtonContainer onClick={openProjectModal}>
               <Icon
                 name="plus"
                 color="rgba(0,0,0,.54);"
@@ -103,14 +100,7 @@ const Projects = () => {
           )}
         </ContentTitleContainer>
       </ProjectsItemsContainer>
-      {open ? (
-        <ProjectsList
-          toggle={toggle}
-          handleToggleButtons={handleToggleButtons}
-        />
-      ) : (
-        ""
-      )}
+      {open ? <ProjectsList /> : ""}
     </div>
   );
 };

@@ -16,7 +16,7 @@ const Input = styled.input`
   background: ${(props) => props.theme.colors.background};
   border: none;
   outline: none;
-  width: 100%;
+  width: ${(props) => props.theme.spaces[27]};
   display: inline-block;
   text-align: start;
 `;
@@ -47,6 +47,7 @@ const SearchInput = () => {
   const [expand, setExpand] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const inputRef = React.useRef(null);
+  const expandedWidth = 450;
 
   React.useEffect(() => {
     if (document.activeElement === inputRef) {
@@ -67,7 +68,7 @@ const SearchInput = () => {
     setExpand(false);
   };
   return (
-    <SearchContainer style={{ width: expand ? 450 : "" }}>
+    <SearchContainer style={{ width: expand ? expandedWidth : "" }}>
       <IconSearchContainer>
         <Icon name="search" />
       </IconSearchContainer>

@@ -43,7 +43,13 @@ const ContentIconContainer = styled.div`
   align-items: center;
 `;
 
-const ProjectItem = ({ handleToggleButtons, toggle, project }) => {
+const ProjectItem = ({ item }) => {
+  const [toggle, setToggle] = React.useState(false);
+
+  const handleToggleButtons = () => {
+    setToggle((current) => !current);
+  };
+
   return (
     <div style={{ display: "flex" }}>
       {/* <ContentIconContainer>
@@ -57,10 +63,10 @@ const ProjectItem = ({ handleToggleButtons, toggle, project }) => {
           <Icon name="dot" color="grey" style={{ fontSize: 12 }} />
         </ContentIconContainer>
         <ContentTitleContainer>
-          <Title>{project.title}</Title>
+          <Title>{item.title}</Title>
         </ContentTitleContainer>
         {!toggle ? (
-          <CounterContainer>{project.number}</CounterContainer>
+          <CounterContainer>{item.number}</CounterContainer>
         ) : (
           <CounterContainer>
             <Icon name="horizontalDots" color="grey" style={{ fontSize: 12 }} />

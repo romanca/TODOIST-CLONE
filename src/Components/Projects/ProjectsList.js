@@ -10,17 +10,12 @@ const projects = [
   { id: 6, title: "Todo 6", number: 1 },
 ];
 
-const ProjectsList = ({ handleToggleButtons, toggle }) => {
+const ProjectsList = () => {
   return (
     <div>
-      {projects.map((i) => (
-        <ProjectItem
-          key={i.id}
-          handleToggleButtons={handleToggleButtons}
-          toggle={toggle}
-          project={i}
-        >
-          {i.title}
+      {projects.map((item) => (
+        <ProjectItem key={item.id} item={item}>
+          {item.title}
         </ProjectItem>
       ))}
     </div>

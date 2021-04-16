@@ -1,4 +1,6 @@
 import React from "react";
+import styled from "styled-components";
+import Icon from "../../shared/Icon";
 
 const ItemsContainer = styled.div`
   height: ${(props) => props.theme.spaces[10]};
@@ -10,14 +12,6 @@ const ItemsContainer = styled.div`
     background: ${(props) => props.theme.colors.muted3};
     border-radius: ${(props) => props.theme.spaces[1]};
   }
-`;
-
-const CounterContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${(props) => props.theme.colors.muted4};
-  font-size: ${(props) => props.theme.spaces[12]};
 `;
 
 const ContentTitleContainer = styled.div`
@@ -43,7 +37,7 @@ const ContentIconContainer = styled.div`
   align-items: center;
 `;
 
-const FilterItem = () => {
+const FilterItem = ({ item }) => {
   return (
     <div>
       <ItemsContainer>
@@ -51,7 +45,7 @@ const FilterItem = () => {
           <Icon name="drop" color="#158FAD" style={{ fontSize: 17 }} />
         </ContentIconContainer>
         <ContentTitleContainer>
-          <Title>{i.title}</Title>
+          <Title>{item.title}</Title>
         </ContentTitleContainer>
       </ItemsContainer>
     </div>
