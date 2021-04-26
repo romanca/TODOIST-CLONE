@@ -26,7 +26,7 @@ const IconSearchContainer = styled.div`
   justify-content: center;
   padding-left: ${(props) => props.theme.spaces[3]};
   padding-right: ${(props) => props.theme.spaces[3]};
-  color: ${(props) => props.theme.colors.text};
+  color: ${(props) => props.theme.colors.text2};
   background: ${(props) => props.theme.colors.background};
 `;
 const IconCrossContainer = styled.div`
@@ -79,9 +79,7 @@ const SearchInput = () => {
         ref={inputRef}
       />
       {visible ? (
-        <IconCrossContainer>
-          <Icon name="cross" />
-        </IconCrossContainer>
+        <IconCrossContainer>{/* <Icon name="cross" /> */}x</IconCrossContainer>
       ) : (
         ""
       )}

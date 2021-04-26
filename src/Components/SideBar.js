@@ -8,9 +8,11 @@ import StaticProjects from "./StaticProjects";
 const SideBarContainer = styled.div`
   height: calc(100vh - 44px);
   width: ${(props) => props.theme.spaces[19]};
-  border-right: ${(props) => props.theme.spaces[8]} solid grey;
+  border-right: ${(props) => props.theme.spaces[8]} solid
+    ${(props) => props.theme.colors.text};
   background-color: ${(props) => props.theme.colors.muted6};
-  overflow: scroll;
+  // overflow-y: hidden;
+  // overflow-x: hidden;
 `;
 const MenuContainer = styled.div`
   box-sizing: border-box;

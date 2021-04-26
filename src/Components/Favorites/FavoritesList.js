@@ -1,25 +1,22 @@
 import React from "react";
+import { favorites } from "../../shared/mockData";
 import FavoriteItem from "./FavoriteItem";
+import styled from "styled-components";
 
-const favorites = [
-  { title: "Todo 1 Todo 1Todo 1Todo 1Todo 1Todo 1Todo 1 ", number: 3 },
-  { title: "Todo 2", number: 4 },
-  { title: "Todo 3", number: 9 },
-  { title: "Todo 4", number: 3 },
-  { title: "Todo 5", number: 2 },
-  { title: "Todo 6", number: 1 },
-];
+const FavoritesListContainer = styled.div`
+  display: flex;
+`;
 
 const FavoritesList = () => {
   return (
     <div>
-      {favorites.map((item) => (
-        <div style={{ display: "flex" }}>
+      {Object.values(favorites).map((item) => (
+        <FavoritesListContainer style={{ display: "flex" }}>
           {/* <ContentIconContainer>
             <Icon name="th" color="rgba(0,0,0,.54);" />
           </ContentIconContainer> */}
           <FavoriteItem item={item} key={item.id} />
-        </div>
+        </FavoritesListContainer>
       ))}
     </div>
   );

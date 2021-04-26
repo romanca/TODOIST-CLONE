@@ -29,6 +29,11 @@ const ContentIconContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+const FiltersTitle = styled.div`
+  font-size: ${(props) => props.theme.spaces[14]};
+  color: ${(props) => props.theme.colors.muted5};
+  font-weight: ${(props) => props.theme.spaces[34]};
+`;
 
 const Filters = () => {
   const [open, setOpen] = React.useState(false);
@@ -58,15 +63,7 @@ const Filters = () => {
           )}
         </ContentIconContainer>
         <ContentTitleContainer>
-          <div
-            style={{
-              fontSize: 14,
-              color: "#333",
-              fontWeight: 700,
-            }}
-          >
-            Filters
-          </div>
+          <FiltersTitle>Filters</FiltersTitle>
         </ContentTitleContainer>
       </ProjectsItemsContainer>
       {open ? <FiltersList /> : ""}

@@ -1,0 +1,3 @@
+- Router
+  - Projects route with dinamic id parameter
+- Projects CRUD + persistance

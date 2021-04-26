@@ -1,15 +1,18 @@
 import React from "react";
 import PopPop from "react-poppop";
+import { useTheme } from "styled-components";
 
 const ModalDialog = ({ visible, closeModalDialog, content }) => {
+  const { colors, spaces, radii } = useTheme();
+
   return (
     <PopPop
       open={visible}
+      position="centerCenter"
       contentStyle={{
-        borderRadius: "10px",
-        padding: "0px",
-        boxShadow: "0 2px 8px 0 rgb(0 0 0 / 16%)",
-        backgroundColor: "#fff",
+        borderRadius: radii[0],
+        padding: spaces[28],
+        backgroundColor: colors["background1"],
       }}
       closeModalDialog={closeModalDialog}
     >

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Icon from "../shared/Icon";
+import Icon from "../../shared/Icon";
 
 const selectItems = [
   {
@@ -134,7 +134,7 @@ const SelectItemContainer = styled.div`
   background-color: inherit;
   outline: none;
   :hover {
-    background-color: #f3f3f3;
+    background-color: ${(props) => props.theme.colors.muted8};
   }
 `;
 const ColorPickerButton = styled.button`
@@ -163,6 +163,12 @@ const FormTitle = styled.div`
   margin: ${(props) => props.theme.spaces[28]}
     ${(props) => props.theme.spaces[28]} ${(props) => props.theme.spaces[29]};
   color: ${(props) => props.theme.colors.text};
+`;
+const SelectedItemContentContainer = styled.div`
+  width: ${(props) => props.theme.spaces[41]};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 //chcecked item background is background-color: #f3f3f3;;
 //if is checked and hovered background is #ccc
@@ -204,20 +210,15 @@ const ColorPicker = () => {
                 <ColorPickerIconTitle>{i.title}</ColorPickerIconTitle>,
               ])}
             >
-              <div
-                style={{
-                  width: "95%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
+              <SelectedItemContentContainer>
                 <div>
                   <Icon name="dot" color={i.color} />
                   <ColorPickerIconTitle>{i.title}</ColorPickerIconTitle>
                 </div>
-                <Icon name="check" color="#202020" />
-              </div>
+                <div>
+                  <Icon name="check" color="#202020" />
+                </div>
+              </SelectedItemContentContainer>
             </SelectItemContainer>
           ))}
         </DropDownSelectColorPicker>

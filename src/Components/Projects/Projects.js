@@ -10,6 +10,7 @@ const ProjectsItemsContainer = styled.div`
   display: flex;
   cursor: pointer;
   padding-left: ${(props) => props.theme.spaces[1]};
+  align-items: center;
 `;
 
 const PlusButtonContainer = styled.div`
@@ -31,7 +32,7 @@ const ContentTitleContainer = styled.div`
   word-break: break-all;
   padding: ${(props) => props.theme.spaces[1]};
   justify-content: space-between;
-  width: ${(props) => props.theme.spaces[13]};
+  width: ${(props) => props.theme.spaces[42]};
   height: ${(props) => props.theme.spaces[12]};
   font-size: ${(props) => props.theme.spaces[14]};
   color: ${(props) => props.theme.colors.muted5};
@@ -41,6 +42,14 @@ const ContentIconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+const ProjectsTitle = styled.div`
+  font-size: ${(props) => props.theme.spaces[14]};
+  color: ${(props) => props.theme.colors.muted5};
+  font-weight: ${(props) => props.theme.spaces[34]};
+`;
+const ContentProjectsContainer = styled.div`
+  display: flex;
 `;
 
 const Projects = () => {
@@ -64,41 +73,37 @@ const Projects = () => {
   return (
     <div>
       <ProjectsItemsContainer
-        onClick={handleOpenClose}
         onMouseLeave={handleVisible}
         onMouseEnter={handleVisible}
       >
-        {!switchIcon ? (
-          <ContentIconContainer>
-            <Icon name="rightArrow" color="rgba(0,0,0,.54);" />
-          </ContentIconContainer>
-        ) : (
-          <ContentIconContainer>
-            <Icon name="rightDown" color="rgba(0,0,0,.54);" />
-          </ContentIconContainer>
-        )}
-        <ContentTitleContainer>
-          <div
-            style={{
-              fontSize: 14,
-              color: "#333",
-              fontWeight: 700,
-            }}
-          >
-            Projects
-          </div>
-          {visible ? (
-            <PlusButtonContainer onClick={openProjectModal}>
-              <Icon
-                name="plus"
-                color="rgba(0,0,0,.54);"
-                style={{ fontSize: 12 }}
-              />
-            </PlusButtonContainer>
+        <ContentProjectsContainer
+          onClick={handleOpenClose}
+          style={{ display: "flex" }}
+        >
+          {!switchIcon ? (
+            <ContentIconContainer>
+              <Icon name="rightArrow" color="rgba(0,0,0,.54);" />
+            </ContentIconContainer>
           ) : (
-            ""
+            <ContentIconContainer>
+              <Icon name="rightDown" color="rgba(0,0,0,.54);" />
+            </ContentIconContainer>
           )}
-        </ContentTitleContainer>
+          <ContentTitleContainer>
+            <ProjectsTitle>Projects</ProjectsTitle>
+          </ContentTitleContainer>
+        </ContentProjectsContainer>
+        {visible ? (
+          <PlusButtonContainer onClick={openProjectModal}>
+            <Icon
+              name="plus"
+              color="rgba(0,0,0,.54);"
+              style={{ fontSize: 12 }}
+            />
+          </PlusButtonContainer>
+        ) : (
+          ""
+        )}
       </ProjectsItemsContainer>
       {open ? <ProjectsList /> : ""}
     </div>

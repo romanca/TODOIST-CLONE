@@ -28,6 +28,11 @@ const ContentIconContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+const FavoritesMainTitle = styled.div`
+  font-size: ${(props) => props.theme.spaces[14]};
+  color: ${(props) => props.theme.colors.muted5};
+  font-weight: ${(props) => props.theme.spaces[34]};
+`;
 
 const Favorites = () => {
   const [switchIcon, setSwitchIcon] = React.useState(false);
@@ -57,15 +62,7 @@ const Favorites = () => {
           )}
         </ContentIconContainer>
         <ContentTitleContainer>
-          <div
-            style={{
-              fontSize: 14,
-              color: "#333",
-              fontWeight: 700,
-            }}
-          >
-            Favorites
-          </div>
+          <FavoritesMainTitle>Favorites</FavoritesMainTitle>
         </ContentTitleContainer>
       </ProjectsItemsContainer>
       {open ? <FavoritesList /> : ""}

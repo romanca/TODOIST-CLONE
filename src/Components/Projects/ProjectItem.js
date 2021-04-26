@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Icon from "../../shared/Icon";
+import DropDown from "../DropDown";
 
 const ItemsContainer = styled.div`
   height: ${(props) => props.theme.spaces[10]};
@@ -45,9 +46,17 @@ const ContentIconContainer = styled.div`
 
 const ProjectItem = ({ item }) => {
   const [toggle, setToggle] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
 
   const handleToggleButtons = () => {
     setToggle((current) => !current);
+    handleClose();
+  };
+  const handleOpenClose = () => {
+    setOpen((current) => !current);
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -69,7 +78,16 @@ const ProjectItem = ({ item }) => {
           <CounterContainer>{item.number}</CounterContainer>
         ) : (
           <CounterContainer>
-            <Icon name="horizontalDots" color="grey" style={{ fontSize: 12 }} />
+            <div>
+              <div onClick={handleOpenClose}>
+                <Icon
+                  name="horizontalDots"
+                  color="grey"
+                  style={{ fontSize: 12 }}
+                />
+              </div>
+              {open ? <DropDown /> : ""}
+            </div>
           </CounterContainer>
         )}
       </ItemsContainer>

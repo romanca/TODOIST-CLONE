@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useModal } from "../../../Providers/ModalProvider";
 import Icon from "../../../shared/Icon";
-import ColorPicker from "../../ColorPicker";
+import ColorPicker from "../../Pickers/ColorPicker";
 import SwitchInput from "./SwitchInput";
 
 const MainContentContainer = styled.div`
@@ -92,7 +92,7 @@ const AddButton = styled.button`
   background-color: ${(props) => props.theme.colors.accent};
   border: ${(props) => props.theme.spaces[8]} solid transparent;
   border-radius: ${(props) => props.theme.spaces[0]} !important;
-  color: #fff !important;
+  color: ${(props) => props.theme.colors.background1} !important;
   margin-left: ${(props) => props.theme.spaces[30]};
   outline: none;
   cursor: pointer;
@@ -120,6 +120,7 @@ const InfoIconContainer = styled.div`
   border: none;
   background-color: transparent;
   border-radius: ${(props) => props.theme.spaces[0]};
+  color: ${(props) => props.theme.colors.text};
 `;
 const ProjectsModalContent = () => {
   const { closeModalDialog } = useModal();
@@ -131,7 +132,7 @@ const ProjectsModalContent = () => {
           <HeaderTitle>Add project</HeaderTitle>
         </HeaderTitleContainer>
         <InfoIconContainer>
-          <Icon name="questionMark" color="#202020" />
+          <Icon name="questionMark" />
         </InfoIconContainer>
       </ContentHeader>
       <ContentContainer>
