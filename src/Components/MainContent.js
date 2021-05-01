@@ -5,6 +5,7 @@ import pick1 from "../pick1.jpeg";
 import InfoProjectsButton from "./Projects/InfoProjectsButton";
 import TodoItem from "./TodoItem";
 import SubmitFormInput from "./SubmitFormInput";
+import TodoDropDown from "./TodoDropDown";
 
 const MainContentContainer = styled.div`
   height: calc(100vh - 44px);
@@ -108,6 +109,12 @@ const InfoContent = styled.div`
 `;
 
 const MainContent = () => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpenClose = () => {
+    setOpen((current) => !current);
+  };
+
   return (
     <MainContentContainer>
       <ContentContainer>
@@ -131,7 +138,7 @@ const MainContent = () => {
 
                 <HeaderButtonTitleContainer>Sort</HeaderButtonTitleContainer>
               </HeaderButton>
-              <HeaderButton>
+              <HeaderButton onClick={handleOpenClose}>
                 <ContentHeaderDotsIconContainer>
                   <Icon name="circle" />
                   <Icon name="circle" />
@@ -139,6 +146,7 @@ const MainContent = () => {
                 </ContentHeaderDotsIconContainer>
               </HeaderButton>
             </HeaderContentButtonsContainer>
+            {open ? <TodoDropDown /> : ""}
           </HeaderContent>
         </ContentHeader>
         <TodoItem />

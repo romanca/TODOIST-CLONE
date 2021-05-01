@@ -1,6 +1,7 @@
 import React from "react";
 import Icon from "../shared/Icon";
 import styled from "styled-components";
+import TodoItemDropDown from "./TodoItemDropDownMenu";
 
 const MainTodoItemContainer = styled.div`
   font-size: ${(props) => props.theme.spaces[14]};
@@ -89,6 +90,7 @@ const TodoEditButton = styled.button`
   border: ${(props) => props.theme.spaces[8]} solid transparent;
   outline: none;
   background-color: transparent;
+  cursor: pointer;
 `;
 const TodoScheduleButton = styled.button`
   width: ${(props) => props.theme.spaces[12]};
@@ -100,6 +102,7 @@ const TodoScheduleButton = styled.button`
   align-items: center;
   border: ${(props) => props.theme.spaces[8]} solid transparent;
   outline: none;
+  cursor: pointer;
   background-color: transparent;
 `;
 const TodoCommentButton = styled.button`
@@ -113,6 +116,7 @@ const TodoCommentButton = styled.button`
   border: ${(props) => props.theme.spaces[8]} solid transparent;
   outline: none;
   background-color: transparent;
+  cursor: pointer;
 `;
 const TodoDotsButton = styled.button`
   width: ${(props) => props.theme.spaces[12]};
@@ -121,6 +125,7 @@ const TodoDotsButton = styled.button`
   font-size: ${(props) => props.theme.spaces[67]};
   display: flex;
   justify-content: center;
+  cursor: pointer;
   align-items: center;
   border: ${(props) => props.theme.spaces[8]} solid transparent;
   outline: none;
@@ -128,6 +133,12 @@ const TodoDotsButton = styled.button`
 `;
 
 const TodoItem = () => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpenClose = () => {
+    setOpen(true);
+    // setOpen((current) => !current);
+  };
   return (
     <div>
       <MainTodoItemContainer>
@@ -152,36 +163,10 @@ const TodoItem = () => {
           <TodoCommentButton>
             <Icon name="comment" />
           </TodoCommentButton>
-          <TodoDotsButton>
+          <TodoDotsButton onClick={handleOpenClose}>
             <Icon name="horizontalDots" />
           </TodoDotsButton>
-        </TodoButtonsContainer>
-      </MainTodoItemContainer>
-      <MainTodoItemContainer>
-        <MainDropDownIconButtonContainer>
-          <DropDownIconButtonContainer>
-            <Icon name="th" />
-          </DropDownIconButtonContainer>
-        </MainDropDownIconButtonContainer>
-        <CheckBoxContainer>
-          <CheckBoxButton></CheckBoxButton>
-        </CheckBoxContainer>
-        <TodoTitleContainer>
-          <TodoTitle>Todo1</TodoTitle>
-        </TodoTitleContainer>
-        <TodoButtonsContainer>
-          <TodoEditButton>
-            <Icon name="edit" />
-          </TodoEditButton>
-          <TodoScheduleButton>
-            <Icon name="calendar1" />
-          </TodoScheduleButton>
-          <TodoCommentButton>
-            <Icon name="comment" />
-          </TodoCommentButton>
-          <TodoDotsButton>
-            <Icon name="horizontalDots" />
-          </TodoDotsButton>
+          {open ? <TodoItemDropDown /> : ""}
         </TodoButtonsContainer>
       </MainTodoItemContainer>
     </div>

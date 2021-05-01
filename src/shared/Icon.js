@@ -29,6 +29,8 @@ const IconNamesMap = {
   arrows: "fa fa-arrows-v",
   flag: "fa fa-flag-o",
   listUl: "fa fa-list-ul",
+  archive: "fa fa-archive",
+  flag1: "fa fa-flag",
 };
 
 const Icon = ({ name, style, color }) => {

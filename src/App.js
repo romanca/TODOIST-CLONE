@@ -5,6 +5,8 @@ import ModalProvider from "./Providers/ModalProvider";
 import { theme } from "./shared/theme";
 
 const App = () => {
+  // const todo = useTodoByIidFromParams();
+
   return (
     <Theme theme={theme}>
       <ModalProvider>
@@ -13,4 +15,19 @@ const App = () => {
     </Theme>
   );
 };
+
+// const useTodos = () => {
+//   const { todos } = useContext(Context);
+
+//   return { data: Object.values(todos) };
+// };
+
+// const useTodoByIidFromParams = () => {
+//   const { todos } = useContext(Context);
+
+//   const { id } = useParams();
+
+//   return todos[id];
+// };
+
 export default App;
