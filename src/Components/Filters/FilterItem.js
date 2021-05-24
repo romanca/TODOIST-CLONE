@@ -35,20 +35,19 @@ const ContentIconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: ${(props) => props.theme.spaces[70]};
 `;
 
 const FilterItem = ({ item }) => {
   return (
-    <div>
-      <ItemsContainer>
-        <ContentIconContainer>
-          <Icon name="drop" color="#158FAD" style={{ fontSize: 17 }} />
-        </ContentIconContainer>
-        <ContentTitleContainer>
-          <Title>{item.title}</Title>
-        </ContentTitleContainer>
-      </ItemsContainer>
-    </div>
+    <ItemsContainer>
+      <ContentIconContainer>
+        <Icon name="drop" color="#158FAD" />
+      </ContentIconContainer>
+      <ContentTitleContainer>
+        <Title>{item.title}</Title>
+      </ContentTitleContainer>
+    </ItemsContainer>
   );
 };
 

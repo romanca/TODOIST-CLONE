@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import useVisibiltyState from "../hooks/useVisibiltyState";
+import { useTodoMessageDialog } from "../Providers/ModalProvider";
 import Icon from "../shared/Icon";
 
 const MainTodoItemDropDownContainer = styled.div`
@@ -10,7 +12,7 @@ const MainTodoItemDropDownContainer = styled.div`
   box-shadow: 0 1px 8px 0 rgb(0 0 0 / 8%);
   list-style: none;
   margin: 0;
-  padding: 4px 0;
+  padding: 4px 0px;
   width: 250px;
   margin-top: 20px;
   margin-left: -10px;
@@ -69,16 +71,18 @@ const IconItemsContainer = styled.div`
   display: flex;
 `;
 
-const TodoItemDropDown = () => {
+const TodoItemDropDown = ({ handleOpenClose }) => {
+  const openTodoModal = useTodoMessageDialog();
+
   return (
-    <MainTodoItemDropDownContainer>
+    <MainTodoItemDropDownContainer onClick={handleOpenClose}>
       <MenuItem>
         <IconMenuContainer>
           <Icon name="edit" />
         </IconMenuContainer>
         <Title>Edit task</Title>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={openTodoModal}>
         <IconMenuContainer>
           <Icon name="trash" />
         </IconMenuContainer>

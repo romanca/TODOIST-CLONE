@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import useVisibiltyState from "../../hooks/useVisibiltyState";
 import { useProjectsDialog } from "../../Providers/ModalProvider";
 import Icon from "../../shared/Icon";
 import ProjectsList from "./ProjectsList";
@@ -53,21 +54,19 @@ const ContentProjectsContainer = styled.div`
 `;
 
 const Projects = () => {
-  const [open, setOpen] = React.useState(false);
-  const [switchIcon, setSwitchIcon] = React.useState(false);
-  const [visible, setVisible] = React.useState(false);
+  const {
+    open,
+    visible,
+    switchItem,
+    handleSwitchItem,
+    handleVisible,
+    handleOpenClose,
+  } = useVisibiltyState();
   const openProjectModal = useProjectsDialog();
 
-  const handleOpenClose = () => {
-    setOpen((current) => !current);
-    handleSwitchIcon();
-  };
-  const handleVisible = () => {
-    setVisible((current) => !current);
-  };
-
-  const handleSwitchIcon = () => {
-    setSwitchIcon((current) => !current);
+  const handleToggle = () => {
+    handleOpenClose();
+    handleSwitchItem();
   };
 
   return (
@@ -77,10 +76,10 @@ const Projects = () => {
         onMouseEnter={handleVisible}
       >
         <ContentProjectsContainer
-          onClick={handleOpenClose}
+          onClick={handleToggle}
           style={{ display: "flex" }}
         >
-          {!switchIcon ? (
+          {!switchItem ? (
             <ContentIconContainer>
               <Icon name="rightArrow" color="rgba(0,0,0,.54);" />
             </ContentIconContainer>

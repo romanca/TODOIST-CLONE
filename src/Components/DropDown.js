@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import useVisibiltyState from "../hooks/useVisibiltyState";
+import { useProjectActions } from "../Providers/ItemProvider";
 import Icon from "../shared/Icon";
+import { useProjectMessageDialog } from "../Providers/ModalProvider";
 
 const SelectedItemContainer = styled.div`
   position: absolute;
@@ -51,35 +54,97 @@ const SelectedItemIconContainer = styled.div`
 const Content = styled.div`
   line-height: ${(props) => props.theme.spaces[12]};
 `;
+const ContentIconContainer = styled.div`
+  width: ${(props) => props.theme.spaces[5]};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const CounterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${(props) => props.theme.colors.muted4};
+  font-size: ${(props) => props.theme.spaces[15]};
+`;
 
-const DropDown = () => {
+const DropDown = ({ item }) => {
+  const { open, handleOpenClose, handleClose } = useVisibiltyState();
+  const { favoriteProjects, handleSelected, selected } = useProjectActions();
+  const openProjectModal = useProjectMessageDialog();
+  const ref = React.createRef();
+
+  const handleFavoriteProject = (item) => {
+    favoriteProjects(item);
+    handleClose();
+  };
+
+  const handleRemoveProject = (item) => {
+    handleSelected(item);
+    handleClose();
+  };
+
+  const handleSelectProject = (item) => {
+    handleOpenClose();
+    handleSelected(item);
+  };
+
+  const handleClickOutside = (event) => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      handleClose();
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return function cleanup() {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  });
+
   return (
-    <SelectedItemContainer>
-      <SelectedItem>
-        <SelectedItemContent>
-          <SelectedItemIconContainer>
-            <Icon name="edit" />
-          </SelectedItemIconContainer>
-          <Content>Edit</Content>
-        </SelectedItemContent>
-      </SelectedItem>
-      <SelectedItem>
-        <SelectedItemContent>
-          <SelectedItemIconContainer>
-            <Icon name="trash" />
-          </SelectedItemIconContainer>
-          <Content>Remove</Content>
-        </SelectedItemContent>
-      </SelectedItem>
-      <SelectedItem>
-        <SelectedItemContent>
-          <SelectedItemIconContainer>
-            <Icon name="hearth" />
-          </SelectedItemIconContainer>
-          <Content>Add to favorites</Content>
-        </SelectedItemContent>
-      </SelectedItem>
-    </SelectedItemContainer>
+    <div style={{ display: "flex" }} ref={ref}>
+      {/* <ContentIconContainer>
+          <Icon name="th" color="rgba(0,0,0,.54);" />
+        </ContentIconContainer> */}
+      <CounterContainer>
+        <ContentIconContainer onClick={() => handleSelectProject(item)}>
+          <Icon name="horizontalDots" color="grey" style={{ fontSize: 12 }} />
+        </ContentIconContainer>
+        {open ? (
+          <div>
+            <SelectedItemContainer>
+              <SelectedItem>
+                <SelectedItemContent>
+                  <SelectedItemIconContainer>
+                    <Icon name="edit" />
+                  </SelectedItemIconContainer>
+                  <Content>Edit</Content>
+                </SelectedItemContent>
+              </SelectedItem>
+              <SelectedItem onClick={() => handleRemoveProject(item)}>
+                <SelectedItemContent onClick={openProjectModal}>
+                  <SelectedItemIconContainer>
+                    <Icon name="trash" />
+                  </SelectedItemIconContainer>
+                  <Content>Remove Project</Content>
+                </SelectedItemContent>
+              </SelectedItem>
+              <SelectedItem onClick={() => handleFavoriteProject(item)}>
+                <SelectedItemContent>
+                  <SelectedItemIconContainer>
+                    <Icon name="hearth" />
+                  </SelectedItemIconContainer>
+                  <Content>Add to favorites</Content>
+                </SelectedItemContent>
+              </SelectedItem>
+            </SelectedItemContainer>
+          </div>
+        ) : (
+          ""
+        )}
+      </CounterContainer>
+    </div>
   );
 };
 

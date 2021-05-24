@@ -29,19 +29,42 @@ const IconSearchContainer = styled.div`
   color: ${(props) => props.theme.colors.text2};
   background: ${(props) => props.theme.colors.background};
 `;
-const IconCrossContainer = styled.div`
+// const IconCrossContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   padding-left: ${(props) => props.theme.spaces[3]};
+//   padding-right: ${(props) => props.theme.spaces[3]};
+//   color: ${(props) => props.theme.colors.text};
+//   background: ${(props) => props.theme.colors.background};
+//   transform: rotate(45deg);
+//   font-size: 40px;
+//   :hover {
+//     background: ${(props) => props.theme.colors.muted2};
+//     border-radius: ${(props) => props.theme.spaces[9]};
+//     cursor: pointer;
+//   }
+// `;
+const CrossContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 100;
   padding-left: ${(props) => props.theme.spaces[3]};
   padding-right: ${(props) => props.theme.spaces[3]};
   color: ${(props) => props.theme.colors.text};
-  background: ${(props) => props.theme.colors.background};
-  :hover {
-    background: ${(props) => props.theme.colors.muted2};
-    border-radius: ${(props) => props.theme.spaces[9]};
-    cursor: pointer;
-  }
+  font-size: 28px;
+  background: transparent;
+  // width: 24px;
+  height: 24px;
+  // transform: rotate(45deg);
+  // :hover {
+  //   background: ${(props) => props.theme.colors.muted2};
+  //   border-radius: ${(props) => props.theme.spaces[9]};
+  //   cursor: pointer;
+`;
+const Plus = styled.div`
+  transform: rotate(45deg);
 `;
 const SearchInput = () => {
   const [expand, setExpand] = React.useState(false);
@@ -79,7 +102,23 @@ const SearchInput = () => {
         ref={inputRef}
       />
       {visible ? (
-        <IconCrossContainer>{/* <Icon name="cross" /> */}x</IconCrossContainer>
+        <CrossContainer
+          style={
+            {
+              // width: 24,
+              // height: 24,
+              // cursor: "pointer",
+              // color: "grey",
+              // display: "flex",
+              // justifyContent: "center",
+              // alignItems: "center",
+              // fontWeight: 100,
+              // fontSize: 24,
+            }
+          }
+        >
+          <Plus>+</Plus>
+        </CrossContainer>
       ) : (
         ""
       )}

@@ -1,109 +1,117 @@
 import React from "react";
 import Icon from "../../shared/Icon";
 import styled from "styled-components";
-import { defaultProject, projects } from "../../shared/mockData";
+import useVisibiltyState from "../../hooks/useVisibiltyState";
+import { useDefaultTodos } from "../../hooks/selectors";
 
 const ProjectsPickerButton = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 28px;
-  padding: 0px 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  color: #555;
+  height: ${(props) => props.theme.spaces[5]};
+  padding: ${(props) => props.theme.spaces[28]}
+    ${(props) => props.theme.spaces[43]};
+  border: ${(props) => props.theme.spaces[8]} solid
+    ${(props) => props.theme.colors.muted9};
+  border-radius: ${(props) => props.theme.spaces[1]};
+  color: ${(props) => props.theme.colors.text3};
   background-color: transparent;
   outline: none;
   cursor: pointer;
 `;
 const ProjectPickerIconContainer = styled.div`
-  width: 24px;
-  height: 24px;
+  width: ${(props) => props.theme.spaces[12]};
+  height: ${(props) => props.theme.spaces[12]};
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 const MainProjectPickersBoxContainer = styled.div`
-  background-color: #fff;
-  width: 275px;
-  height: 275px;
-  padding: 0px;
-  border-radius: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 8%);
+  background-color: ${(props) => props.theme.colors.background1};
+  width: ${(props) => props.theme.spaces[71]};
+  height: ${(props) => props.theme.spaces[71]};
+  padding: ${(props) => props.theme.spaces[28]};
+  border-radius: ${(props) => props.theme.spaces[1]};
+  border: ${(props) => props.theme.spaces[8]} solid rgba(0, 0, 0, 0.1);
+  box-shadow: ${(props) => props.theme.spaces[28]}
+    ${(props) => props.theme.spaces[39]} ${(props) => props.theme.spaces[9]}
+    ${(props) => props.theme.spaces[28]} rgb(0 0 0 / 8%);
   position: absolute;
-  inset: 5px auto auto 140px;
+  inset: ${(props) => props.theme.spaces[1]} auto auto
+    ${(props) => props.theme.spaces[72]};
   transform: translate(295px, 245px);
-  z-index: 1000;
+  z-index: ${(props) => props.theme.spaces[47]};
 `;
 const ProjectsPickerBoxPopperContainer = styled.div`
   position: absolute;
-  left: 0px;
+  left: ${(props) => props.theme.spaces[28]};
   transform: translate(133px, 0px);
-  z-index: 1000;
-  margin-top: -12px;
-  height: 0px;
-  width: 0px;
-  border: 6px solid transparent;
-  border-bottom-color: #ddd;
+  z-index: ${(props) => props.theme.spaces[47]};
+  margin-top: ${(props) => props.theme.spaces[73]};
+  height: ${(props) => props.theme.spaces[28]};
+  width: ${(props) => props.theme.spaces[28]};
+  border: ${(props) => props.theme.spaces[9]} solid transparent;
+  border-bottom-color: ${(props) => props.theme.colors.muted7};
 `;
 const ProjectsPickerBoxPopper = styled.div`
-  content: "";
   position: absolute;
-  border: 6px solid transparent;
-  border-bottom-color: #fff;
-  left: -6px;
-  top: -5px;
+  border: ${(props) => props.theme.spaces[2]} solid transparent;
+  border-bottom-color: ${(props) => props.theme.colors.background1};
+  left: ${(props) => props.theme.spaces[74]};
+  top: ${(props) => props.theme.spaces[75]};
 `;
 const ProjectsPickerInputContainer = styled.div`
   display: flex;
-  padding: 4px 10px;
+  padding: ${(props) => props.theme.spaces[9]}
+    ${(props) => props.theme.spaces[30]};
   align-items: center;
-  border-bottom: 1px solid #ddd;
+  border-bottom: ${(props) => props.theme.spaces[8]} solid
+    ${(props) => props.theme.colors.muted7};
 `;
 const Input = styled.input`
-  border: 0px;
-  height: 24px;
+  border: ${(props) => props.theme.spaces[28]};
+  height: ${(props) => props.theme.spaces[12]};
   outline: none;
-  background-color: #ffffff;
-  padding: 1px 2px;
+  background-color: ${(props) => props.theme.colors.background1};
+  padding: ${(props) => props.theme.spaces[8]}
+    ${(props) => props.theme.spaces[39]};
   display: inline-block;
   text-align: start;
 `;
 const ProjectsPickerBoxContentContainer = styled.div`
-  padding: 0px;
-  margin: 0px;
-  max-height: 300px;
+  padding: ${(props) => props.theme.spaces[28]};
+  margin: ${(props) => props.theme.spaces[28]};
+  max-height: ${(props) => props.theme.spaces[76]};
 `;
 const ProjectsPickerBoxContentItemContainer = styled.div`
-  padding: 4px 0px;
-  margin: 0px 10px;
+  padding: ${(props) => props.theme.spaces[9]}
+    ${(props) => props.theme.spaces[28]};
+  margin: ${(props) => props.theme.spaces[28]}
+    ${(props) => props.theme.spaces[30]};
   display: flex;
   align-items: center;
   cursor: pointer;
 `;
 const ProjectsPickerBoxContentItemTitle = styled.span`
-  margin: 0px 10px;
+  margin: ${(props) => props.theme.spaces[28]}
+    ${(props) => props.theme.spaces[30]};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-all;
-  height: 24px;
-  line-height: 1.5;
-  width: 215px;
-  color: #555;
+  height: ${(props) => props.theme.spaces[12]};
+  line-height: ${(props) => props.theme.spaces[77]};
+  width: ${(props) => props.theme.spaces[78]};
+  color: ${(props) => props.theme.colors.text3};
 `;
 
 const ProjectsPicker = () => {
-  const [open, setOpen] = React.useState(false);
+  const { open, handleOpenClose } = useVisibiltyState();
   const [selectedOption, setSelectedOption] = React.useState([]);
+  const projects = useDefaultTodos();
 
-  const handleOpenClose = () => {
-    setOpen((current) => !current);
-  };
   const onOptionClicked = (value) => () => {
     setSelectedOption(value);
-    console.log(selectedOption);
   };
 
   return (
@@ -116,7 +124,6 @@ const ProjectsPicker = () => {
             color="rgb(128, 128, 128);"
           />
         </ProjectPickerIconContainer>
-        {/* <div style={{ backgroundColor: "lightblue" }}>{selectedOption}</div> */}
         {selectedOption.title || "Mangoes"}
       </ProjectsPickerButton>
       {open ? (

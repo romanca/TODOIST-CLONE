@@ -1,97 +1,26 @@
 import React from "react";
-import styled from "styled-components";
-import Icon from "../../shared/Icon";
-import DropDown from "../DropDown";
+import { useParams } from "@reach/router";
+import TodoItem from "../TodoItem";
+import SubmitFormInput from "../SubmitFormInput";
+import { useTodos } from "../../Providers/ItemProvider";
 
-const ItemsContainer = styled.div`
-  height: ${(props) => props.theme.spaces[10]};
-  width: ${(props) => props.theme.spaces[11]};
-  display: flex;
-  cursor: pointer;
-  padding-left: ${(props) => props.theme.spaces[1]};
-  :hover {
-    background: ${(props) => props.theme.colors.muted3};
-    border-radius: ${(props) => props.theme.spaces[1]};
-  }
-`;
-const CounterContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${(props) => props.theme.colors.muted4};
-  font-size: ${(props) => props.theme.spaces[15]};
-`;
-const Title = styled.div`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-const ContentTitleContainer = styled.div`
-  display: flex;
-  align-items: center;
-  word-break: break-all;
-  padding: ${(props) => props.theme.spaces[1]};
-  justify-content: space-between;
-  width: ${(props) => props.theme.spaces[16]};
-  height: ${(props) => props.theme.spaces[12]};
-  font-size: ${(props) => props.theme.spaces[14]};
-  color: ${(props) => props.theme.colors.muted5};
-`;
-const ContentIconContainer = styled.div`
-  width: ${(props) => props.theme.spaces[5]};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+const ProjectItem = () => {
+  const { todos } = useTodos();
+  const { id } = useParams();
 
-const ProjectItem = ({ item }) => {
-  const [toggle, setToggle] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
-
-  const handleToggleButtons = () => {
-    setToggle((current) => !current);
-    handleClose();
-  };
-  const handleOpenClose = () => {
-    setOpen((current) => !current);
-  };
-  const handleClose = () => {
-    setOpen(false);
+  const renderProjects = () => {
+    return (
+      <div>
+        {Object.values(todos)
+          .filter((i) => i.categoryId === id)
+          .map((i) => {
+            return <TodoItem item={i} key={i.id} />;
+          })}
+        <SubmitFormInput />
+      </div>
+    );
   };
 
-  return (
-    <div style={{ display: "flex" }}>
-      {/* <ContentIconContainer>
-  <Icon name="th" color="rgba(0,0,0,.54);" />
-</ContentIconContainer> */}
-      <ItemsContainer
-        onMouseEnter={handleToggleButtons}
-        onMouseLeave={handleToggleButtons}
-      >
-        <ContentIconContainer>
-          <Icon name="dot" color="grey" style={{ fontSize: 12 }} />
-        </ContentIconContainer>
-        <ContentTitleContainer>
-          <Title>{item.title}</Title>
-        </ContentTitleContainer>
-        {!toggle ? (
-          <CounterContainer>{item.number}</CounterContainer>
-        ) : (
-          <CounterContainer>
-            <div>
-              <div onClick={handleOpenClose}>
-                <Icon
-                  name="horizontalDots"
-                  color="grey"
-                  style={{ fontSize: 12 }}
-                />
-              </div>
-              {open ? <DropDown /> : ""}
-            </div>
-          </CounterContainer>
-        )}
-      </ItemsContainer>
-    </div>
-  );
+  return renderProjects();
 };
 export default ProjectItem;

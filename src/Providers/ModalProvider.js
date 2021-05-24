@@ -1,5 +1,7 @@
 import React, { createContext, useState } from "react";
+import ProjectMessage from "../Components/Projects/ProjectsModal/ProjectMessage";
 import ProjectsModalContent from "../Components/Projects/ProjectsModal/ProjectsModalContent";
+import TodoMessage from "../Components/TodoMessage";
 import ModalDialog from "../Modal";
 
 const ModalContext = createContext(null);
@@ -35,6 +37,20 @@ export const useProjectsDialog = () => {
 
   return () => {
     setDialog(<ProjectsModalContent />);
+  };
+};
+export const useProjectMessageDialog = () => {
+  const { setDialog } = useModal();
+
+  return () => {
+    setDialog(<ProjectMessage />);
+  };
+};
+export const useTodoMessageDialog = () => {
+  const { setDialog } = useModal();
+
+  return () => {
+    setDialog(<TodoMessage />);
   };
 };
 

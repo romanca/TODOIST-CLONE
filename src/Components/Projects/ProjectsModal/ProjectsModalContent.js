@@ -1,5 +1,7 @@
+import { navigate } from "@reach/router";
 import React from "react";
 import styled from "styled-components";
+import { useProjectActions } from "../../../Providers/ItemProvider";
 import { useModal } from "../../../Providers/ModalProvider";
 import Icon from "../../../shared/Icon";
 import ColorPicker from "../../Pickers/ColorPicker";
@@ -124,6 +126,20 @@ const InfoIconContainer = styled.div`
 `;
 const ProjectsModalContent = () => {
   const { closeModalDialog } = useModal();
+  const { createProject } = useProjectActions();
+  const [title, setTitle] = React.useState("");
+
+  const handleChange = React.useCallback((e) => {
+    setTitle(e.target.value);
+  }, []);
+
+  const handleSubmitProject = () => {
+    const id = String(Date.now());
+    createProject(title, id);
+    setTitle("");
+    closeModalDialog();
+    navigate(`${id}`);
+  };
 
   return (
     <MainContentContainer>
@@ -138,7 +154,7 @@ const ProjectsModalContent = () => {
       <ContentContainer>
         <FormField>
           <FormTitle>Name</FormTitle>
-          <FormInput />
+          <FormInput type="text" value={title} onChange={handleChange} />
         </FormField>
         <ColorPicker />
         <FormField>
@@ -147,7 +163,7 @@ const ProjectsModalContent = () => {
       </ContentContainer>
       <ContentFooter>
         <CancelButton onClick={closeModalDialog}>Cancel</CancelButton>
-        <AddButton>Add</AddButton>
+        <AddButton onClick={handleSubmitProject}>Add</AddButton>
       </ContentFooter>
     </MainContentContainer>
   );

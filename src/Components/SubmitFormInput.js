@@ -3,6 +3,9 @@ import Icon from "../shared/Icon";
 import ProjectsPicker from "./Pickers/ProjectsPicker";
 import styled from "styled-components";
 import DatePicker from "./Pickers/DatePicker";
+import useVisibiltyState from "../hooks/useVisibiltyState";
+import { useTodoActions } from "../Providers/ItemProvider";
+import { useParams } from "@reach/router";
 
 const AddButton = styled.button`
   display: flex;
@@ -111,24 +114,43 @@ const SubmitFormPickersContainer = styled.div`
 `;
 
 const SubmitFormInput = () => {
-  const [toggle, setToggle] = React.useState(false);
+  const { toggle, handleToggle, toggleFalse } = useVisibiltyState();
   const [date, setDate] = React.useState();
+  const { createTodo } = useTodoActions();
+  const [title, setTitle] = React.useState("");
 
-  const handleToggleSubmitForm = () => {
-    setToggle((current) => !current);
+  const { id } = useParams();
+  const projectId = id;
+
+  const handleSubmit = () => {
+    const categoryId = projectId;
+    if (projectId) {
+      createTodo(title, categoryId);
+      setTitle("");
+      toggleFalse();
+    }
   };
+
+  const handleChange = React.useCallback((e) => {
+    setTitle(e.target.value);
+  }, []);
 
   return (
     <MainToggleSubmitFormContainer>
       {!toggle ? (
-        <AddButton onClick={handleToggleSubmitForm}>
+        <AddButton onClick={handleToggle}>
           <AddButtonTitle>+</AddButtonTitle>
           Add task
         </AddButton>
       ) : (
         <div>
           <SubmitFormInputContainer>
-            <FormInput placeholder="e.g., Renew gym every May 1st #Health" />
+            <FormInput
+              placeholder="e.g., Renew gym every May 1st #Health"
+              type="text"
+              value={title}
+              onChange={handleChange}
+            />
             <SubmitFormContentButtonsContainer>
               <SubmitFormPickersContainer>
                 <DatePicker
@@ -146,8 +168,8 @@ const SubmitFormInput = () => {
             </SubmitFormContentButtonsContainer>
           </SubmitFormInputContainer>
           <FormSubmitButtonsContainer>
-            <AddTaskButton>Add task</AddTaskButton>
-            <CancelButton onClick={handleToggleSubmitForm}>Cancel</CancelButton>
+            <AddTaskButton onClick={handleSubmit}>Add task</AddTaskButton>
+            <CancelButton onClick={handleToggle}>Cancel</CancelButton>
           </FormSubmitButtonsContainer>
         </div>
       )}

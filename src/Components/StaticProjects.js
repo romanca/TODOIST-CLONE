@@ -1,6 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { useDefaultTodos } from "../hooks/selectors";
+import { useProjectActions, useTodos } from "../Providers/ItemProvider";
+import { staticTodo } from "../shared/constants";
 import Icon from "../shared/Icon";
+import { items } from "../shared/mockData";
+import Link from "../wrappers/Link";
+import SubmitFormInput from "./SubmitFormInput";
 
 const ItemsContainer = styled.div`
   height: ${(props) => props.theme.spaces[10]};
@@ -41,35 +47,36 @@ const ContentIconContainer = styled.div`
 `;
 
 const StaticProjects = () => {
+  const staticProjects = useDefaultTodos();
+  const { todos } = useTodos();
+  const { handleSelected } = useProjectActions();
+
   return (
     <div>
-      <ItemsContainer>
-        <ContentIconContainer>
-          <Icon name="inbox" color="#246fe0" />
-        </ContentIconContainer>
-        <ContentTitleContainer>
-          <span>Inbox</span>
-          <CounterContainer>6</CounterContainer>
-        </ContentTitleContainer>
-      </ItemsContainer>
-      <ItemsContainer>
-        <ContentIconContainer>
-          <Icon name="today" color="#058527" />
-        </ContentIconContainer>
-        <ContentTitleContainer>
-          <span>Today</span>
-          <CounterContainer>3</CounterContainer>
-        </ContentTitleContainer>
-      </ItemsContainer>
-      <ItemsContainer>
-        <ContentIconContainer>
-          <Icon name="calendar" color="#692fc2" />
-        </ContentIconContainer>
-        <ContentTitleContainer>
-          <span>Upcoming</span>
-          <CounterContainer>9</CounterContainer>
-        </ContentTitleContainer>
-      </ItemsContainer>
+      {Object.values(staticProjects)
+        .filter((i) => i.id === staticTodo.id)
+        .map((i) => {
+          const to = `project/${i.id}`;
+          return (
+            <Link to={to} onClick={() => handleSelected(console.log(i))}>
+              <ItemsContainer key={i.id}>
+                <ContentIconContainer>
+                  <Icon name="inbox" color="#246fe0" />
+                </ContentIconContainer>
+                <ContentTitleContainer>
+                  {i.title}
+                  <CounterContainer>
+                    {
+                      Object.values(todos).filter(
+                        (i) => i.categoryId === "inbox"
+                      ).length
+                    }
+                  </CounterContainer>
+                </ContentTitleContainer>
+              </ItemsContainer>
+            </Link>
+          );
+        })}
     </div>
   );
 };

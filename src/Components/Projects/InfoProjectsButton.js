@@ -1,6 +1,7 @@
 import React from "react";
 import Icon from "../../shared/Icon";
 import styled from "styled-components";
+import useVisibiltyState from "../../hooks/useVisibiltyState";
 
 const MainContainer = styled.div``;
 const MainBoxContainer = styled.div`
@@ -104,11 +105,7 @@ const InfoProjectsButtonTitleContainer = styled.span`
 `;
 
 const InfoProjectsButton = () => {
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpenClose = () => {
-    setOpen((current) => !current);
-  };
+  const { open, handleOpenClose } = useVisibiltyState();
 
   return (
     <MainContainer>

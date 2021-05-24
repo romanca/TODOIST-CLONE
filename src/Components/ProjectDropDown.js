@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import { useProjectMessageDialog } from "../Providers/ModalProvider";
 import Icon from "../shared/Icon";
 
-const MainTodoDropDownContainer = styled.div`
+const MainProjectDropDownContainer = styled.div`
   position: absolute;
   inset: 0px auto auto 0px;
   transform: translate(1090px, 105px);
@@ -19,6 +20,7 @@ const MainTodoDropDownContainer = styled.div`
 const MenuItem = styled.div`
   padding: 4px 10px;
   display: flex;
+  cursor: pointer;
 `;
 const IconMenuContainer = styled.div`
   color: grey;
@@ -53,16 +55,18 @@ const CheckBoxButton = styled.span`
   font-size: 10px;
 `;
 
-const TodoDropDown = () => {
+const ProjectDropDown = ({ handleOpenClose }) => {
+  const removeProjectDialog = useProjectMessageDialog();
+
   return (
-    <MainTodoDropDownContainer>
+    <MainProjectDropDownContainer onClick={handleOpenClose}>
       <MenuItem>
         <IconMenuContainer>
           <Icon name="edit" />
         </IconMenuContainer>
         <Title>Edit project</Title>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={removeProjectDialog}>
         <IconMenuContainer>
           <Icon name="trash" />
         </IconMenuContainer>
@@ -83,7 +87,7 @@ const TodoDropDown = () => {
         </IconMenuContainer>
         <Title>Archive</Title>
       </MenuItem>
-    </MainTodoDropDownContainer>
+    </MainProjectDropDownContainer>
   );
 };
-export default TodoDropDown;
+export default ProjectDropDown;

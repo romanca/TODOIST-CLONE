@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import Icon from "../shared/Icon";
-import pick1 from "../pick1.jpeg";
-import InfoProjectsButton from "./Projects/InfoProjectsButton";
 import TodoItem from "./TodoItem";
 import SubmitFormInput from "./SubmitFormInput";
-import TodoDropDown from "./TodoDropDown";
+import MainInfoContent from "./MainInfoContent";
+import useVisibiltyState from "../hooks/useVisibiltyState";
+import ProjectDropDown from "./ProjectDropDown";
+import { useProjectActions } from "../Providers/ItemProvider";
 
 const MainContentContainer = styled.div`
   height: calc(100vh - 44px);
@@ -79,48 +80,21 @@ const ContentHeaderDotsIconContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   color: ${(props) => props.theme.colors.text};
-`;
-const MainInfoContainer = styled.div`
-  width: ${(props) => props.theme.spaces[27]};
-`;
-const MainInfoContentContainer = styled.div`
-  position: relative;
-  width: ${(props) => props.theme.spaces[59]};
-  margin: auto;
-  text-align: center;
-  margin-top: ${(props) => props.theme.spaces[60]};
-`;
-const ImageContainer = styled.div`
-  margin: auto;
-  width: ${(props) => props.theme.spaces[19]};
-  height: ${(props) => props.theme.spaces[61]};
-`;
-const MainInfoContentTitle = styled.div`
-  margin-top: ${(props) => props.theme.spaces[32]};
-  font-size: ${(props) => props.theme.spaces[37]};
-  margin: ${(props) => props.theme.spaces[32]}
-    ${(props) => props.theme.spaces[28]} ${(props) => props.theme.spaces[43]};
-`;
-const InfoContent = styled.div`
-  color: ${(props) => props.theme.colors.text4};
-  margin: ${(props) => props.theme.spaces[8]}
-    ${(props) => props.theme.spaces[28]};
-  font-size: ${(props) => props.theme.spaces[36]};
+  background: red;
 `;
 
 const MainContent = () => {
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpenClose = () => {
-    setOpen((current) => !current);
-  };
+  const { open, handleOpenClose } = useVisibiltyState();
+  const { selected } = useProjectActions();
 
   return (
     <MainContentContainer>
       <ContentContainer>
         <ContentHeader>
           <HeaderContent>
-            <HeaderContentTitleContainer>Todos</HeaderContentTitleContainer>
+            <HeaderContentTitleContainer>
+              {selected && selected.title}
+            </HeaderContentTitleContainer>
             <HeaderContentButtonsContainer>
               <HeaderButton>
                 <HeaderButtonsIconContainer>
@@ -135,7 +109,6 @@ const MainContent = () => {
                   <Icon name="arrows" />
                   {/* <Icon name="longArrowDown" style={{ marginLeft: 2 }} /> */}
                 </HeaderButtonsIconContainer>
-
                 <HeaderButtonTitleContainer>Sort</HeaderButtonTitleContainer>
               </HeaderButton>
               <HeaderButton onClick={handleOpenClose}>
@@ -146,26 +119,14 @@ const MainContent = () => {
                 </ContentHeaderDotsIconContainer>
               </HeaderButton>
             </HeaderContentButtonsContainer>
-            {open ? <TodoDropDown /> : ""}
+            {open ? <ProjectDropDown /> : ""}
           </HeaderContent>
         </ContentHeader>
-        <TodoItem />
-        <SubmitFormInput />
-        <MainInfoContainer>
-          <MainInfoContentContainer>
-            <ImageContainer>
-              <img src={pick1} width="220" height="200" />
-            </ImageContainer>
-            <MainInfoContentTitle>
-              Keep your tasks organized
-            </MainInfoContentTitle>
-            <InfoContent>
-              Group your tasks by goal or area of your life. Drag and drop to
-              rearrange tasks or create sub-tasks.
-            </InfoContent>
-            <InfoProjectsButton />
-          </MainInfoContentContainer>
-        </MainInfoContainer>
+        {/* <TodoItem />
+        <SubmitFormInput /> */}
+        {/* <MainInfoContent /> */}
+        {/* <MainInfoContent />
+        Should be switched according to the content  */}
       </ContentContainer>
     </MainContentContainer>
   );

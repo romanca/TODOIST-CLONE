@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import useVisibiltyState from "../../../hooks/useVisibiltyState";
 
 const CheckBoxInput = styled.input`
   position: absolute;
@@ -37,11 +38,7 @@ const SwitchContainer = styled.div`
 `;
 
 const SwitchInput = () => {
-  const [toggle, setToggle] = React.useState(false);
-
-  const handleToggle = () => {
-    setToggle((current) => !current);
-  };
+  const { toggle, handleToggle } = useVisibiltyState();
 
   return (
     <AddToFavoritesContainer>

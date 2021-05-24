@@ -2,6 +2,8 @@ import React from "react";
 import Icon from "../shared/Icon";
 import styled from "styled-components";
 import TodoItemDropDown from "./TodoItemDropDownMenu";
+import useVisibiltyState from "../hooks/useVisibiltyState";
+import { useTodoActions } from "../Providers/ItemProvider";
 
 const MainTodoItemContainer = styled.div`
   font-size: ${(props) => props.theme.spaces[14]};
@@ -82,8 +84,8 @@ const TodoButtonsContainer = styled.div`
 const TodoEditButton = styled.button`
   width: ${(props) => props.theme.spaces[12]};
   height: ${(props) => props.theme.spaces[12]};
-  color: ${(props) => props.theme.colors.muted10};
-  font-size: ${(props) => props.theme.spaces[33]};
+  color: ${(props) => props.theme.colors.text2};
+  font-size: ${(props) => props.theme.spaces[14]};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -95,8 +97,8 @@ const TodoEditButton = styled.button`
 const TodoScheduleButton = styled.button`
   width: ${(props) => props.theme.spaces[12]};
   height: ${(props) => props.theme.spaces[12]};
-  color: ${(props) => props.theme.colors.muted10};
-  font-size: ${(props) => props.theme.spaces[33]};
+  color: ${(props) => props.theme.colors.text2};
+  font-size: ${(props) => props.theme.spaces[14]};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -108,8 +110,8 @@ const TodoScheduleButton = styled.button`
 const TodoCommentButton = styled.button`
   width: ${(props) => props.theme.spaces[12]};
   height: ${(props) => props.theme.spaces[12]};
-  color: ${(props) => props.theme.colors.muted10};
-  font-size: ${(props) => props.theme.spaces[33]};
+  color: ${(props) => props.theme.colors.text3};
+  font-size: ${(props) => props.theme.spaces[14]};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -121,7 +123,7 @@ const TodoCommentButton = styled.button`
 const TodoDotsButton = styled.button`
   width: ${(props) => props.theme.spaces[12]};
   height: ${(props) => props.theme.spaces[12]};
-  color: ${(props) => props.theme.colors.muted10};
+  color: ${(props) => props.theme.colors.text2};
   font-size: ${(props) => props.theme.spaces[67]};
   display: flex;
   justify-content: center;
@@ -131,45 +133,111 @@ const TodoDotsButton = styled.button`
   outline: none;
   background-color: transparent;
 `;
+// const MainTodoItemDropDownContainer = styled.div`
+//   position: absolute;
+//   background-color: #fff;
+//   border-radius: 3px;
+//   border: 1px solid #ddd;
+//   box-shadow: 0 1px 8px 0 rgb(0 0 0 / 8%);
+//   list-style: none;
+//   margin: 0;
+//   padding: 4px 0px;
+//   width: 250px;
+//   margin-top: 20px;
+//   margin-left: -10px;
+// `;
+// const MenuItem = styled.div`
+//   padding: 4px 10px;
+//   display: flex;
+// `;
+// const IconMenuContainer = styled.div`
+//   color: grey;
+//   height: 24px;
+//   width: 24px;
+//   margin-right: 10px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
+// const Title = styled.span`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   font-size: 13px;
+// `;
+// const MenuSeparator = styled.div`
+//   margin: 4px;
+//   border-bottom: 1px solid #ddd;
+// `;
+// const PriorityTitle = styled.div`
+//   font-size: 11px;
+//   margin-bottom: 1em;
+// `;
+// const PriorityItem = styled.div`
+//   display: inline-block;
+//   border: 1px solid transparent;
+//   border-radius: 3px;
+//   cursor: pointer;
+//   width: 24px;
+//   height: 24px;
+//   padding: 1px;
+//   font-size: 20px;
+// `;
+// const PriorityItemIconContainer = styled.div`
+//   margin-left: 16px;
+//   border: 1px solid transparent;
+//   border-radius: 3px;
+//   cursor: pointer;
+//   width: 24px;
+//   height: 24px;
+//   padding: 1px;
+//   font-size: 20px;
+// `;
+// const PriorityItemContainer = styled.div`
+//   padding: 4px 10px;
+// `;
+// const IconItemsContainer = styled.div`
+//   display: flex;
+// `;
 
-const TodoItem = () => {
-  const [open, setOpen] = React.useState(false);
+const TodoItem = ({ item }) => {
+  const { open, handleOpenClose } = useVisibiltyState();
+  const { handleSelectedTodo } = useTodoActions();
 
-  const handleOpenClose = () => {
-    setOpen(true);
-    // setOpen((current) => !current);
+  const handleSelectTodo = (item) => {
+    handleSelectedTodo(item);
+    handleOpenClose();
   };
+
   return (
-    <div>
-      <MainTodoItemContainer>
-        <MainDropDownIconButtonContainer>
-          <DropDownIconButtonContainer>
-            <Icon name="th" />
-          </DropDownIconButtonContainer>
-        </MainDropDownIconButtonContainer>
-        <CheckBoxContainer>
-          <CheckBoxButton></CheckBoxButton>
-        </CheckBoxContainer>
-        <TodoTitleContainer>
-          <TodoTitle>Todo</TodoTitle>
-        </TodoTitleContainer>
-        <TodoButtonsContainer>
-          <TodoEditButton>
-            <Icon name="edit" />
-          </TodoEditButton>
-          <TodoScheduleButton>
-            <Icon name="calendar1" />
-          </TodoScheduleButton>
-          <TodoCommentButton>
-            <Icon name="comment" />
-          </TodoCommentButton>
-          <TodoDotsButton onClick={handleOpenClose}>
-            <Icon name="horizontalDots" />
-          </TodoDotsButton>
-          {open ? <TodoItemDropDown /> : ""}
-        </TodoButtonsContainer>
-      </MainTodoItemContainer>
-    </div>
+    <MainTodoItemContainer>
+      <MainDropDownIconButtonContainer>
+        <DropDownIconButtonContainer>
+          <Icon name="th" />
+        </DropDownIconButtonContainer>
+      </MainDropDownIconButtonContainer>
+      <CheckBoxContainer>
+        <CheckBoxButton></CheckBoxButton>
+      </CheckBoxContainer>
+      <TodoTitleContainer>
+        <TodoTitle>{item.title}</TodoTitle>
+      </TodoTitleContainer>
+      <TodoButtonsContainer>
+        <TodoEditButton>
+          <Icon name="edit" />
+        </TodoEditButton>
+        <TodoScheduleButton>
+          <Icon name="calendar1" />
+        </TodoScheduleButton>
+        <TodoCommentButton>
+          <Icon name="comment" />
+        </TodoCommentButton>
+        <TodoDotsButton onClick={() => handleSelectTodo(item)}>
+          <Icon name="horizontalDots" />
+        </TodoDotsButton>
+        {open ? <TodoItemDropDown handleOpenClose={handleOpenClose} /> : ""}
+      </TodoButtonsContainer>
+    </MainTodoItemContainer>
   );
 };
 

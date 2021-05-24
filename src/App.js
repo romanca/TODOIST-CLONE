@@ -3,16 +3,28 @@ import Theme from "./Providers/ThemeProvider";
 import Layout from "./Components/Layout";
 import ModalProvider from "./Providers/ModalProvider";
 import { theme } from "./shared/theme";
+import { Redirect, Router } from "@reach/router";
+import ProjectItem from "./Components/Projects/ProjectItem";
+import Items from "./Components/Filters/Items";
+import ItemProvider from "./Providers/ItemProvider";
 
 const App = () => {
   // const todo = useTodoByIidFromParams();
 
   return (
-    <Theme theme={theme}>
-      <ModalProvider>
-        <Layout />
-      </ModalProvider>
-    </Theme>
+    <ItemProvider>
+      <Theme theme={theme}>
+        <ModalProvider>
+          <Router>
+            <Layout path="/">
+              <Redirect noThrow from="/" to="project/inbox" />
+              <ProjectItem path="project/:id" />
+              <Items path="filter/:id" />
+            </Layout>
+          </Router>
+        </ModalProvider>
+      </Theme>
+    </ItemProvider>
   );
 };
 

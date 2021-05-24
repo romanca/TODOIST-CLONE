@@ -28,6 +28,7 @@ export const theme = {
     muted10: "#c0c0c0", //light grey
   },
   radii: ["10px"],
+  styles: ["none"],
   spaces: [
     "3px", //0
     "5px", //1
@@ -99,5 +100,16 @@ export const theme = {
     "17px", //67
     "11px", //68
     "25px", //69
+    "17px", //70
+    "275px", // 71
+    "140px", //72
+    "-12px", //73
+    "-6px", //74
+    "-5px", //75
+    "300px", //76
+    1.5, //77
+    "215px", //78
+    "170px", //79
+    "150px", //80
   ],
 };

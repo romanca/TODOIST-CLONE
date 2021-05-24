@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import useVisibiltyState from "../../hooks/useVisibiltyState";
 import Icon from "../../shared/Icon";
 import FavoritesList from "./FavoritesList";
 
@@ -35,23 +36,23 @@ const FavoritesMainTitle = styled.div`
 `;
 
 const Favorites = () => {
-  const [switchIcon, setSwitchIcon] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
+  const {
+    open,
+    switchItem,
+    handleSwitchItem,
+    handleOpenClose,
+  } = useVisibiltyState();
 
-  const handleSwitchIcons = () => {
-    setSwitchIcon((current) => !current);
-  };
-
-  const handleOpenClose = () => {
-    setOpen((current) => !current);
-    handleSwitchIcons();
+  const handleToggle = () => {
+    handleOpenClose();
+    handleSwitchItem();
   };
 
   return (
     <div>
-      <ProjectsItemsContainer onClick={handleOpenClose}>
+      <ProjectsItemsContainer onClick={handleToggle}>
         <ContentIconContainer>
-          {!switchIcon ? (
+          {!switchItem ? (
             <ContentIconContainer>
               <Icon name="rightArrow" color="rgba(0,0,0,.54);" />
             </ContentIconContainer>
