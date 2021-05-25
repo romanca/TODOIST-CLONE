@@ -70,21 +70,10 @@ const CounterContainer = styled.div`
 `;
 
 const DropDown = ({ item }) => {
-  // const { open, handleOpenClose, handleClose } = useVisibiltyState();
   const { favoriteProjects, handleSelected } = useProjectActions();
   const openProjectModal = useProjectMessageDialog();
-  // const ref = React.createRef();
-  // const { ref, isVisible, setIsVisible } = useClickDropDown();
-  // const [isActive, setIsActive] = useDetectOutsideClick(ref, false);
   const { ref, handleSwitchDropDown, handleSwitchClose, isVisible } =
     useSwitchDropDown();
-
-  // const handleIsActive = () => {
-  //   setIsActive((current) => !current);
-  // };
-  // const handleCloseIsActive = () => {
-  //   setIsActive(false);
-  // };
 
   const handleFavoriteProject = (item) => {
     favoriteProjects(item);

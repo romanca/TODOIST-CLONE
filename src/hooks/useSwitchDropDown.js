@@ -28,11 +28,4 @@ function useSwitchDropDown() {
 
 export default useSwitchDropDown;
 
-// import React from "react"
-
-// const useSwitchDropDown = () => {
-//     return(
-
-//     )
-// }
-// export default useSwitchDropDown
+ 

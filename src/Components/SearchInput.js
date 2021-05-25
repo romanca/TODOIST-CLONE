@@ -103,19 +103,6 @@ const SearchInput = () => {
       />
       {visible ? (
         <CrossContainer
-          style={
-            {
-              // width: 24,
-              // height: 24,
-              // cursor: "pointer",
-              // color: "grey",
-              // display: "flex",
-              // justifyContent: "center",
-              // alignItems: "center",
-              // fontWeight: 100,
-              // fontSize: 24,
-            }
-          }
         >
           <Plus>+</Plus>
         </CrossContainer>

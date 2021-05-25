@@ -135,73 +135,7 @@ const TodoDotsButton = styled.button`
   outline: none;
   background-color: transparent;
 `;
-// const MainTodoItemDropDownContainer = styled.div`
-//   position: absolute;
-//   background-color: #fff;
-//   border-radius: 3px;
-//   border: 1px solid #ddd;
-//   box-shadow: 0 1px 8px 0 rgb(0 0 0 / 8%);
-//   list-style: none;
-//   margin: 0;
-//   padding: 4px 0px;
-//   width: 250px;
-//   margin-top: 20px;
-//   margin-left: -10px;
-// `;
-// const MenuItem = styled.div`
-//   padding: 4px 10px;
-//   display: flex;
-// `;
-// const IconMenuContainer = styled.div`
-//   color: grey;
-//   height: 24px;
-//   width: 24px;
-//   margin-right: 10px;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// `;
-// const Title = styled.span`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   font-size: 13px;
-// `;
-// const MenuSeparator = styled.div`
-//   margin: 4px;
-//   border-bottom: 1px solid #ddd;
-// `;
-// const PriorityTitle = styled.div`
-//   font-size: 11px;
-//   margin-bottom: 1em;
-// `;
-// const PriorityItem = styled.div`
-//   display: inline-block;
-//   border: 1px solid transparent;
-//   border-radius: 3px;
-//   cursor: pointer;
-//   width: 24px;
-//   height: 24px;
-//   padding: 1px;
-//   font-size: 20px;
-// `;
-// const PriorityItemIconContainer = styled.div`
-//   margin-left: 16px;
-//   border: 1px solid transparent;
-//   border-radius: 3px;
-//   cursor: pointer;
-//   width: 24px;
-//   height: 24px;
-//   padding: 1px;
-//   font-size: 20px;
-// `;
-// const PriorityItemContainer = styled.div`
-//   padding: 4px 10px;
-// `;
-// const IconItemsContainer = styled.div`
-//   display: flex;
-// `;
-
+ 
 const TodoItem = ({ item }) => {
   const { handleSelectedTodo } = useTodoActions();
   const { ref, isVisible, handleSwitchDropDown } = useSwitchDropDown();

@@ -112,9 +112,7 @@ const ItemProvider = ({ children }) => {
       return newState;
     });
   }, []);
-  // const getTodoById = (id) => {
-  //   return Object.values(todos).find((i) => i.id === id);
-  // };
+   
 
   return (
     <Context.Provider
