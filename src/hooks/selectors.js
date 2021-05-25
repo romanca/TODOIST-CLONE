@@ -1,9 +1,14 @@
-import { useItems } from "../Providers/ItemProvider";
-import { InboxId } from "../shared/constants";
+import { useItems, useStaticItems } from "../Providers/ItemProvider";
+import {
+  favoritesId,
+  favoritesTitle,
+  inboxId,
+  projectsId,
+  projectsTitle,
+} from "../shared/constants";
 
 export const useDefaultTodos = () => {
   const { projectsItems } = useItems();
-  const inboxId = InboxId;
   const staticItem = {
     [inboxId]: {
       title: "Inbox",
@@ -16,4 +21,9 @@ export const useDefaultTodos = () => {
     ...staticItem,
     ...projectsItems,
   };
+};
+
+export const useStaticProjectsItems = () => {
+  const { staticProjectItems } = useStaticItems();
+  return { ...staticProjectItems };
 };

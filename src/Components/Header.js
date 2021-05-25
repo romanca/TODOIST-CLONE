@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import SearchInput from "./SearchInput";
 import Icon from "../shared/Icon";
+import { useStaticProjectsItems } from "../hooks/selectors";
+import { hamburgerId } from "../shared/constants";
 
 const Container = styled.div`
   height: ${(props) => props.theme.spaces[17]};
@@ -35,11 +37,11 @@ const LeftIconButtonsContainer = styled.div`
     cursor: pointer;
 `;
 
-const Header = () => {
+const Header = ({ item, handleOpenCloseSideBar }) => {
   return (
     <Container>
       <LeftSideButtonsContainer>
-        <LeftIconButtonsContainer>
+        <LeftIconButtonsContainer onClick={() => handleOpenCloseSideBar(item)}>
           <Icon name="bars" color="#909090" />
         </LeftIconButtonsContainer>
         <LeftIconButtonsContainer>

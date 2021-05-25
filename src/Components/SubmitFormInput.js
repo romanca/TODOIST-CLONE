@@ -74,6 +74,7 @@ const AddTaskButton = styled.button`
   display: inline-block;
   text-align: center;
   outline: none;
+  cursor: pointer;
 `;
 const CancelButton = styled.button`
   color: ${(props) => props.theme.colors.text3};
@@ -84,6 +85,7 @@ const CancelButton = styled.button`
   border: ${(props) => props.theme.spaces[8]} solid transparent;
   outline: none;
   background-color: transparent;
+  cursor: pointer;
 `;
 const MainToggleSubmitFormContainer = styled.div`
   display: block;
@@ -168,7 +170,20 @@ const SubmitFormInput = () => {
             </SubmitFormContentButtonsContainer>
           </SubmitFormInputContainer>
           <FormSubmitButtonsContainer>
-            <AddTaskButton onClick={handleSubmit}>Add task</AddTaskButton>
+            {title ? (
+              <AddTaskButton onClick={handleSubmit} type="button">
+                Add task
+              </AddTaskButton>
+            ) : (
+              <AddTaskButton
+                onClick={handleSubmit}
+                type="button"
+                style={{ opacity: 0.5 }}
+                disabled
+              >
+                Add task
+              </AddTaskButton>
+            )}
             <CancelButton onClick={handleToggle}>Cancel</CancelButton>
           </FormSubmitButtonsContainer>
         </div>

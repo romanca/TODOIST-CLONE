@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import useVisibiltyState from "../hooks/useVisibiltyState";
 import { useTodoMessageDialog } from "../Providers/ModalProvider";
 import Icon from "../shared/Icon";
 
@@ -71,11 +70,11 @@ const IconItemsContainer = styled.div`
   display: flex;
 `;
 
-const TodoItemDropDown = ({ handleOpenClose }) => {
+const TodoItemDropDown = () => {
   const openTodoModal = useTodoMessageDialog();
 
   return (
-    <MainTodoItemDropDownContainer onClick={handleOpenClose}>
+    <MainTodoItemDropDownContainer>
       <MenuItem>
         <IconMenuContainer>
           <Icon name="edit" />

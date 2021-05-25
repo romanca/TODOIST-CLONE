@@ -1,12 +1,11 @@
+import { Match } from "@reach/router";
 import React from "react";
 import styled from "styled-components";
 import { useDefaultTodos } from "../hooks/selectors";
 import { useProjectActions, useTodos } from "../Providers/ItemProvider";
-import { staticTodo } from "../shared/constants";
+import { inboxId, staticTodo } from "../shared/constants";
 import Icon from "../shared/Icon";
-import { items } from "../shared/mockData";
 import Link from "../wrappers/Link";
-import SubmitFormInput from "./SubmitFormInput";
 
 const ItemsContainer = styled.div`
   height: ${(props) => props.theme.spaces[10]};
@@ -58,23 +57,35 @@ const StaticProjects = () => {
         .map((i) => {
           const to = `project/${i.id}`;
           return (
-            <Link to={to} onClick={() => handleSelected(console.log(i))}>
-              <ItemsContainer key={i.id}>
-                <ContentIconContainer>
-                  <Icon name="inbox" color="#246fe0" />
-                </ContentIconContainer>
-                <ContentTitleContainer>
-                  {i.title}
-                  <CounterContainer>
-                    {
-                      Object.values(todos).filter(
-                        (i) => i.categoryId === "inbox"
-                      ).length
-                    }
-                  </CounterContainer>
-                </ContentTitleContainer>
-              </ItemsContainer>
-            </Link>
+            <Match path={to}>
+              {({ match }) => (
+                <div
+                  style={{
+                    backgroundColor: match ? "#ececec" : "",
+                    borderRadius: match ? 5 : "",
+                    width: 180,
+                  }}
+                >
+                  <Link to={to} onClick={() => handleSelected(console.log(i))}>
+                    <ItemsContainer key={i.id}>
+                      <ContentIconContainer>
+                        <Icon name="inbox" color="#246fe0" />
+                      </ContentIconContainer>
+                      <ContentTitleContainer>
+                        {i.title}
+                        <CounterContainer>
+                          {
+                            Object.values(todos).filter(
+                              (i) => i.categoryId === inboxId
+                            ).length
+                          }
+                        </CounterContainer>
+                      </ContentTitleContainer>
+                    </ItemsContainer>
+                  </Link>
+                </div>
+              )}
+            </Match>
           );
         })}
     </div>

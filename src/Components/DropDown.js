@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import useVisibiltyState from "../hooks/useVisibiltyState";
 import { useProjectActions } from "../Providers/ItemProvider";
 import Icon from "../shared/Icon";
 import { useProjectMessageDialog } from "../Providers/ModalProvider";
+import useDetectOutsideClick from "../hooks/useDetectOutsideClick";
+import useSwitchDropDown from "../hooks/useSwitchDropDown";
 
 const SelectedItemContainer = styled.div`
   position: absolute;
@@ -69,38 +70,49 @@ const CounterContainer = styled.div`
 `;
 
 const DropDown = ({ item }) => {
-  const { open, handleOpenClose, handleClose } = useVisibiltyState();
-  const { favoriteProjects, handleSelected, selected } = useProjectActions();
+  // const { open, handleOpenClose, handleClose } = useVisibiltyState();
+  const { favoriteProjects, handleSelected } = useProjectActions();
   const openProjectModal = useProjectMessageDialog();
-  const ref = React.createRef();
+  // const ref = React.createRef();
+  // const { ref, isVisible, setIsVisible } = useClickDropDown();
+  // const [isActive, setIsActive] = useDetectOutsideClick(ref, false);
+  const { ref, handleSwitchDropDown, handleSwitchClose, isVisible } =
+    useSwitchDropDown();
+
+  // const handleIsActive = () => {
+  //   setIsActive((current) => !current);
+  // };
+  // const handleCloseIsActive = () => {
+  //   setIsActive(false);
+  // };
 
   const handleFavoriteProject = (item) => {
     favoriteProjects(item);
-    handleClose();
+    handleSwitchClose();
   };
 
   const handleRemoveProject = (item) => {
     handleSelected(item);
-    handleClose();
+    handleSwitchClose();
   };
 
   const handleSelectProject = (item) => {
-    handleOpenClose();
+    handleSwitchDropDown();
     handleSelected(item);
   };
 
-  const handleClickOutside = (event) => {
-    if (ref.current && !ref.current.contains(event.target)) {
-      handleClose();
-    }
-  };
+  // const handleClickOutside = (event) => {
+  //   if (ref.current && !ref.current.contains(event.target)) {
+  //     handleClose();
+  //   }
+  // };
 
-  React.useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return function cleanup() {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  });
+  // React.useEffect(() => {
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return function cleanup() {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // });
 
   return (
     <div style={{ display: "flex" }} ref={ref}>
@@ -111,7 +123,7 @@ const DropDown = ({ item }) => {
         <ContentIconContainer onClick={() => handleSelectProject(item)}>
           <Icon name="horizontalDots" color="grey" style={{ fontSize: 12 }} />
         </ContentIconContainer>
-        {open ? (
+        {isVisible ? (
           <div>
             <SelectedItemContainer>
               <SelectedItem>

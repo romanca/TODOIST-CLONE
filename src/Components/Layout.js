@@ -2,10 +2,10 @@ import React from "react";
 import Header from "./Header";
 import styled from "styled-components";
 import SideBar from "./SideBar";
-import Icon from "../shared/Icon";
 import useVisibiltyState from "../hooks/useVisibiltyState";
-import ProjectDropDown from "./ProjectDropDown";
 import { useProjectActions } from "../Providers/ItemProvider";
+import { useStaticProjectsItems } from "../hooks/selectors";
+import { hamburgerId } from "../shared/constants";
 
 const MainContentContainer = styled.div`
   height: calc(100vh - 44px);
@@ -82,62 +82,66 @@ const ContentHeaderDotsIconContainer = styled.div`
   color: ${(props) => props.theme.colors.text1};
 `;
 
+const Container = styled.div`
+  height: ${(props) => props.theme.spaces[17]};
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-color: ${(props) => props.theme.colors.muted1};
+  background-color: ${(props) => props.theme.colors.muted};
+  padding-left: ${(props) => props.theme.spaces[18]};
+  padding-right: ${(props) => props.theme.spaces[18]};
+`;
+const LeftSideButtonsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const LeftIconButtonsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: ${(props) => props.theme.spaces[5]};
+  height: ${(props) => props.theme.spaces[5]};
+  font-weight: ${(props) => props.theme.spaces[7]};
+  :hover {
+    background: ${(props) => props.theme.colors.muted2};
+    border-radius: ${(props) => props.theme.spaces[9]};
+    cursor: pointer;
+`;
+
 const LayoutContainer = styled.div``;
 
 const Layout = (props) => {
-  const { open, handleOpenClose } = useVisibiltyState();
-  const { selected } = useProjectActions();
+  const items = useStaticProjectsItems();
+  const { staticItems } = useProjectActions();
+  const { handleSwitchItem } = useVisibiltyState();
+
+  const handleOpenCloseSideBar = (item) => {
+    staticItems(item);
+    handleSwitchItem();
+  };
 
   return (
-    <LayoutContainer>
-      <Header />
-      <div style={{ display: "flex" }}>
-        <SideBar />
-        <MainContentContainer>
-          <ContentContainer>
-            <ContentHeader>
-              <HeaderContent>
-                <HeaderContentTitleContainer>
-                  {selected && selected.title}
-                </HeaderContentTitleContainer>
-                <HeaderContentButtonsContainer>
-                  <HeaderButton>
-                    <HeaderButtonsIconContainer>
-                      <Icon name="comment" />
-                    </HeaderButtonsIconContainer>
-                    <HeaderButtonTitleContainer>
-                      Comments
-                    </HeaderButtonTitleContainer>
-                  </HeaderButton>
-                  <HeaderButton>
-                    <HeaderButtonsIconContainer>
-                      <Icon name="arrows" />
-                      {/* <Icon name="longArrowDown" style={{ marginLeft: 2 }} /> */}
-                    </HeaderButtonsIconContainer>
-                    <HeaderButtonTitleContainer>
-                      Sort
-                    </HeaderButtonTitleContainer>
-                  </HeaderButton>
-                  <HeaderButton onClick={handleOpenClose}>
-                    <ContentHeaderDotsIconContainer>
-                      <Icon name="circle" />
-                      <Icon name="circle" />
-                      <Icon name="circle" />
-                    </ContentHeaderDotsIconContainer>
-                  </HeaderButton>
-                </HeaderContentButtonsContainer>
-                {open ? (
-                  <ProjectDropDown handleOpenClose={handleOpenClose} />
-                ) : (
-                  ""
-                )}
-              </HeaderContent>
-            </ContentHeader>
-            {props.children}
-          </ContentContainer>
-        </MainContentContainer>
-      </div>
-    </LayoutContainer>
+    <div>
+      {Object.values(items)
+        .filter((i) => i.id === hamburgerId)
+        .map((i) => (
+          <LayoutContainer>
+            <Header item={i} handleOpenCloseSideBar={handleOpenCloseSideBar} />
+            <div style={{ display: "flex" }}>
+              {!i.opened ? <SideBar /> : ""}
+              <MainContentContainer>
+                <ContentContainer>{props.children}</ContentContainer>
+              </MainContentContainer>
+            </div>
+          </LayoutContainer>
+        ))}
+    </div>
   );
 };
 export default Layout;

@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { useStaticProjectsItems } from "../../hooks/selectors";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
+import { useProjectActions } from "../../Providers/ItemProvider";
 import { useProjectsDialog } from "../../Providers/ModalProvider";
+import { projectsId } from "../../shared/constants";
 import Icon from "../../shared/Icon";
 import ProjectsList from "./ProjectsList";
 
@@ -54,57 +57,58 @@ const ContentProjectsContainer = styled.div`
 `;
 
 const Projects = () => {
-  const {
-    open,
-    visible,
-    switchItem,
-    handleSwitchItem,
-    handleVisible,
-    handleOpenClose,
-  } = useVisibiltyState();
+  const projects = useStaticProjectsItems();
+  const { staticItems } = useProjectActions();
+  const { visible, handleSwitchItem, handleVisible } = useVisibiltyState();
   const openProjectModal = useProjectsDialog();
 
-  const handleToggle = () => {
-    handleOpenClose();
+  const handleOpenCloseFavorites = (item) => {
+    staticItems(item);
     handleSwitchItem();
   };
 
   return (
     <div>
-      <ProjectsItemsContainer
-        onMouseLeave={handleVisible}
-        onMouseEnter={handleVisible}
-      >
-        <ContentProjectsContainer
-          onClick={handleToggle}
-          style={{ display: "flex" }}
-        >
-          {!switchItem ? (
-            <ContentIconContainer>
-              <Icon name="rightArrow" color="rgba(0,0,0,.54);" />
-            </ContentIconContainer>
-          ) : (
-            <ContentIconContainer>
-              <Icon name="rightDown" color="rgba(0,0,0,.54);" />
-            </ContentIconContainer>
-          )}
-          <ContentTitleContainer>
-            <ProjectsTitle>Projects</ProjectsTitle>
-          </ContentTitleContainer>
-        </ContentProjectsContainer>
-        {visible ? (
-          <PlusButtonContainer onClick={openProjectModal}>
-            <Icon
-              name="plus"
-              color="rgba(0,0,0,.54);"
-              style={{ fontSize: 12 }}
-            />
-          </PlusButtonContainer>
-        ) : (
-          ""
-        )}
-      </ProjectsItemsContainer>
-      {open ? <ProjectsList /> : ""}
+      {Object.values(projects)
+        .filter((i) => i.id === projectsId)
+        .map((i) => (
+          <div>
+            <ProjectsItemsContainer
+              onMouseLeave={handleVisible}
+              onMouseEnter={handleVisible}
+            >
+              <ContentProjectsContainer
+                style={{ display: "flex" }}
+                onClick={() => handleOpenCloseFavorites(i)}
+              >
+                {!i.opened ? (
+                  <ContentIconContainer>
+                    <Icon name="rightArrow" color="rgba(0,0,0,.54);" />
+                  </ContentIconContainer>
+                ) : (
+                  <ContentIconContainer>
+                    <Icon name="rightDown" color="rgba(0,0,0,.54);" />
+                  </ContentIconContainer>
+                )}
+                <ContentTitleContainer>
+                  <ProjectsTitle>Projects</ProjectsTitle>
+                </ContentTitleContainer>
+              </ContentProjectsContainer>
+              {visible ? (
+                <PlusButtonContainer onClick={openProjectModal}>
+                  <Icon
+                    name="plus"
+                    color="rgba(0,0,0,.54);"
+                    style={{ fontSize: 12 }}
+                  />
+                </PlusButtonContainer>
+              ) : (
+                ""
+              )}
+            </ProjectsItemsContainer>
+            {i.opened ? <ProjectsList /> : ""}
+          </div>
+        ))}
     </div>
   );
 };

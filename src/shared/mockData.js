@@ -1,4 +1,36 @@
-import { useParams } from "@reach/router";
+import {
+  favoritesId,
+  favoritesTitle,
+  filtersId,
+  filtersTitle,
+  hamburgerId,
+  hamburgerTitle,
+  projectsId,
+  projectsTitle,
+} from "./constants";
+
+export const staticItems = {
+  [favoritesId]: {
+    title: favoritesTitle,
+    id: favoritesId,
+    opened: false,
+  },
+  [projectsId]: {
+    title: projectsTitle,
+    id: projectsId,
+    opened: false,
+  },
+  [filtersId]: {
+    title: filtersTitle,
+    id: filtersId,
+    opened: false,
+  },
+  [hamburgerId]: {
+    title: hamburgerTitle,
+    id: hamburgerId,
+    opened: false,
+  },
+};
 
 export const selectedItems = {
   id1: {

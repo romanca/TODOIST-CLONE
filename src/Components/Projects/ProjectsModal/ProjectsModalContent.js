@@ -163,7 +163,18 @@ const ProjectsModalContent = () => {
       </ContentContainer>
       <ContentFooter>
         <CancelButton onClick={closeModalDialog}>Cancel</CancelButton>
-        <AddButton onClick={handleSubmitProject}>Add</AddButton>
+        {title ? (
+          <AddButton onClick={handleSubmitProject}>Add</AddButton>
+        ) : (
+          <AddButton
+            onClick={handleSubmitProject}
+            type="button"
+            style={{ opacity: 0.5 }}
+            disabled
+          >
+            Add
+          </AddButton>
+        )}
       </ContentFooter>
     </MainContentContainer>
   );

@@ -1,10 +1,12 @@
 import React from "react";
 import usePersistedState from "../hooks/use-persisted-state";
+import { staticItems } from "../shared/mockData";
 
 const Context = React.createContext(null);
 
 const initialItems = {};
 const initialTodos = {};
+const initialStaticItems = staticItems;
 
 const ItemProvider = ({ children }) => {
   const [projectsItems, setProjectsItems] = usePersistedState(
@@ -12,6 +14,10 @@ const ItemProvider = ({ children }) => {
     initialItems
   );
   const [todos, setTodos] = usePersistedState("todos", initialTodos);
+  const [staticProjectItems, setStaticProjectItems] = usePersistedState(
+    "staticItems",
+    initialStaticItems
+  );
   const [selectedProjectId, setSelectedProjectId] = React.useState();
   const [selectedTodoId, setSelectedTodotId] = React.useState();
 
@@ -69,6 +75,20 @@ const ItemProvider = ({ children }) => {
     );
   };
 
+  const staticItems = (item) => {
+    setStaticProjectItems(
+      Object.values(staticProjectItems).map((i) => {
+        if (i === item) {
+          return {
+            ...i,
+            opened: !i.opened,
+          };
+        }
+        return i;
+      })
+    );
+  };
+
   const createTodo = (title, categoryId) => {
     const newId = String(Date.now());
     setTodos((current) => {
@@ -110,6 +130,8 @@ const ItemProvider = ({ children }) => {
         handleSelected,
         handleSelectedTodo,
         favoriteProjects,
+        staticProjectItems,
+        staticItems,
       }}
     >
       {children}
@@ -124,6 +146,7 @@ export const useProjectActions = () => {
     handleSelected,
     selected,
     favoriteProjects,
+    staticItems,
   } = React.useContext(Context);
   return {
     createProject,
@@ -131,6 +154,7 @@ export const useProjectActions = () => {
     handleSelected,
     selected,
     favoriteProjects,
+    staticItems,
   };
 };
 
@@ -156,6 +180,14 @@ export const useItems = () => {
 
   return {
     projectsItems: Object.values(projectsItems),
+  };
+};
+
+export const useStaticItems = () => {
+  const { staticProjectItems } = React.useContext(Context);
+
+  return {
+    staticProjectItems: Object.values(staticProjectItems),
   };
 };
 

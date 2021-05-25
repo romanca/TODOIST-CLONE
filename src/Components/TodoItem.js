@@ -4,6 +4,8 @@ import styled from "styled-components";
 import TodoItemDropDown from "./TodoItemDropDownMenu";
 import useVisibiltyState from "../hooks/useVisibiltyState";
 import { useTodoActions } from "../Providers/ItemProvider";
+import useDetectOutsideClick from "../hooks/useDetectOutsideClick";
+import useSwitchDropDown from "../hooks/useSwitchDropDown";
 
 const MainTodoItemContainer = styled.div`
   font-size: ${(props) => props.theme.spaces[14]};
@@ -201,12 +203,12 @@ const TodoDotsButton = styled.button`
 // `;
 
 const TodoItem = ({ item }) => {
-  const { open, handleOpenClose } = useVisibiltyState();
   const { handleSelectedTodo } = useTodoActions();
+  const { ref, isVisible, handleSwitchDropDown } = useSwitchDropDown();
 
   const handleSelectTodo = (item) => {
     handleSelectedTodo(item);
-    handleOpenClose();
+    handleSwitchDropDown();
   };
 
   return (
@@ -232,10 +234,14 @@ const TodoItem = ({ item }) => {
         <TodoCommentButton>
           <Icon name="comment" />
         </TodoCommentButton>
-        <TodoDotsButton onClick={() => handleSelectTodo(item)}>
+        <TodoDotsButton onClick={() => handleSelectTodo(item)} ref={ref}>
           <Icon name="horizontalDots" />
         </TodoDotsButton>
-        {open ? <TodoItemDropDown handleOpenClose={handleOpenClose} /> : ""}
+        {isVisible ? (
+          <TodoItemDropDown handleSwitchDropDown={handleSwitchDropDown} />
+        ) : (
+          ""
+        )}
       </TodoButtonsContainer>
     </MainTodoItemContainer>
   );

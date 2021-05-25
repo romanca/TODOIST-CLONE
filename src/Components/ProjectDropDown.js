@@ -55,11 +55,11 @@ const CheckBoxButton = styled.span`
   font-size: 10px;
 `;
 
-const ProjectDropDown = ({ handleOpenClose }) => {
+const ProjectDropDown = () => {
   const removeProjectDialog = useProjectMessageDialog();
 
   return (
-    <MainProjectDropDownContainer onClick={handleOpenClose}>
+    <MainProjectDropDownContainer>
       <MenuItem>
         <IconMenuContainer>
           <Icon name="edit" />

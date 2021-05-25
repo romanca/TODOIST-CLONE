@@ -3,6 +3,7 @@ import { useProjectActions } from "../../../Providers/ItemProvider";
 import { useModal } from "../../../Providers/ModalProvider";
 import Icon from "../../../shared/Icon";
 import styled from "styled-components";
+import { useParams } from "@reach/router";
 
 const DeleteButton = styled.button`
   background-color: #dd4b39;

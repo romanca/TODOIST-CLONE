@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import { useStaticProjectsItems } from "../../hooks/selectors";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
+import { useProjectActions } from "../../Providers/ItemProvider";
+import { filtersId } from "../../shared/constants";
 import Icon from "../../shared/Icon";
 import FiltersList from "./FiltersList";
 
@@ -37,37 +40,40 @@ const FiltersTitle = styled.div`
 `;
 
 const Filters = () => {
-  const {
-    open,
-    switchItem,
-    handleSwitchItem,
-    handleOpenClose,
-  } = useVisibiltyState();
+  const { handleSwitchItem } = useVisibiltyState();
+  const filters = useStaticProjectsItems();
+  const { staticItems } = useProjectActions();
 
-  const handleToggle = () => {
-    handleOpenClose();
+  const handleOpenCloseFavorites = (item) => {
+    staticItems(item);
     handleSwitchItem();
   };
 
   return (
     <div>
-      <ProjectsItemsContainer onClick={handleToggle}>
-        <ContentIconContainer>
-          {!switchItem ? (
-            <ContentIconContainer>
-              <Icon name="rightArrow" color="rgba(0,0,0,.54);" />
-            </ContentIconContainer>
-          ) : (
-            <ContentIconContainer>
-              <Icon name="rightDown" color="rgba(0,0,0,.54);" />
-            </ContentIconContainer>
-          )}
-        </ContentIconContainer>
-        <ContentTitleContainer>
-          <FiltersTitle>Filters</FiltersTitle>
-        </ContentTitleContainer>
-      </ProjectsItemsContainer>
-      {open ? <FiltersList /> : ""}
+      {Object.values(filters)
+        .filter((i) => i.id === filtersId)
+        .map((i) => (
+          <div>
+            <ProjectsItemsContainer onClick={() => handleOpenCloseFavorites(i)}>
+              <ContentIconContainer>
+                {!i.opened ? (
+                  <ContentIconContainer>
+                    <Icon name="rightArrow" color="rgba(0,0,0,.54);" />
+                  </ContentIconContainer>
+                ) : (
+                  <ContentIconContainer>
+                    <Icon name="rightDown" color="rgba(0,0,0,.54);" />
+                  </ContentIconContainer>
+                )}
+              </ContentIconContainer>
+              <ContentTitleContainer>
+                <FiltersTitle>Filters</FiltersTitle>
+              </ContentTitleContainer>
+            </ProjectsItemsContainer>
+            {i.opened ? <FiltersList /> : ""}
+          </div>
+        ))}
     </div>
   );
 };

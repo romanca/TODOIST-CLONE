@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import { useStaticProjectsItems } from "../../hooks/selectors";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
+import { useProjectActions } from "../../Providers/ItemProvider";
+import { favoritesId, hamburgerId } from "../../shared/constants";
 import Icon from "../../shared/Icon";
 import FavoritesList from "./FavoritesList";
 
@@ -36,37 +39,40 @@ const FavoritesMainTitle = styled.div`
 `;
 
 const Favorites = () => {
-  const {
-    open,
-    switchItem,
-    handleSwitchItem,
-    handleOpenClose,
-  } = useVisibiltyState();
+  const { handleSwitchItem } = useVisibiltyState();
+  const favorites = useStaticProjectsItems();
+  const { staticItems } = useProjectActions();
 
-  const handleToggle = () => {
-    handleOpenClose();
+  const handleOpenCloseFavorites = (item) => {
+    staticItems(item);
     handleSwitchItem();
   };
 
   return (
     <div>
-      <ProjectsItemsContainer onClick={handleToggle}>
-        <ContentIconContainer>
-          {!switchItem ? (
-            <ContentIconContainer>
-              <Icon name="rightArrow" color="rgba(0,0,0,.54);" />
-            </ContentIconContainer>
-          ) : (
-            <ContentIconContainer>
-              <Icon name="rightDown" color="rgba(0,0,0,.54);" />
-            </ContentIconContainer>
-          )}
-        </ContentIconContainer>
-        <ContentTitleContainer>
-          <FavoritesMainTitle>Favorites</FavoritesMainTitle>
-        </ContentTitleContainer>
-      </ProjectsItemsContainer>
-      {open ? <FavoritesList /> : ""}
+      {Object.values(favorites)
+        .filter((i) => i.id === favoritesId)
+        .map((i) => (
+          <div>
+            <ProjectsItemsContainer onClick={() => handleOpenCloseFavorites(i)}>
+              <ContentIconContainer>
+                {!i.opened ? (
+                  <ContentIconContainer>
+                    <Icon name="rightArrow" color="rgba(0,0,0,.54);" />
+                  </ContentIconContainer>
+                ) : (
+                  <ContentIconContainer>
+                    <Icon name="rightDown" color="rgba(0,0,0,.54);" />
+                  </ContentIconContainer>
+                )}
+              </ContentIconContainer>
+              <ContentTitleContainer>
+                <FavoritesMainTitle>{i.title}</FavoritesMainTitle>
+              </ContentTitleContainer>
+            </ProjectsItemsContainer>
+            {i.opened ? <FavoritesList /> : ""}
+          </div>
+        ))}
     </div>
   );
 };
