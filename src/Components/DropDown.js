@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useProjectActions } from "../Providers/ItemProvider";
 import Icon from "../shared/Icon";
 import { useProjectMessageDialog } from "../Providers/ModalProvider";
-import useDetectOutsideClick from "../hooks/useDetectOutsideClick";
 import useSwitchDropDown from "../hooks/useSwitchDropDown";
 
 const SelectedItemContainer = styled.div`
@@ -89,19 +88,6 @@ const DropDown = ({ item }) => {
     handleSwitchDropDown();
     handleSelected(item);
   };
-
-  // const handleClickOutside = (event) => {
-  //   if (ref.current && !ref.current.contains(event.target)) {
-  //     handleClose();
-  //   }
-  // };
-
-  // React.useEffect(() => {
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return function cleanup() {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // });
 
   return (
     <div style={{ display: "flex" }} ref={ref}>

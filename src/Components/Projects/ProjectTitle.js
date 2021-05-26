@@ -1,6 +1,8 @@
 import { Link } from "@reach/router";
 import React from "react";
 import styled from "styled-components";
+import useVisibiltyState from "../../hooks/useVisibiltyState";
+import { useTodos } from "../../Providers/ItemProvider";
 import DropDown from "../DropDown";
 
 const ItemsContainer = styled.div`
@@ -34,15 +36,44 @@ const ContentTitleContainer = styled.div`
   color: ${(props) => props.theme.colors.muted5};
 `;
 
+const CounterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${(props) => props.theme.colors.muted4};
+  font-size: ${(props) => props.theme.spaces[15]};
+`;
+
+const ContentIconContainer = styled.div`
+  width: ${(props) => props.theme.spaces[5]};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ProjectTitle = ({ item, to }) => {
+  const { todos } = useTodos();
+  const { toggle, handleToggle } = useVisibiltyState();
+
   return (
-    <ItemsContainer>
+    <ItemsContainer onMouseEnter={handleToggle} onMouseLeave={handleToggle}>
       <Link to={to} style={{ textDecoration: "none", width: 15 }}>
         <ContentTitleContainer>
           <Title>{item.title}</Title>
         </ContentTitleContainer>
       </Link>
-      <DropDown item={item} />
+      {toggle ? (
+        <DropDown item={item} />
+      ) : (
+        <ContentIconContainer>
+          <CounterContainer>
+            {
+              Object.values(todos).filter((i) => i.categoryId === item.id)
+                .length
+            }
+          </CounterContainer>
+        </ContentIconContainer>
+      )}
     </ItemsContainer>
   );
 };

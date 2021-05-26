@@ -6,9 +6,7 @@ import { useProjectActions, useTodos } from "../../Providers/ItemProvider";
 import { useDefaultTodos } from "../../hooks/selectors";
 import Icon from "../../shared/Icon";
 import styled from "styled-components";
-import useVisibiltyState from "../../hooks/useVisibiltyState";
 import ProjectDropDown from "../ProjectDropDown";
-import useDetectOutsideClick from "../../hooks/useDetectOutsideClick";
 import useSwitchDropDown from "../../hooks/useSwitchDropDown";
 
 const ContentHeader = styled.div`

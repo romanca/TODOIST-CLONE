@@ -2,9 +2,7 @@ import React from "react";
 import Icon from "../shared/Icon";
 import styled from "styled-components";
 import TodoItemDropDown from "./TodoItemDropDownMenu";
-import useVisibiltyState from "../hooks/useVisibiltyState";
 import { useTodoActions } from "../Providers/ItemProvider";
-import useDetectOutsideClick from "../hooks/useDetectOutsideClick";
 import useSwitchDropDown from "../hooks/useSwitchDropDown";
 
 const MainTodoItemContainer = styled.div`
@@ -135,7 +133,7 @@ const TodoDotsButton = styled.button`
   outline: none;
   background-color: transparent;
 `;
- 
+
 const TodoItem = ({ item }) => {
   const { handleSelectedTodo } = useTodoActions();
   const { ref, isVisible, handleSwitchDropDown } = useSwitchDropDown();

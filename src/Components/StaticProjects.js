@@ -2,7 +2,7 @@ import { Match } from "@reach/router";
 import React from "react";
 import styled from "styled-components";
 import { useDefaultTodos } from "../hooks/selectors";
-import { useProjectActions, useTodos } from "../Providers/ItemProvider";
+import {  useTodos } from "../Providers/ItemProvider";
 import { inboxId, staticTodo } from "../shared/constants";
 import Icon from "../shared/Icon";
 import Link from "../wrappers/Link";
@@ -48,7 +48,6 @@ const ContentIconContainer = styled.div`
 const StaticProjects = () => {
   const staticProjects = useDefaultTodos();
   const { todos } = useTodos();
-  const { handleSelected } = useProjectActions();
 
   return (
     <div>
@@ -66,7 +65,7 @@ const StaticProjects = () => {
                     width: 180,
                   }}
                 >
-                  <Link to={to} onClick={() => handleSelected(console.log(i))}>
+                  <Link to={to}>
                     <ItemsContainer key={i.id}>
                       <ContentIconContainer>
                         <Icon name="inbox" color="#246fe0" />
