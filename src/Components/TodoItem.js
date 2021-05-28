@@ -2,8 +2,8 @@ import React from "react";
 import Icon from "../shared/Icon";
 import styled from "styled-components";
 import TodoItemDropDown from "./TodoItemDropDownMenu";
-import { useTodoActions } from "../Providers/ItemProvider";
-import useSwitchDropDown from "../hooks/useSwitchDropDown";
+import useVisibiltyState from "../hooks/useVisibiltyState";
+import EditTodoInput from "./EditTodoInput";
 
 const MainTodoItemContainer = styled.div`
   font-size: ${(props) => props.theme.spaces[14]};
@@ -135,47 +135,42 @@ const TodoDotsButton = styled.button`
 `;
 
 const TodoItem = ({ item }) => {
-  const { handleSelectedTodo } = useTodoActions();
-  const { ref, isVisible, handleSwitchDropDown } = useSwitchDropDown();
-
-  const handleSelectTodo = (item) => {
-    handleSelectedTodo(item);
-    handleSwitchDropDown();
-  };
+  const { toggle, handleToggle } = useVisibiltyState();
 
   return (
-    <MainTodoItemContainer>
-      <MainDropDownIconButtonContainer>
-        <DropDownIconButtonContainer>
-          <Icon name="th" />
-        </DropDownIconButtonContainer>
-      </MainDropDownIconButtonContainer>
-      <CheckBoxContainer>
-        <CheckBoxButton></CheckBoxButton>
-      </CheckBoxContainer>
-      <TodoTitleContainer>
-        <TodoTitle>{item.title}</TodoTitle>
-      </TodoTitleContainer>
-      <TodoButtonsContainer>
-        <TodoEditButton>
-          <Icon name="edit" />
-        </TodoEditButton>
-        <TodoScheduleButton>
-          <Icon name="calendar1" />
-        </TodoScheduleButton>
-        <TodoCommentButton>
-          <Icon name="comment" />
-        </TodoCommentButton>
-        <TodoDotsButton onClick={() => handleSelectTodo(item)} ref={ref}>
-          <Icon name="horizontalDots" />
-        </TodoDotsButton>
-        {isVisible ? (
-          <TodoItemDropDown handleSwitchDropDown={handleSwitchDropDown} />
-        ) : (
-          ""
-        )}
-      </TodoButtonsContainer>
-    </MainTodoItemContainer>
+    <div>
+      {!toggle ? (
+        <MainTodoItemContainer>
+          <MainDropDownIconButtonContainer>
+            <DropDownIconButtonContainer>
+              <Icon name="th" />
+            </DropDownIconButtonContainer>
+          </MainDropDownIconButtonContainer>
+          <CheckBoxContainer>
+            <CheckBoxButton></CheckBoxButton>
+          </CheckBoxContainer>
+          <TodoTitleContainer>
+            <TodoTitle>{item.title}</TodoTitle>
+          </TodoTitleContainer>
+          <TodoButtonsContainer>
+            <TodoEditButton onClick={handleToggle}>
+              <Icon name="edit" />
+            </TodoEditButton>
+            <TodoScheduleButton>
+              <Icon name="calendar1" />
+            </TodoScheduleButton>
+            <TodoCommentButton>
+              <Icon name="comment" />
+            </TodoCommentButton>
+            <TodoDotsButton>
+              <TodoItemDropDown item={item} handleToggle={handleToggle} />
+            </TodoDotsButton>
+          </TodoButtonsContainer>
+        </MainTodoItemContainer>
+      ) : (
+        <EditTodoInput handleToggle={handleToggle} item={item} />
+      )}
+    </div>
   );
 };
 

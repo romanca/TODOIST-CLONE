@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import useVisibiltyState from "../hooks/useVisibiltyState";
+import { useTodoActions } from "../Providers/ItemProvider";
 import { useTodoMessageDialog } from "../Providers/ModalProvider";
 import Icon from "../shared/Icon";
 
@@ -13,8 +15,8 @@ const MainTodoItemDropDownContainer = styled.div`
   margin: 0;
   padding: 4px 0px;
   width: 250px;
-  margin-top: 20px;
-  margin-left: -10px;
+  // margin-top: 20px;
+  margin-left: -120px;
 `;
 const MenuItem = styled.div`
   padding: 4px 10px;
@@ -42,6 +44,8 @@ const MenuSeparator = styled.div`
 const PriorityTitle = styled.div`
   font-size: 11px;
   margin-bottom: 1em;
+  display: flex;
+  justify-content: flex-start;
 `;
 const PriorityItem = styled.div`
   display: inline-block;
@@ -70,42 +74,60 @@ const IconItemsContainer = styled.div`
   display: flex;
 `;
 
-const TodoItemDropDown = () => {
+const TodoItemDropDown = ({ item, handleToggle }) => {
   const openTodoModal = useTodoMessageDialog();
+  const { handleSelectedTodo } = useTodoActions();
+  const { ref, open, handleOpenClose } = useVisibiltyState();
+
+  const handleSelectTodo = (item) => {
+    handleSelectedTodo(item);
+    handleOpenClose();
+  };
 
   return (
-    <MainTodoItemDropDownContainer>
-      <MenuItem>
-        <IconMenuContainer>
-          <Icon name="edit" />
-        </IconMenuContainer>
-        <Title>Edit task</Title>
-      </MenuItem>
-      <MenuItem onClick={openTodoModal}>
-        <IconMenuContainer>
-          <Icon name="trash" />
-        </IconMenuContainer>
-        <Title>Remove task</Title>
-      </MenuItem>
-      <MenuSeparator />
-      <PriorityItemContainer>
-        <PriorityTitle>Priority</PriorityTitle>
-        <IconItemsContainer>
-          <PriorityItem>
-            <Icon name="flag1" color="rgb(222, 76, 74)" />
-          </PriorityItem>
-          <PriorityItemIconContainer>
-            <Icon name="flag1" color="rgb(244, 156, 24)" />
-          </PriorityItemIconContainer>
-          <PriorityItemIconContainer>
-            <Icon name="flag1" color="rgb(64, 115, 214)" />
-          </PriorityItemIconContainer>
-          <PriorityItemIconContainer>
-            <Icon name="flag" color="#555" />
-          </PriorityItemIconContainer>
-        </IconItemsContainer>
-      </PriorityItemContainer>
-    </MainTodoItemDropDownContainer>
+    <div ref={ref}>
+      <div onClick={() => handleSelectTodo(item)}>
+        <Icon name="horizontalDots" />
+      </div>
+      {open ? (
+        <MainTodoItemDropDownContainer>
+          <MenuItem onClick={handleToggle}>
+            <IconMenuContainer>
+              <Icon name="edit" />
+            </IconMenuContainer>
+            <Title>Edit task</Title>
+          </MenuItem>
+          <div onClick={handleOpenClose}>
+            <MenuItem onClick={openTodoModal}>
+              <IconMenuContainer>
+                <Icon name="trash" />
+              </IconMenuContainer>
+              <Title>Remove task</Title>
+            </MenuItem>
+          </div>
+          <MenuSeparator />
+          <PriorityItemContainer>
+            <PriorityTitle>Priority</PriorityTitle>
+            <IconItemsContainer>
+              <PriorityItem>
+                <Icon name="flag1" color="rgb(222, 76, 74)" />
+              </PriorityItem>
+              <PriorityItemIconContainer>
+                <Icon name="flag1" color="rgb(244, 156, 24)" />
+              </PriorityItemIconContainer>
+              <PriorityItemIconContainer>
+                <Icon name="flag1" color="rgb(64, 115, 214)" />
+              </PriorityItemIconContainer>
+              <PriorityItemIconContainer>
+                <Icon name="flag" color="#555" />
+              </PriorityItemIconContainer>
+            </IconItemsContainer>
+          </PriorityItemContainer>
+        </MainTodoItemDropDownContainer>
+      ) : (
+        ""
+      )}
+    </div>
   );
 };
 

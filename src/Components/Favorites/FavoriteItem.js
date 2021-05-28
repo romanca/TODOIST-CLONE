@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
 import { useTodos } from "../../Providers/ItemProvider";
-import DropDown from "../DropDown";
+import FavoriteItemDropDown from "./FavoriteItemDropDown";
 
 const ItemsContainer = styled.div`
   height: ${(props) => props.theme.spaces[10]};
@@ -23,25 +23,25 @@ const Title = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
- 
-const CounterContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${(props) => props.theme.colors.muted4};
-  font-size: ${(props) => props.theme.spaces[15]};
-`;
-
 const ContentTitleContainer = styled.div`
   display: flex;
   align-items: center;
   word-break: break-all;
   padding: ${(props) => props.theme.spaces[1]};
   justify-content: space-between;
-  width: ${(props) => props.theme.spaces[22]};
+  width: ${(props) => props.theme.spaces[80]};
+  width: 130px;
   height: ${(props) => props.theme.spaces[12]};
   font-size: ${(props) => props.theme.spaces[14]};
   color: ${(props) => props.theme.colors.muted5};
+`;
+
+const CounterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${(props) => props.theme.colors.muted4};
+  font-size: ${(props) => props.theme.spaces[15]};
 `;
 
 const ContentIconContainer = styled.div`
@@ -51,46 +51,30 @@ const ContentIconContainer = styled.div`
   align-items: center;
 `;
 
-const ProjectTitle = ({ item, to }) => {
-  const { todos } = useTodos();
-  const {
-    toggle,
-    hover,
-    handleHoverClose,
-    handleToggleOpen,
-    handleToggleClose,
-    handleHover,
-    ref,
-  } = useVisibiltyState();
-
-  const renderTodosCounter = React.useCallback(() => {
-    return Object.values(todos).filter((i) => i.categoryId === item.id).length;
-  }, [todos]);
+const FavoriteItem = ({ to, item }) => {
+  const { toggle, handleToggleOpen } = useVisibiltyState();
+  const todos = useTodos();
 
   return (
-    <ItemsContainer
-      onMouseEnter={handleToggleOpen}
-      style={{ backgroundColor: hover ? "#ececec" : "", borderRadius: 3 }}
-      ref={ref}
-    >
+    <ItemsContainer onMouseEnter={handleToggleOpen}>
       <Link to={to} style={{ textDecoration: "none", width: 15 }}>
         <ContentTitleContainer>
           <Title>{item.title}</Title>
         </ContentTitleContainer>
       </Link>
       {toggle ? (
-        <DropDown
-          item={item}
-          handleHoverClose={handleHoverClose}
-          handleHover={handleHover}
-        />
+        <FavoriteItemDropDown item={item} />
       ) : (
         <ContentIconContainer>
-          <CounterContainer>{renderTodosCounter()}</CounterContainer>
+          <CounterContainer>
+            {
+              Object.values(todos).filter((i) => i.categoryId === item.id)
+                .length
+            }
+          </CounterContainer>
         </ContentIconContainer>
       )}
     </ItemsContainer>
   );
 };
-
-export default ProjectTitle;
+export default FavoriteItem;

@@ -5,12 +5,20 @@ const useVisibiltyState = () => {
   const [visible, setVisible] = React.useState(false);
   const [switchItem, setSwitchItem] = React.useState(false);
   const [toggle, setToggle] = React.useState(false);
+  const [hover, setHover] = React.useState(false);
+  const ref = React.useRef(null);
 
   const handleOpenClose = () => {
     setOpen((current) => !current);
   };
   const handleVisible = () => {
     setVisible((current) => !current);
+  };
+  const handleVisibleOpen = () => {
+    setVisible(true);
+  };
+  const handleVisibleClose = () => {
+    setVisible(false);
   };
   const handleSwitchItem = () => {
     setSwitchItem((current) => !current);
@@ -33,12 +41,36 @@ const useVisibiltyState = () => {
   const toggleFalse = () => {
     setToggle(false);
   };
+  const handleHoverOpen = () => {
+    setHover(true);
+  };
+  const handleHoverClose = () => {
+    setHover(false);
+  };
+  const handleHover = () => {
+    setHover((current) => !current);
+  };
+
+  React.useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        handleClose();
+        handleHoverClose();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return function cleanup() {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
 
   return {
     open,
     visible,
     switchItem,
     toggle,
+    hover,
+    ref,
     handleToggle,
     handleToggleOpen,
     handleToggleClose,
@@ -48,6 +80,11 @@ const useVisibiltyState = () => {
     handleClose,
     toggleFalse,
     handleOpen,
+    handleHoverClose,
+    handleHoverOpen,
+    handleHover,
+    handleVisibleOpen,
+    handleVisibleClose,
   };
 };
 export default useVisibiltyState;

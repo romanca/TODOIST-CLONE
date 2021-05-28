@@ -61,6 +61,19 @@ const ItemProvider = ({ children }) => {
     });
   }, []);
 
+  const editProject = React.useCallback((item) => {
+    setProjectsItems((current) => {
+      const oldItem = current[item.id];
+      return {
+        ...current,
+        [item.id]: {
+          ...oldItem,
+          ...item,
+        },
+      };
+    });
+  }, []);
+
   const favoriteProjects = (item) => {
     setProjectsItems(
       Object.values(projectsItems).map((i) => {
@@ -112,7 +125,19 @@ const ItemProvider = ({ children }) => {
       return newState;
     });
   }, []);
-   
+
+  const editTodo = React.useCallback((item) => {
+    setTodos((current) => {
+      const oldItem = current[item.id];
+      return {
+        ...current,
+        [item.id]: {
+          ...oldItem,
+          ...item,
+        },
+      };
+    });
+  }, []);
 
   return (
     <Context.Provider
@@ -130,6 +155,8 @@ const ItemProvider = ({ children }) => {
         favoriteProjects,
         staticProjectItems,
         staticItems,
+        editProject,
+        editTodo,
       }}
     >
       {children}
@@ -145,6 +172,7 @@ export const useProjectActions = () => {
     selected,
     favoriteProjects,
     staticItems,
+    editProject,
   } = React.useContext(Context);
   return {
     createProject,
@@ -153,23 +181,19 @@ export const useProjectActions = () => {
     selected,
     favoriteProjects,
     staticItems,
+    editProject,
   };
 };
 
 export const useTodoActions = () => {
-  const {
-    createTodo,
-    handleSelectedTodo,
-    selectedTodo,
-    removeTodo,
-    getTodoById,
-  } = React.useContext(Context);
+  const { createTodo, handleSelectedTodo, selectedTodo, removeTodo, editTodo } =
+    React.useContext(Context);
   return {
     createTodo,
     removeTodo,
     handleSelectedTodo,
     selectedTodo,
-    getTodoById,
+    editTodo,
   };
 };
 

@@ -1,12 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { useProjectActions } from "../Providers/ItemProvider";
-import Icon from "../shared/Icon";
-import {
-  useEditProjectsDialog,
-  useProjectMessageDialog,
-} from "../Providers/ModalProvider";
-import useVisibiltyState from "../hooks/useVisibiltyState";
+import useVisibiltyState from "../../hooks/useVisibiltyState";
+import { useProjectActions } from "../../Providers/ItemProvider";
+import { useProjectMessageDialog } from "../../Providers/ModalProvider";
+import Icon from "../../shared/Icon";
 
 const SelectedItemContainer = styled.div`
   position: absolute;
@@ -69,18 +66,11 @@ const CounterContainer = styled.div`
   justify-content: center;
   color: ${(props) => props.theme.colors.muted4};
   font-size: ${(props) => props.theme.spaces[15]};
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 `;
 
-const DropDown = ({ item, handleHover }) => {
+const FavoriteItemDropDown = ({ item }) => {
   const { favoriteProjects, handleSelected } = useProjectActions();
   const openProjectModal = useProjectMessageDialog();
-  const openEditProjectModal = useEditProjectsDialog();
   const { open, handleOpenClose, handleClose, ref } = useVisibiltyState();
 
   const handleFavoriteProject = (item) => {
@@ -93,48 +83,29 @@ const DropDown = ({ item, handleHover }) => {
     handleClose();
   };
 
-  const handleEditProject = (item) => {
-    handleSelected(item);
-    handleClose();
-  };
-
   const handleSelectProject = (item) => {
     handleOpenClose();
     handleSelected(item);
-    handleHover();
   };
 
   return (
     <div style={{ display: "flex" }} ref={ref}>
       {/* <ContentIconContainer>
-          <Icon name="th" color="rgba(0,0,0,.54);" />
-        </ContentIconContainer> */}
+      <Icon name="th" color="rgba(0,0,0,.54);" />
+    </ContentIconContainer> */}
       <CounterContainer>
         <ContentIconContainer onClick={() => handleSelectProject(item)}>
-          <Icon
-            name="horizontalDots"
-            style={{
-              fontSize: 15,
-            }}
-          />
+          <Icon name="horizontalDots" color="grey" style={{ fontSize: 12 }} />
         </ContentIconContainer>
         {open ? (
           <div>
             <SelectedItemContainer>
-              <SelectedItem onClick={() => handleEditProject(item)}>
-                <SelectedItemContent onClick={openEditProjectModal}>
+              <SelectedItem>
+                <SelectedItemContent>
                   <SelectedItemIconContainer>
                     <Icon name="edit" />
                   </SelectedItemIconContainer>
-                  <Content>Edit</Content>
-                </SelectedItemContent>
-              </SelectedItem>
-              <SelectedItem onClick={() => handleRemoveProject(item)}>
-                <SelectedItemContent onClick={openProjectModal}>
-                  <SelectedItemIconContainer>
-                    <Icon name="trash" />
-                  </SelectedItemIconContainer>
-                  <Content>Remove Project</Content>
+                  <Content>Edit project</Content>
                 </SelectedItemContent>
               </SelectedItem>
               <SelectedItem onClick={() => handleFavoriteProject(item)}>
@@ -142,7 +113,7 @@ const DropDown = ({ item, handleHover }) => {
                   <SelectedItemIconContainer>
                     <Icon name="hearth" />
                   </SelectedItemIconContainer>
-                  <Content>Add to favorites</Content>
+                  <Content>Remove from favorites</Content>
                 </SelectedItemContent>
               </SelectedItem>
             </SelectedItemContainer>
@@ -154,5 +125,4 @@ const DropDown = ({ item, handleHover }) => {
     </div>
   );
 };
-
-export default DropDown;
+export default FavoriteItemDropDown;

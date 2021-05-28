@@ -59,12 +59,11 @@ const ContentProjectsContainer = styled.div`
 const Projects = () => {
   const projects = useStaticProjectsItems();
   const { staticItems } = useProjectActions();
-  const { visible, handleSwitchItem, handleVisible } = useVisibiltyState();
+  const { switchItem, handleSwitchItem } = useVisibiltyState();
   const openProjectModal = useProjectsDialog();
 
   const handleOpenCloseFavorites = (item) => {
     staticItems(item);
-    handleSwitchItem();
   };
 
   return (
@@ -74,8 +73,8 @@ const Projects = () => {
         .map((i) => (
           <div>
             <ProjectsItemsContainer
-              onMouseLeave={handleVisible}
-              onMouseEnter={handleVisible}
+              onMouseLeave={handleSwitchItem}
+              onMouseEnter={handleSwitchItem}
             >
               <ContentProjectsContainer
                 style={{ display: "flex" }}
@@ -94,7 +93,7 @@ const Projects = () => {
                   <ProjectsTitle>Projects</ProjectsTitle>
                 </ContentTitleContainer>
               </ContentProjectsContainer>
-              {visible ? (
+              {switchItem ? (
                 <PlusButtonContainer onClick={openProjectModal}>
                   <Icon
                     name="plus"

@@ -1,6 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { useProjectMessageDialog } from "../Providers/ModalProvider";
+import useVisibiltyState from "../hooks/useVisibiltyState";
+import { useProjectActions } from "../Providers/ItemProvider";
+import {
+  useEditProjectsDialog,
+  useProjectMessageDialog,
+} from "../Providers/ModalProvider";
 import Icon from "../shared/Icon";
 
 const MainProjectDropDownContainer = styled.div`
@@ -55,39 +60,86 @@ const CheckBoxButton = styled.span`
   font-size: 10px;
 `;
 
-const ProjectDropDown = () => {
+const HeaderButton = styled.button`
+  display: flex;
+  align-items: center;
+  color: grey;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: ${(props) => props.theme.spaces[28]};
+  margin: ${(props) => props.theme.spaces[28]};
+`;
+
+const ContentHeaderDotsIconContainer = styled.div`
+  width: ${(props) => props.theme.spaces[33]};
+  height: ${(props) => props.theme.spaces[33]};
+  font-size: ${(props) => props.theme.spaces[2]};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: ${(props) => props.theme.colors.text1};
+`;
+
+const ProjectDropDown = ({ item }) => {
   const removeProjectDialog = useProjectMessageDialog();
+  const openEditProjectModal = useEditProjectsDialog();
+  const { handleSelected } = useProjectActions();
+  const { ref, open, handleOpenClose } = useVisibiltyState();
+
+  const handleSelectProject = (item) => {
+    handleOpenClose();
+    handleSelected(item);
+  };
 
   return (
-    <MainProjectDropDownContainer>
-      <MenuItem>
-        <IconMenuContainer>
-          <Icon name="edit" />
-        </IconMenuContainer>
-        <Title>Edit project</Title>
-      </MenuItem>
-      <MenuItem onClick={removeProjectDialog}>
-        <IconMenuContainer>
-          <Icon name="trash" />
-        </IconMenuContainer>
-        <Title>Remove project</Title>
-      </MenuItem>
-      <MenuSeparator />
-      <MenuItem>
-        <IconMenuContainer>
-          <CheckBoxButton>
-            <Icon name="check" />
-          </CheckBoxButton>
-        </IconMenuContainer>
-        <Title>Show completed tasks</Title>
-      </MenuItem>
-      <MenuItem>
-        <IconMenuContainer>
-          <Icon name="archive" />
-        </IconMenuContainer>
-        <Title>Archive</Title>
-      </MenuItem>
-    </MainProjectDropDownContainer>
+    <div ref={ref}>
+      <HeaderButton onClick={() => handleSelectProject(item)}>
+        <ContentHeaderDotsIconContainer>
+          <Icon name="circle" />
+          <Icon name="circle" />
+          <Icon name="circle" />
+        </ContentHeaderDotsIconContainer>
+      </HeaderButton>
+      {open ? (
+        <MainProjectDropDownContainer>
+          <div onClick={handleOpenClose}>
+            <MenuItem onClick={openEditProjectModal}>
+              <IconMenuContainer>
+                <Icon name="edit" />
+              </IconMenuContainer>
+              <Title>Edit project</Title>
+            </MenuItem>
+          </div>
+          <div onClick={handleOpenClose}>
+            <MenuItem onClick={removeProjectDialog}>
+              <IconMenuContainer>
+                <Icon name="trash" />
+              </IconMenuContainer>
+              <Title>Remove project</Title>
+            </MenuItem>
+          </div>
+          <MenuSeparator />
+          <MenuItem>
+            <IconMenuContainer>
+              <CheckBoxButton>
+                <Icon name="check" />
+              </CheckBoxButton>
+            </IconMenuContainer>
+            <Title>Show completed tasks</Title>
+          </MenuItem>
+          <MenuItem>
+            <IconMenuContainer>
+              <Icon name="archive" />
+            </IconMenuContainer>
+            <Title>Archive</Title>
+          </MenuItem>
+        </MainProjectDropDownContainer>
+      ) : (
+        ""
+      )}
+    </div>
   );
 };
 export default ProjectDropDown;

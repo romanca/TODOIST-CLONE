@@ -2,12 +2,11 @@ import React from "react";
 import { useParams } from "@reach/router";
 import TodoItem from "../TodoItem";
 import SubmitFormInput from "../SubmitFormInput";
-import { useProjectActions, useTodos } from "../../Providers/ItemProvider";
+import { useTodos } from "../../Providers/ItemProvider";
 import { useDefaultTodos } from "../../hooks/selectors";
 import Icon from "../../shared/Icon";
 import styled from "styled-components";
 import ProjectDropDown from "../ProjectDropDown";
-import useSwitchDropDown from "../../hooks/useSwitchDropDown";
 
 const ContentHeader = styled.div`
   display: flex;
@@ -62,28 +61,12 @@ const HeaderButtonTitleContainer = styled.div`
   margin-right: ${(props) => props.theme.spaces[2]};
   color: ${(props) => props.theme.colors.text3};
 `;
-const ContentHeaderDotsIconContainer = styled.div`
-  width: ${(props) => props.theme.spaces[33]};
-  height: ${(props) => props.theme.spaces[33]};
-  font-size: ${(props) => props.theme.spaces[2]};
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: ${(props) => props.theme.colors.text1};
-`;
 
 const ProjectItem = (props) => {
   const projectItems = useDefaultTodos();
   const item = Object.values(projectItems).find((i) => i.id === props.id);
   const { todos } = useTodos();
   const { id } = useParams();
-  const { handleSelected } = useProjectActions();
-  const { ref, isVisible, handleSwitchDropDown } = useSwitchDropDown();
-
-  const handleSelectProject = (item) => {
-    handleSwitchDropDown();
-    handleSelected(item);
-  };
 
   const renderProjects = () => {
     return (
@@ -109,15 +92,8 @@ const ProjectItem = (props) => {
                 </HeaderButtonsIconContainer>
                 <HeaderButtonTitleContainer>Sort</HeaderButtonTitleContainer>
               </HeaderButton>
-              <HeaderButton onClick={() => handleSelectProject(item)} ref={ref}>
-                <ContentHeaderDotsIconContainer>
-                  <Icon name="circle" />
-                  <Icon name="circle" />
-                  <Icon name="circle" />
-                </ContentHeaderDotsIconContainer>
-              </HeaderButton>
+              <ProjectDropDown item={item} />
             </HeaderContentButtonsContainer>
-            {isVisible ? <ProjectDropDown /> : ""}
           </HeaderContent>
         </ContentHeader>
         {Object.values(todos)

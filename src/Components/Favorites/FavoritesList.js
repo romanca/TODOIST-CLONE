@@ -6,11 +6,12 @@ import useVisibiltyState from "../../hooks/useVisibiltyState";
 import { useProjectActions } from "../../Providers/ItemProvider";
 import { staticTodo } from "../../shared/constants";
 import Link from "../../wrappers/Link";
+import FilterItem from "../Filters/FilterItem";
 import ProjectTitle from "../Projects/ProjectTitle";
+import FavoriteItem from "./FavoriteItem";
 
 const FavoritesList = () => {
   const projects = useDefaultTodos();
-  const { open, handleOpenClose } = useVisibiltyState();
 
   return (
     <div>
@@ -29,11 +30,10 @@ const FavoritesList = () => {
                     width: 180,
                   }}
                 >
-                  <ProjectTitle
+                  <FavoriteItem
                     to={to}
                     item={i}
-                    open={open}
-                    handleOpenClose={handleOpenClose}
+  
                   />
                 </div>
               )}
