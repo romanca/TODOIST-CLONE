@@ -39,7 +39,7 @@ const ItemProvider = ({ children }) => {
     setSelectedTodotId(i.id);
   }, []);
 
-  const createProject = (title, id) => {
+  const createProject = React.useCallback((title, id) => {
     setProjectsItems((current) => {
       const newItem = {
         ...current,
@@ -51,7 +51,7 @@ const ItemProvider = ({ children }) => {
       };
       return newItem;
     });
-  };
+  }, []);
 
   const removeProject = React.useCallback((id) => {
     setProjectsItems((current) => {
@@ -102,7 +102,7 @@ const ItemProvider = ({ children }) => {
     );
   };
 
-  const createTodo = (title, categoryId) => {
+  const createTodo = React.useCallback((title, categoryId) => {
     const newId = String(Date.now());
     setTodos((current) => {
       const newItem = {
@@ -116,7 +116,7 @@ const ItemProvider = ({ children }) => {
       };
       return newItem;
     });
-  };
+  }, []);
 
   const removeTodo = React.useCallback((id) => {
     setTodos((current) => {

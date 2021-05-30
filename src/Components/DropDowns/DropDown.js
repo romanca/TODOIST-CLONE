@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { useProjectActions } from "../Providers/ItemProvider";
-import Icon from "../shared/Icon";
+import { useProjectActions } from "../../Providers/ItemProvider";
+import Icon from "../../shared/Icon";
 import {
   useEditProjectsDialog,
   useProjectMessageDialog,
-} from "../Providers/ModalProvider";
-import useVisibiltyState from "../hooks/useVisibiltyState";
+} from "../../Providers/ModalProvider";
+
 
 const SelectedItemContainer = styled.div`
   position: absolute;
@@ -77,11 +77,16 @@ const CounterContainer = styled.div`
   user-select: none;
 `;
 
-const DropDown = ({ item, handleHover }) => {
+const DropDown = ({
+  item,
+  handleHover,
+  open,
+  handleOpenClose,
+  handleClose,
+}) => {
   const { favoriteProjects, handleSelected } = useProjectActions();
   const openProjectModal = useProjectMessageDialog();
   const openEditProjectModal = useEditProjectsDialog();
-  const { open, handleOpenClose, handleClose, ref } = useVisibiltyState();
 
   const handleFavoriteProject = (item) => {
     favoriteProjects(item);
@@ -105,7 +110,7 @@ const DropDown = ({ item, handleHover }) => {
   };
 
   return (
-    <div style={{ display: "flex" }} ref={ref}>
+    <div style={{ display: "flex" }}>
       {/* <ContentIconContainer>
           <Icon name="th" color="rgba(0,0,0,.54);" />
         </ContentIconContainer> */}

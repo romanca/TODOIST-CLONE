@@ -1,9 +1,9 @@
 import React from "react";
 import Icon from "../shared/Icon";
 import styled from "styled-components";
-import TodoItemDropDown from "./TodoItemDropDownMenu";
 import useVisibiltyState from "../hooks/useVisibiltyState";
 import EditTodoInput from "./EditTodoInput";
+import TodoItemDropDown from "./DropDowns/TodoItemDropDownMenu";
 
 const MainTodoItemContainer = styled.div`
   font-size: ${(props) => props.theme.spaces[14]};

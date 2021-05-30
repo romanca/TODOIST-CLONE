@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
 import { useTodos } from "../../Providers/ItemProvider";
-import FavoriteItemDropDown from "./FavoriteItemDropDown";
+import FavoriteItemDropDown from "../DropDowns/FavoriteItemDropDown";
 
 const ItemsContainer = styled.div`
   height: ${(props) => props.theme.spaces[10]};

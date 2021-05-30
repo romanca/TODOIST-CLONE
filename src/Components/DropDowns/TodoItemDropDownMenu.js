@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import useVisibiltyState from "../hooks/useVisibiltyState";
-import { useTodoActions } from "../Providers/ItemProvider";
-import { useTodoMessageDialog } from "../Providers/ModalProvider";
-import Icon from "../shared/Icon";
+import useVisibiltyState from "../../hooks/useVisibiltyState";
+import { useTodoActions } from "../../Providers/ItemProvider";
+import { useTodoMessageDialog } from "../../Providers/ModalProvider";
+import Icon from "../../shared/Icon";
 
 const MainTodoItemDropDownContainer = styled.div`
   position: absolute;
@@ -11,12 +11,11 @@ const MainTodoItemDropDownContainer = styled.div`
   border-radius: 3px;
   border: 1px solid #ddd;
   box-shadow: 0 1px 8px 0 rgb(0 0 0 / 8%);
-  list-style: none;
   margin: 0;
   padding: 4px 0px;
   width: 250px;
-  // margin-top: 20px;
   margin-left: -120px;
+  z-index: 1;
 `;
 const MenuItem = styled.div`
   padding: 4px 10px;

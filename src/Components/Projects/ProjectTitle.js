@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
 import { useTodos } from "../../Providers/ItemProvider";
-import DropDown from "../DropDown";
+import DropDown from "../DropDowns/DropDown";
 
 const ItemsContainer = styled.div`
   height: ${(props) => props.theme.spaces[10]};
@@ -23,7 +23,7 @@ const Title = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
- 
+
 const CounterContainer = styled.div`
   display: flex;
   align-items: center;
@@ -59,8 +59,11 @@ const ProjectTitle = ({ item, to }) => {
     handleHoverClose,
     handleToggleOpen,
     handleToggleClose,
+    handleOpenClose,
     handleHover,
     ref,
+    open,
+    handleClose,
   } = useVisibiltyState();
 
   const renderTodosCounter = React.useCallback(() => {
@@ -70,7 +73,12 @@ const ProjectTitle = ({ item, to }) => {
   return (
     <ItemsContainer
       onMouseEnter={handleToggleOpen}
-      style={{ backgroundColor: hover ? "#ececec" : "", borderRadius: 3 }}
+      onMouseLeave={open ? handleToggleOpen : handleToggleClose}
+      style={{
+        backgroundColor: hover ? "#ececec" : "",
+        borderRadius: 3 && open ? "#ececec" : "",
+        borderRadius: 3,
+      }}
       ref={ref}
     >
       <Link to={to} style={{ textDecoration: "none", width: 15 }}>
@@ -83,6 +91,9 @@ const ProjectTitle = ({ item, to }) => {
           item={item}
           handleHoverClose={handleHoverClose}
           handleHover={handleHover}
+          open={open}
+          handleOpenClose={handleOpenClose}
+          handleClose={handleClose}
         />
       ) : (
         <ContentIconContainer>

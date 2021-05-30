@@ -128,18 +128,25 @@ const ProjectsModalContent = () => {
   const { closeModalDialog } = useModal();
   const { createProject } = useProjectActions();
   const [title, setTitle] = React.useState("");
+  const ref = React.useRef();
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      ref.current && ref.current.focus();
+    }, 1);
+  }, [ref]);
 
   const handleChange = React.useCallback((e) => {
     setTitle(e.target.value);
   }, []);
 
-  const handleSubmitProject = () => {
+  const handleSubmitProject = React.useCallback(() => {
     const id = String(Date.now());
     createProject(title, id);
     setTitle("");
     closeModalDialog();
     navigate(`${id}`);
-  };
+  }, [title]);
 
   return (
     <MainContentContainer>
@@ -154,7 +161,12 @@ const ProjectsModalContent = () => {
       <ContentContainer>
         <FormField>
           <FormTitle>Name</FormTitle>
-          <FormInput type="text" value={title} onChange={handleChange} />
+          <FormInput
+            type="text"
+            value={title}
+            onChange={handleChange}
+            ref={ref}
+          />
         </FormField>
         <ColorPicker />
         <FormField>

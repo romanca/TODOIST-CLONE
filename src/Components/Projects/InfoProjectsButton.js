@@ -105,7 +105,7 @@ const InfoProjectsButtonTitleContainer = styled.span`
 `;
 
 const InfoProjectsButton = () => {
-  const { open, handleOpenClose } = useVisibiltyState();
+  const { open, handleOpen, handleClose } = useVisibiltyState();
 
   return (
     <MainContainer>
@@ -166,8 +166,8 @@ const InfoProjectsButton = () => {
         ""
       )}
       <InfoProjectsButtonContainer
-        onMouseEnter={handleOpenClose}
-        onMouseLeave={handleOpenClose}
+        onMouseEnter={handleOpen}
+        onMouseLeave={handleClose}
       >
         <InfoProjectsButtonContentContainer>
           <InfoProjectsButtonIconContainer>

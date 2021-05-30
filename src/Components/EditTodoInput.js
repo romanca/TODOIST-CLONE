@@ -95,10 +95,10 @@ const EditTodoInput = ({ handleToggle, item }) => {
   const { editTodo } = useTodoActions();
   const [title, setTitle] = React.useState(item.title);
 
-  const handleEditTodo = () => {
+  const handleEditTodo = React.useCallback(() => {
     editTodo({ ...item, title });
     handleToggle();
-  };
+  }, []);
 
   const handleChange = React.useCallback((e) => {
     setTitle(e.target.value);

@@ -56,6 +56,7 @@ const useVisibiltyState = () => {
       if (ref.current && !ref.current.contains(e.target)) {
         handleClose();
         handleHoverClose();
+        handleToggleClose();
       }
     };
     document.addEventListener("mousedown", handleClickOutside);

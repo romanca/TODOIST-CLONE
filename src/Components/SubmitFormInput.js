@@ -120,18 +120,27 @@ const SubmitFormInput = () => {
   const [date, setDate] = React.useState();
   const { createTodo } = useTodoActions();
   const [title, setTitle] = React.useState("");
+  const ref = React.useRef();
+
+  React.useEffect(() => {
+    if (toggle) {
+      setTimeout(() => {
+        ref.current && ref.current.focus();
+      }, 1);
+    }
+  }, [ref, toggle]);
 
   const { id } = useParams();
   const projectId = id;
 
-  const handleSubmit = () => {
+  const handleSubmit = React.useCallback(() => {
     const categoryId = projectId;
     if (projectId) {
       createTodo(title, categoryId);
       setTitle("");
       toggleFalse();
     }
-  };
+  }, [title, projectId]);
 
   const handleChange = React.useCallback((e) => {
     setTitle(e.target.value);
@@ -152,6 +161,7 @@ const SubmitFormInput = () => {
               type="text"
               value={title}
               onChange={handleChange}
+              ref={ref}
             />
             <SubmitFormContentButtonsContainer>
               <SubmitFormPickersContainer>

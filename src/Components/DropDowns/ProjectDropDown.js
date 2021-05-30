@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import useVisibiltyState from "../hooks/useVisibiltyState";
-import { useProjectActions } from "../Providers/ItemProvider";
+import useVisibiltyState from "../../hooks/useVisibiltyState";
+import { useProjectActions } from "../../Providers/ItemProvider";
 import {
   useEditProjectsDialog,
   useProjectMessageDialog,
-} from "../Providers/ModalProvider";
-import Icon from "../shared/Icon";
+} from "../../Providers/ModalProvider";
+import Icon from "../../shared/Icon";
 
 const MainProjectDropDownContainer = styled.div`
   position: absolute;
