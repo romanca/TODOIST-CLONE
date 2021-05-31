@@ -141,14 +141,18 @@ const DropDown = ({
                   <Content>Remove Project</Content>
                 </SelectedItemContent>
               </SelectedItem>
-              <SelectedItem onClick={() => handleFavoriteProject(item)}>
-                <SelectedItemContent>
-                  <SelectedItemIconContainer>
-                    <Icon name="hearth" />
-                  </SelectedItemIconContainer>
-                  <Content>Add to favorites</Content>
-                </SelectedItemContent>
-              </SelectedItem>
+              {item.favorite ? (
+                ""
+              ) : (
+                <SelectedItem onClick={() => handleFavoriteProject(item)}>
+                  <SelectedItemContent>
+                    <SelectedItemIconContainer>
+                      <Icon name="hearth" />
+                    </SelectedItemIconContainer>
+                    <Content>Add to favorites</Content>
+                  </SelectedItemContent>
+                </SelectedItem>
+              )}
             </SelectedItemContainer>
           </div>
         ) : (
