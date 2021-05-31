@@ -68,10 +68,9 @@ const CounterContainer = styled.div`
   font-size: ${(props) => props.theme.spaces[15]};
 `;
 
-const FavoriteItemDropDown = ({ item }) => {
+const FavoriteItemDropDown = ({ item, open, handleOpenClose, handleClose }) => {
   const { favoriteProjects, handleSelected } = useProjectActions();
   const openProjectModal = useProjectMessageDialog();
-  const { open, handleOpenClose, handleClose, ref } = useVisibiltyState();
 
   const handleFavoriteProject = (item) => {
     favoriteProjects(item);
@@ -89,7 +88,7 @@ const FavoriteItemDropDown = ({ item }) => {
   };
 
   return (
-    <div style={{ display: "flex" }} ref={ref}>
+    <div style={{ display: "flex" }}>
       {/* <ContentIconContainer>
       <Icon name="th" color="rgba(0,0,0,.54);" />
     </ContentIconContainer> */}

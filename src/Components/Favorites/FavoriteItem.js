@@ -52,18 +52,35 @@ const ContentIconContainer = styled.div`
 `;
 
 const FavoriteItem = ({ to, item }) => {
-  const { toggle, handleToggleOpen } = useVisibiltyState();
+  const {
+    open,
+    handleOpenClose,
+    handleClose,
+    toggle,
+    handleToggleOpen,
+    handleToggleClose,
+    ref = { ref },
+  } = useVisibiltyState();
   const todos = useTodos();
 
   return (
-    <ItemsContainer onMouseEnter={handleToggleOpen}>
+    <ItemsContainer
+      onMouseEnter={handleToggleOpen}
+      onMouseLeave={open ? handleToggleOpen : handleToggleClose}
+      ref={ref}
+    >
       <Link to={to} style={{ textDecoration: "none", width: 15 }}>
         <ContentTitleContainer>
           <Title>{item.title}</Title>
         </ContentTitleContainer>
       </Link>
       {toggle ? (
-        <FavoriteItemDropDown item={item} />
+        <FavoriteItemDropDown
+          item={item}
+          open={open}
+          handleOpenClose={handleOpenClose}
+          handleClose={handleClose}
+        />
       ) : (
         <ContentIconContainer>
           <CounterContainer>
