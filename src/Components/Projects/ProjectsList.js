@@ -1,7 +1,7 @@
 import { Match } from "@reach/router";
 import React from "react";
 import { useDefaultTodos } from "../../hooks/selectors";
-import { staticTodo } from "../../shared/constants";
+import { inboxId } from "../../shared/constants";
 import ProjectTitle from "./ProjectTitle";
 
 const ProjectsList = () => {
@@ -10,7 +10,7 @@ const ProjectsList = () => {
   return (
     <div>
       {Object.values(projects)
-        .filter((i) => i.id !== staticTodo.id)
+        .filter((i) => i.id !== inboxId)
         .map((i) => {
           const to = `project/${i.id}`;
           return (

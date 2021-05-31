@@ -2,7 +2,7 @@ import Icon from "./Icon";
 
 export const inboxId = "inbox";
 export const inboxTitle = "INBOX";
-export const staticTodo = {
+export const inbox = {
   title: inboxTitle,
   id: inboxId,
 };

@@ -7,7 +7,6 @@ import {
   useProjectMessageDialog,
 } from "../../Providers/ModalProvider";
 
-
 const SelectedItemContainer = styled.div`
   position: absolute;
   z-index: ${(props) => props.theme.spaces[51]};

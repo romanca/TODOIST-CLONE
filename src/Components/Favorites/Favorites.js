@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { useStaticProjectsItems } from "../../hooks/selectors";
+import { useDefaultTodos, useStaticProjectsItems } from "../../hooks/selectors";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
 import { useProjectActions } from "../../Providers/ItemProvider";
-import { favoritesId, hamburgerId } from "../../shared/constants";
+import { favoritesId, hamburgerId, inboxId } from "../../shared/constants";
 import Icon from "../../shared/Icon";
 import FavoritesList from "./FavoritesList";
 
@@ -42,13 +42,23 @@ const Favorites = () => {
   const { handleSwitchItem } = useVisibiltyState();
   const favorites = useStaticProjectsItems();
   const { staticItems } = useProjectActions();
+  const projects = useDefaultTodos();
+  const projectsItems = React.useMemo(
+    () =>
+      Object.values(projects)
+        .filter((i) => i.id !== inboxId)
+        .filter((i) => i.favorite).length,
+    [projects, inboxId]
+  );
 
-  const handleOpenCloseFavorites = (item) => {
+  const handleOpenCloseFavorites = React.useCallback((item) => {
     staticItems(item);
     handleSwitchItem();
-  };
+  }, []);
 
-  return (
+  return projectsItems === 0 ? (
+    ""
+  ) : (
     <div>
       {Object.values(favorites)
         .filter((i) => i.id === favoritesId)

@@ -2,8 +2,8 @@ import { Match } from "@reach/router";
 import React from "react";
 import styled from "styled-components";
 import { useDefaultTodos } from "../hooks/selectors";
-import {  useTodos } from "../Providers/ItemProvider";
-import { inboxId, staticTodo } from "../shared/constants";
+import { useTodos } from "../Providers/ItemProvider";
+import { inboxId } from "../shared/constants";
 import Icon from "../shared/Icon";
 import Link from "../wrappers/Link";
 
@@ -52,7 +52,7 @@ const StaticProjects = () => {
   return (
     <div>
       {Object.values(staticProjects)
-        .filter((i) => i.id === staticTodo.id)
+        .filter((i) => i.id === inboxId)
         .map((i) => {
           const to = `project/${i.id}`;
           return (
