@@ -3,9 +3,10 @@ import Icon from "../shared/Icon";
 import ProjectsPicker from "./Pickers/ProjectsPicker";
 import styled from "styled-components";
 import DatePicker from "./Pickers/DatePicker";
-import useVisibiltyState from "../hooks/useVisibiltyState";
 import { useTodoActions } from "../Providers/ItemProvider";
 import { useParams } from "@reach/router";
+import { useDefaultTodos } from "../hooks/selectors";
+import { inboxId, todayId } from "../shared/constants";
 
 const AddButton = styled.button`
   display: flex;
@@ -105,7 +106,6 @@ const SubmitFormContentButtonsContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
   margin-top: ${(props) => props.theme.spaces[30]};
 `;
 const SubmitFormPickersContainer = styled.div`
@@ -115,12 +115,131 @@ const SubmitFormPickersContainer = styled.div`
   max-width: ${(props) => props.theme.spaces[27]};
 `;
 
-const SubmitFormInput = () => {
-  const { toggle, handleToggle, toggleFalse } = useVisibiltyState();
-  const [date, setDate] = React.useState();
+const ProjectsPickerButton = styled.button`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: ${(props) => props.theme.spaces[5]};
+  padding: ${(props) => props.theme.spaces[28]}
+    ${(props) => props.theme.spaces[43]};
+  border: ${(props) => props.theme.spaces[8]} solid
+    ${(props) => props.theme.colors.muted9};
+  border-radius: ${(props) => props.theme.spaces[1]};
+  color: ${(props) => props.theme.colors.text3};
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+`;
+
+const ProjectPickerIconContainer = styled.div`
+  width: ${(props) => props.theme.spaces[12]};
+  height: ${(props) => props.theme.spaces[12]};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const MainProjectPickersBoxContainer = styled.div`
+  background-color: ${(props) => props.theme.colors.background1};
+  width: ${(props) => props.theme.spaces[71]};
+  height: ${(props) => props.theme.spaces[71]};
+  padding: ${(props) => props.theme.spaces[28]};
+  border-radius: ${(props) => props.theme.spaces[1]};
+  border: ${(props) => props.theme.spaces[8]} solid rgba(0, 0, 0, 0.1);
+  box-shadow: ${(props) => props.theme.spaces[28]}
+    ${(props) => props.theme.spaces[39]} ${(props) => props.theme.spaces[9]}
+    ${(props) => props.theme.spaces[28]} rgb(0 0 0 / 8%);
+  z-index: ${(props) => props.theme.spaces[47]};
+  margin-top: 40px;
+  position: absolute;
+`;
+
+const ProjectsPickerBoxPopperContainer = styled.div`
+  position: absolute;
+  left: ${(props) => props.theme.spaces[28]};
+  transform: translate(133px, 0px);
+  z-index: ${(props) => props.theme.spaces[47]};
+  margin-top: ${(props) => props.theme.spaces[73]};
+  height: ${(props) => props.theme.spaces[28]};
+  width: ${(props) => props.theme.spaces[28]};
+  border: ${(props) => props.theme.spaces[9]} solid transparent;
+  border-bottom-color: ${(props) => props.theme.colors.muted7};
+`;
+
+const ProjectsPickerBoxPopper = styled.div`
+  position: absolute;
+  border: ${(props) => props.theme.spaces[2]} solid transparent;
+  border-bottom-color: ${(props) => props.theme.colors.background1};
+  left: ${(props) => props.theme.spaces[74]};
+  top: ${(props) => props.theme.spaces[75]};
+`;
+
+const ProjectsPickerInputContainer = styled.div`
+  display: flex;
+  padding: ${(props) => props.theme.spaces[9]}
+    ${(props) => props.theme.spaces[30]};
+  align-items: center;
+  border-bottom: ${(props) => props.theme.spaces[8]} solid
+    ${(props) => props.theme.colors.muted7};
+`;
+
+const Input = styled.input`
+  border: ${(props) => props.theme.spaces[28]};
+  height: ${(props) => props.theme.spaces[12]};
+  outline: none;
+  background-color: ${(props) => props.theme.colors.background1};
+  padding: ${(props) => props.theme.spaces[8]}
+    ${(props) => props.theme.spaces[39]};
+  display: inline-block;
+  text-align: start;
+`;
+
+const ProjectsPickerBoxContentContainer = styled.div`
+  padding: ${(props) => props.theme.spaces[28]};
+  margin: ${(props) => props.theme.spaces[28]};
+  max-height: ${(props) => props.theme.spaces[76]};
+`;
+
+const ProjectsPickerBoxContentItemContainer = styled.div`
+  padding: ${(props) => props.theme.spaces[9]}
+    ${(props) => props.theme.spaces[28]};
+  margin: ${(props) => props.theme.spaces[28]}
+    ${(props) => props.theme.spaces[30]};
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const ProjectsPickerBoxContentItemTitle = styled.span`
+  margin: ${(props) => props.theme.spaces[28]}
+    ${(props) => props.theme.spaces[30]};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  height: ${(props) => props.theme.spaces[12]};
+  line-height: ${(props) => props.theme.spaces[77]};
+  width: ${(props) => props.theme.spaces[78]};
+  color: ${(props) => props.theme.colors.text3};
+`;
+
+const SubmitFormInput = ({ toggle, handleToggle }) => {
+  const [date, setDate] = React.useState("");
   const { createTodo } = useTodoActions();
   const [title, setTitle] = React.useState("");
   const ref = React.useRef();
+  const projects = useDefaultTodos();
+  const { id } = useParams();
+  const defaultProject = Object.values(projects).find((i) => i.id === id);
+  const [selectedOption, setSelectedOption] = React.useState({});
+  // const defaultProject =
+  //   project.id === todayId ? projects["inbox"] : project.id;
+
+  const projectId = selectedOption.id || defaultProject.id;
+
+  const onOptionClicked = (value) => () => {
+    setSelectedOption(value);
+  };
 
   React.useEffect(() => {
     if (toggle) {
@@ -130,17 +249,21 @@ const SubmitFormInput = () => {
     }
   }, [ref, toggle]);
 
-  const { id } = useParams();
-  const projectId = id;
-
   const handleSubmit = React.useCallback(() => {
     const categoryId = projectId;
     if (projectId) {
-      createTodo(title, categoryId);
+      createTodo(title, categoryId, date);
       setTitle("");
-      toggleFalse();
+      setDate("");
+      setSelectedOption(projectId);
     }
-  }, [title, projectId]);
+  }, [title, projectId, date]);
+
+  const handleCancel = () => {
+    setDate("");
+    handleToggle();
+    setTitle("");
+  };
 
   const handleChange = React.useCallback((e) => {
     setTitle(e.target.value);
@@ -170,7 +293,12 @@ const SubmitFormInput = () => {
                   onChange={setDate}
                   placeholder={"Schedule"}
                 />
-                <ProjectsPicker />
+                <ProjectsPicker
+                  onOptionClicked={onOptionClicked}
+                  selectedOption={selectedOption}
+                  defaultProject={defaultProject}
+                  projects={projects}
+                />
               </SubmitFormPickersContainer>
               <FormFlagButtonContainer>
                 <FormFlagButton>
@@ -194,7 +322,7 @@ const SubmitFormInput = () => {
                 Add task
               </AddTaskButton>
             )}
-            <CancelButton onClick={handleToggle}>Cancel</CancelButton>
+            <CancelButton onClick={handleCancel}>Cancel</CancelButton>
           </FormSubmitButtonsContainer>
         </div>
       )}

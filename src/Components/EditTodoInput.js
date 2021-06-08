@@ -4,6 +4,8 @@ import ProjectsPicker from "./Pickers/ProjectsPicker";
 import styled from "styled-components";
 import DatePicker from "./Pickers/DatePicker";
 import { useTodoActions } from "../Providers/ItemProvider";
+import { useDefaultTodos } from "../hooks/selectors";
+import { useParams } from "@reach/router";
 
 const FormInput = styled.input`
   color: ${(props) => props.theme.colors.text5};
@@ -94,11 +96,23 @@ const EditTodoInput = ({ handleToggle, item }) => {
   const [date, setDate] = React.useState();
   const { editTodo } = useTodoActions();
   const [title, setTitle] = React.useState(item.title);
+  const projects = useDefaultTodos();
+  const { id } = useParams();
+  const defaultProject = Object.values(projects).find((i) => i.id === id);
+  const [selectedOption, setSelectedOption] = React.useState({});
+  const projectId = selectedOption.id || defaultProject.id;
+
+  const onOptionClicked = (value) => () => {
+    setSelectedOption(value);
+  };
 
   const handleEditTodo = React.useCallback(() => {
-    editTodo({ ...item, title });
-    handleToggle();
-  }, []);
+    const categoryId = projectId;
+    if (projectId) {
+      editTodo({ ...item, title, date, categoryId });
+      handleToggle();
+    }
+  }, [title, date, projectId]);
 
   const handleChange = React.useCallback((e) => {
     setTitle(e.target.value);
@@ -121,7 +135,12 @@ const EditTodoInput = ({ handleToggle, item }) => {
                 onChange={setDate}
                 placeholder={"Schedule"}
               />
-              <ProjectsPicker />
+              <ProjectsPicker
+                onOptionClicked={onOptionClicked}
+                selectedOption={selectedOption}
+                defaultProject={defaultProject}
+                projects={projects}
+              />
             </SubmitFormPickersContainer>
             <FormFlagButtonContainer>
               <FormFlagButton>

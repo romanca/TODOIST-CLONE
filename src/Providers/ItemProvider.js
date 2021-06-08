@@ -1,27 +1,51 @@
 import React from "react";
 import usePersistedState from "../hooks/use-persisted-state";
-import { staticItems } from "../shared/mockData";
+import { staticItems, staticProjects } from "../shared/mockData";
 
 const Context = React.createContext(null);
 
 const initialItems = {};
 const initialTodos = {};
 const initialStaticItems = staticItems;
+const initialStaticProjects = staticProjects;
 
 const ItemProvider = ({ children }) => {
   const [projectsItems, setProjectsItems] = usePersistedState(
     "projectsItems",
     initialItems
   );
-  const [todos, setTodos] = usePersistedState("todos", initialTodos);
   const [staticProjectItems, setStaticProjectItems] = usePersistedState(
     "staticItems",
     initialStaticItems
   );
+  const [staticProjects, setStaticProjects] = usePersistedState(
+    "staticProjects",
+    initialStaticProjects
+  );
+  const [todos, setTodos] = usePersistedState("todos", initialTodos);
   const [selectedProjectId, setSelectedProjectId] = React.useState();
   const [selectedTodoId, setSelectedTodotId] = React.useState();
 
-  const selected = React.useMemo(
+  const bootstrap = React.useCallback(async () => {
+    try {
+      const projectsItems = await projectsItems;
+      const staticProjectItems = await staticProjectItems;
+      const staticProjects = await staticProjects;
+      const todos = await todos;
+      setProjectsItems(projectsItems);
+      setStaticProjectItems(staticProjectItems);
+      setStaticProjects(staticProjects);
+      setTodos(todos);
+    } catch (error) {
+      // TODO handle error
+    }
+  }, [setProjectsItems, setStaticProjectItems, setStaticProjects, setTodos]);
+
+  React.useEffect(() => {
+    bootstrap();
+  }, [bootstrap]);
+
+  const selectedProject = React.useMemo(
     () => Object.values(projectsItems).find((i) => i.id === selectedProjectId),
     [projectsItems, selectedProjectId]
   );
@@ -102,7 +126,7 @@ const ItemProvider = ({ children }) => {
     );
   };
 
-  const createTodo = React.useCallback((title, categoryId) => {
+  const createTodo = React.useCallback((title, categoryId, date) => {
     const newId = String(Date.now());
     setTodos((current) => {
       const newItem = {
@@ -111,7 +135,7 @@ const ItemProvider = ({ children }) => {
           title,
           id: newId,
           categoryId,
-          favorite: false,
+          date,
         }),
       };
       return newItem;
@@ -145,7 +169,7 @@ const ItemProvider = ({ children }) => {
         todos,
         projectsItems,
         selectedTodo,
-        selected,
+        selectedProject,
         createProject,
         createTodo,
         removeProject,
@@ -154,6 +178,7 @@ const ItemProvider = ({ children }) => {
         handleSelectedTodo,
         favoriteProjects,
         staticProjectItems,
+        staticProjects,
         staticItems,
         editProject,
         editTodo,
@@ -169,7 +194,7 @@ export const useProjectActions = () => {
     createProject,
     removeProject,
     handleSelected,
-    selected,
+    selectedProject,
     favoriteProjects,
     staticItems,
     editProject,
@@ -178,7 +203,7 @@ export const useProjectActions = () => {
     createProject,
     removeProject,
     handleSelected,
-    selected,
+    selectedProject,
     favoriteProjects,
     staticItems,
     editProject,
@@ -210,6 +235,14 @@ export const useStaticItems = () => {
 
   return {
     staticProjectItems: Object.values(staticProjectItems),
+  };
+};
+
+export const useDefaultStaticProjects = () => {
+  const { staticProjects } = React.useContext(Context);
+
+  return {
+    staticProjects: Object.values(staticProjects),
   };
 };
 

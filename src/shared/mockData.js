@@ -5,8 +5,12 @@ import {
   filtersTitle,
   hamburgerId,
   hamburgerTitle,
+  inboxId,
+  inboxTitle,
   projectsId,
   projectsTitle,
+  todayId,
+  todayTitle,
 } from "./constants";
 
 export const staticItems = {
@@ -29,6 +33,19 @@ export const staticItems = {
     title: hamburgerTitle,
     id: hamburgerId,
     opened: false,
+  },
+};
+
+export const staticProjects = {
+  [inboxId]: {
+    title: inboxTitle,
+    id: inboxId,
+    filterMethod: (i) => i.categoryId === inboxId,
+  },
+  [todayId]: {
+    title: todayTitle,
+    id: todayId,
+    filterMethod: (i) => i.categoryId === todayId,
   },
 };
 

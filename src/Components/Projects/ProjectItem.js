@@ -16,6 +16,7 @@ const ContentHeader = styled.div`
   top: ${(props) => props.theme.spaces[28]};
   padding-top: ${(props) => props.theme.spaces[55]};
 `;
+
 const HeaderContent = styled.div`
   display: flex;
   width: ${(props) => props.theme.spaces[27]};
@@ -31,6 +32,7 @@ const HeaderContent = styled.div`
   padding: ${(props) => props.theme.spaces[39]}
     ${(props) => props.theme.spaces[9]};
 `;
+
 const HeaderButton = styled.button`
   display: flex;
   align-items: center;
@@ -42,6 +44,7 @@ const HeaderButton = styled.button`
   padding: ${(props) => props.theme.spaces[28]};
   margin: ${(props) => props.theme.spaces[28]};
 `;
+
 const HeaderContentTitleContainer = styled.span`
   font-size: ${(props) => props.theme.spaces[33]};
   font-weight: ${(props) => props.theme.spaces[34]};
@@ -51,6 +54,7 @@ const HeaderContentTitleContainer = styled.span`
     background: ${(props) => props.theme.colors.muted3};
   }
 `;
+
 const HeaderContentButtonsContainer = styled.div`
   display: flex;
   align-items: center;
@@ -58,10 +62,12 @@ const HeaderContentButtonsContainer = styled.div`
   justify-content: space-between;
   width: ${(props) => props.theme.spaces[58]};
 `;
+
 const HeaderButtonsIconContainer = styled.div`
   font-size: ${(props) => props.theme.spaces[14]};
   color: ${(props) => props.theme.colors.text3};
 `;
+
 const HeaderButtonTitleContainer = styled.div`
   font-size: ${(props) => props.theme.spaces[36]};
   margin-left: ${(props) => props.theme.spaces[1]};
@@ -94,6 +100,7 @@ const EditFormButtonsContainer = styled.div`
   width: 100%;
   display: flex;
 `;
+
 const SaveButton = styled.button`
   margin-right: 5px;
   background-color: #dd4b39;
@@ -129,7 +136,8 @@ const ProjectItem = (props) => {
   );
   const { todos } = useTodos();
   const { id } = useParams();
-  const { open, handleOpenClose, ref } = useVisibiltyState();
+  const { open, handleOpenClose, ref, toggle, handleToggle } =
+    useVisibiltyState();
   const { editProject } = useProjectActions();
   const [title, setTitle] = React.useState(item.title);
 
@@ -189,9 +197,15 @@ const ProjectItem = (props) => {
           </HeaderContentButtonsContainer>
         </HeaderContent>
       </ContentHeader>
-      {renderTodosCounter() === 0 ? "" : renderTodos()}
-      <SubmitFormInput />
-      {renderTodosCounter() === 0 ? <MainInfoContent /> : ""}
+      {renderTodosCounter() !== 0 && renderTodos()}
+      <SubmitFormInput toggle={toggle} handleToggle={handleToggle} />
+      {renderTodosCounter() === 0 && (
+        <MainInfoContent
+          item={item}
+          toggle={toggle}
+          handleToggle={handleToggle}
+        />
+      )}
     </div>
   );
 };

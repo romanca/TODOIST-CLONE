@@ -9,6 +9,7 @@ const ColorPickerIconTitle = styled.span`
     ${(props) => props.theme.spaces[2]};
   font-size: ${(props) => props.theme.spaces[14]};
 `;
+
 const DropDownSelectColorPicker = styled.div`
   max-height: ${(props) => props.theme.spaces[38]};
   overflow-y: scroll;

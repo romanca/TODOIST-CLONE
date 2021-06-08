@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import pick1 from "../pick1.jpeg";
+import hat4 from "../hat4.jpeg";
 import InfoProjectsButton from "./Projects/InfoProjectsButton";
+import { todayId } from "../shared/constants";
 
 const MainInfoContainer = styled.div`
   width: ${(props) => props.theme.spaces[27]};
@@ -31,20 +33,50 @@ const InfoContent = styled.div`
   font-size: ${(props) => props.theme.spaces[36]};
 `;
 
-const MainInfoContent = () => {
+const AddButton = styled.button`
+  display: block;
+  font-size: 13px;
+  line-height: 17px;
+  margin: 20px auto 0;
+  padding: 6px 12px 7px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+  background-color: #dd4b39;
+`;
+
+const MainInfoContent = ({ item, toggle, handleToggle }) => {
   return (
     <MainInfoContainer>
-      <MainInfoContentContainer>
-        <ImageContainer>
-          <img src={pick1} width="220" height="200" />
-        </ImageContainer>
-        <MainInfoContentTitle>Keep your tasks organized</MainInfoContentTitle>
-        <InfoContent>
-          Group your tasks by goal or area of your life. Drag and drop to
-          rearrange tasks or create sub-tasks.
-        </InfoContent>
-        <InfoProjectsButton />
-      </MainInfoContentContainer>
+      {item.id !== todayId ? (
+        <MainInfoContentContainer>
+          <ImageContainer>
+            <img src={pick1} width="220" height="200" />
+          </ImageContainer>
+          <MainInfoContentTitle>Keep your tasks organized</MainInfoContentTitle>
+          <InfoContent>
+            Group your tasks by goal or area of your life. Drag and drop to
+            rearrange tasks or create sub-tasks.
+          </InfoContent>
+          <InfoProjectsButton />
+        </MainInfoContentContainer>
+      ) : (
+        <div>
+          {!toggle && (
+            <MainInfoContentContainer>
+              <ImageContainer>
+                <img src={hat4} width="220" height="250" />
+              </ImageContainer>
+              <MainInfoContentTitle>
+                What tasks are on your mind?
+              </MainInfoContentTitle>
+              {/* <AddButton onClick={handleToggle}>Add a task</AddButton> */}
+            </MainInfoContentContainer>
+          )}
+        </div>
+      )}
     </MainInfoContainer>
   );
 };

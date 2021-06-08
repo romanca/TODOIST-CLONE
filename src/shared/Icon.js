@@ -11,6 +11,7 @@ const IconNamesMap = {
   calendar1: "fa fa-calendar-o",
   today: "fa fa-calendar-check-o",
   rightArrow: "fa fa-angle-right",
+  leftArrow: "fa fa-angle-left",
   rightDown: "fa fa-angle-down",
   plus: "fa fa-plus",
   dot: "fa fa-circle",

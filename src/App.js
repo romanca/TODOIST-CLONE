@@ -7,6 +7,7 @@ import { Redirect, Router } from "@reach/router";
 import ProjectItem from "./Components/Projects/ProjectItem";
 import Items from "./Components/Filters/Items";
 import ItemProvider from "./Providers/ItemProvider";
+import TodayItem from "./Components/TodayItem";
 
 const App = () => {
   // const todo = useTodoByIidFromParams();
@@ -19,6 +20,7 @@ const App = () => {
             <Layout path="/">
               <Redirect noThrow from="/" to="project/inbox" />
               <ProjectItem path="project/:id" />
+              <TodayItem path="today/:id" />
               <Items path="filter/:id" />
             </Layout>
           </Router>

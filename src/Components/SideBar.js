@@ -4,6 +4,7 @@ import Favorites from "./Favorites/Favorites";
 import Filters from "./Filters/Filters";
 import Projects from "./Projects/Projects";
 import StaticProjects from "./StaticProjects";
+import Today from "./Today";
 
 const SideBarContainer = styled.div`
   height: calc(100vh - 44px);
@@ -28,6 +29,7 @@ const SideBar = () => {
     <SideBarContainer>
       <MenuContainer>
         <StaticProjects />
+        <Today />
         <Space />
         <Favorites />
         <Space />

@@ -16,6 +16,7 @@ const FormField = styled.div`
   flex-flow: row wrap;
   justify-content: space-between;
 `;
+
 const FormTitle = styled.div`
   font-size: ${(props) => props.theme.spaces[14]};
   width: ${(props) => props.theme.spaces[25]};
@@ -25,6 +26,7 @@ const FormTitle = styled.div`
     ${(props) => props.theme.spaces[28]} ${(props) => props.theme.spaces[29]};
   color: ${(props) => props.theme.colors.text};
 `;
+
 const FormInput = styled.input`
   width: calc(100% - 12px);
   font-size: ${(props) => props.theme.spaces[14]};
@@ -34,6 +36,7 @@ const FormInput = styled.input`
   padding: ${(props) => props.theme.spaces[1]};
   outline: none;
 `;
+
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -48,6 +51,7 @@ const ContentContainer = styled.div`
   padding: ${(props) => props.theme.spaces[33]}
     ${(props) => props.theme.spaces[12]};
 `;
+
 const ContentHeader = styled.div`
   position: relative;
   padding: ${(props) => props.theme.spaces[28]}
@@ -58,6 +62,7 @@ const ContentHeader = styled.div`
   border-bottom: ${(props) => props.theme.spaces[8]} solid
     ${(props) => props.theme.colors.muted7};
 `;
+
 const ContentFooter = styled.div`
   display: flex;
   background-color: inherit;
@@ -68,6 +73,7 @@ const ContentFooter = styled.div`
     ${(props) => props.theme.spaces[12]};
   justify-content: flex-end;
 `;
+
 const CancelButton = styled.button`
   font-weight: ${(props) => props.theme.spaces[34]};
   font-size: ${(props) => props.theme.spaces[36]} !important;
@@ -81,6 +87,7 @@ const CancelButton = styled.button`
   outline: none;
   cursor: pointer;
 `;
+
 const AddButton = styled.button`
   font-weight: ${(props) => props.theme.spaces[34]};
   font-size: ${(props) => props.theme.spaces[36]} !important;
@@ -105,6 +112,7 @@ const HeaderTitle = styled.div`
     ${(props) => props.theme.spaces[28]} ${(props) => props.theme.spaces[28]};
   font-size: ${(props) => props.theme.spaces[37]};
 `;
+
 const HeaderTitleContainer = styled.div`
   margin: ${(props) => props.theme.spaces[28]};
   padding: ${(props) => props.theme.spaces[14]}
@@ -112,6 +120,7 @@ const HeaderTitleContainer = styled.div`
   font-weight: ${(props) => props.theme.spaces[34]};
   flex-grow: ${(props) => props.theme.spaces[35]};
 `;
+
 const InfoIconContainer = styled.div`
   display: flex;
   align-items: center;
@@ -126,15 +135,15 @@ const InfoIconContainer = styled.div`
 
 const ProjectsEditModalContent = () => {
   const { closeModalDialog } = useModal();
-  const { editProject, selected } = useProjectActions();
-  const [title, setTitle] = React.useState(selected.title);
+  const { editProject, selectedProject } = useProjectActions();
+  const [title, setTitle] = React.useState(selectedProject.title);
 
   const handleChange = React.useCallback((e) => {
     setTitle(e.target.value);
   }, []);
 
   const handleEditProject = () => {
-    editProject({ ...selected, title });
+    editProject({ ...selectedProject, title });
     closeModalDialog();
   };
 

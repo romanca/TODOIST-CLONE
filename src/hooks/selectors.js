@@ -1,19 +1,20 @@
 import { useItems, useStaticItems } from "../Providers/ItemProvider";
-import {
-  favoritesId,
-  favoritesTitle,
-  inboxId,
-  projectsId,
-  projectsTitle,
-} from "../shared/constants";
+import { icon, inboxId, todayId } from "../shared/constants";
 
 export const useDefaultTodos = () => {
   const { projectsItems } = useItems();
+
   const staticItem = {
     [inboxId]: {
       title: "Inbox",
       id: inboxId,
-      filterMethod: (i) => i.categoryId === "inbox",
+      icon: icon,
+      filterMethod: (i) => i.categoryId === inboxId,
+    },
+    [todayId]: {
+      title: "Today",
+      id: todayId,
+      filterMethod: (i) => i.categoryId === todayId,
     },
   };
 

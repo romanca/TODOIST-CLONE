@@ -1,29 +1,10 @@
-import { getDay, getMonth, getYear } from "date-fns";
+import { getDay, getYear, getMonth } from "date-fns";
 import React from "react";
 import DatePickerRaw from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
 import { formatDateToTodoDate } from "../../shared/date-formatter";
 import Icon from "../../shared/Icon";
-
-const FormScheduleButton = styled.button`
-  margin-right: ${(props) => props.theme.spaces[43]};
-  font-size: ${(props) => props.theme.spaces[36]};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: ${(props) => props.theme.spaces[5]};
-  padding: ${(props) => props.theme.spaces[28]}
-    ${(props) => props.theme.spaces[43]};
-  border: ${(props) => props.theme.spaces[8]} solid
-    ${(props) => props.theme.colors.muted9};
-  border-radius: ${(props) => props.theme.spaces[1]};
-  color: ${(props) => props.theme.colors.text3};
-  width: ${(props) => props.theme.spaces[44]};
-  background-color: transparent;
-  outline: none;
-`;
-
 
 const TodoDateContainer = styled.div`
   display: flex;
@@ -35,57 +16,95 @@ const TodoDateContainer = styled.div`
   cursor: pointer;
 `;
 
+const DateButton = styled.button`
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  font-size: 12px;
+  white-space: nowrap;
+  height: 16px;
+  line-height: 16px;
+  color: grey;
+  border-radius: 3px;
+  margin: 0 8px 0 0;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+`;
+
 const today = new Date();
 
-class DatePickerInput extends React.Component {
+class TodoItemDatePickerInput extends React.Component {
   render() {
-    const todayDateValue = formatDateToTodoDate(new Date());
-    const { onClick, value, placeholderText } = this.props;
-    const finalValue = value ? formatDateToTodoDate(value) : placeholderText;
+    const { onClick, value } = this.props;
+    const compareValueComparison =
+      formatDateToTodoDate(value) === formatDateToTodoDate(today);
+    const compareItemDateComparison =
+      formatDateToTodoDate(this.props.item.date) ===
+      formatDateToTodoDate(today);
 
-    const todayValue =
-      finalValue === todayDateValue ? (
-        <TodoDateContainer>
-          <div
-            style={{
-              height: 12,
-              width: 12,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: finalValue === todayDateValue && "green",
-              margin: "1px 4px 3px 0px",
-            }}
-          >
-            <Icon name="calendar1" style={{ fontSize: 10 }} />
-          </div>
-          <span style={{ color: "green" }}>Today</span>
-        </TodoDateContainer>
-      ) : (
-        <div>
-          <TodoDateContainer>
-            <div
-              style={{
-                height: 12,
-                width: 12,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "1px 4px 3px 0px",
-              }}
-            >
-              <Icon name="calendar1" style={{ fontSize: 10 }} />
-            </div>
-            <span style={{ color: finalValue !== todayDateValue && "grey" }}>
-              {finalValue}
-            </span>
-          </TodoDateContainer>
+    const compareValue = compareValueComparison ? (
+      <TodoDateContainer>
+        <div
+          style={{
+            height: 12,
+            width: 12,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: compareValueComparison ? "green" : "grey",
+            margin: "1px 2px 3px 0px",
+          }}
+        >
+          <Icon name="calendar1" style={{ fontSize: 10 }} />
         </div>
-      );
-
-    return (
-      <FormScheduleButton onClick={onClick}>{todayValue}</FormScheduleButton>
+        <span style={{ color: "green" }}>Today</span>
+      </TodoDateContainer>
+    ) : (
+      formatDateToTodoDate(value)
     );
+
+    const compareItemDate = compareItemDateComparison ? (
+      <TodoDateContainer>
+        <div
+          style={{
+            height: 12,
+            width: 12,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: compareItemDateComparison ? "green" : "grey",
+            margin: "1px 2px 3px 0",
+          }}
+        >
+          <Icon name="calendar1" style={{ fontSize: 10 }} />
+        </div>
+        <span style={{ color: "green" }}>Today</span>
+      </TodoDateContainer>
+    ) : (
+      <TodoDateContainer>
+        <div
+          style={{
+            height: 12,
+            width: 12,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "grey",
+            margin: "1px 2px 3px 0",
+          }}
+        >
+          <Icon name="calendar1" style={{ fontSize: 10 }} />
+        </div>
+        <span>{formatDateToTodoDate(this.props.item.date)}</span>
+      </TodoDateContainer>
+    );
+
+    const finalValue = value ? compareValue : compareItemDate;
+
+    return <DateButton onClick={onClick}>{finalValue}</DateButton>;
   }
 }
 
@@ -99,7 +118,7 @@ const renderDayContents = (date) => {
   return <span title={tooltipText}>{date}</span>;
 };
 
-const DatePicker = ({ onChange, selected, placeholder }) => {
+const TodoItemDatePicker = ({ onChange, selected, placeholder, item }) => {
   const months = [
     "January",
     "February",
@@ -120,8 +139,10 @@ const DatePicker = ({ onChange, selected, placeholder }) => {
       <DatePickerRaw
         onChange={onChange}
         selected={selected}
-        // minDate={new Date()}
-        customInput={<DatePickerInput placeholderText={placeholder} />}
+        minDate={new Date()}
+        customInput={
+          <TodoItemDatePickerInput placeholderText={placeholder} item={item} />
+        }
         renderDayContents={renderDayContents}
         filterDate={isWeekday}
         renderCustomHeader={({ decreaseMonth, increaseMonth, date }) => (
@@ -205,5 +226,4 @@ const DatePicker = ({ onChange, selected, placeholder }) => {
     </div>
   );
 };
-
-export default DatePicker;
+export default TodoItemDatePicker;

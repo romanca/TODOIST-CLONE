@@ -4,7 +4,8 @@ import styled from "styled-components";
 import useVisibiltyState from "../hooks/useVisibiltyState";
 import EditTodoInput from "./EditTodoInput";
 import TodoItemDropDown from "./DropDowns/TodoItemDropDownMenu";
-import TodoItemDatePicker from "./Pickers/TodoItemDatePicker";
+import { useDefaultTodos } from "../hooks/selectors";
+import { inboxId } from "../shared/constants";
 
 const MainTodoItemContainer = styled.div`
   font-size: ${(props) => props.theme.spaces[14]};
@@ -148,9 +149,13 @@ const TodoDotsButton = styled.button`
   background-color: transparent;
 `;
 
-const TodoItem = ({ item }) => {
+const TodayProjectItem = ({ item }) => {
   const { toggle, handleToggle } = useVisibiltyState();
-  const [date, setDate] = React.useState(null);
+  const projectItems = useDefaultTodos();
+  const project = React.useMemo(
+    () => Object.values(projectItems).find((i) => i.id === item.categoryId),
+    [projectItems]
+  );
 
   return (
     <div>
@@ -174,13 +179,25 @@ const TodoItem = ({ item }) => {
             <TodoTitleContainer>
               <TodoTitle>{item.title}</TodoTitle>
             </TodoTitleContainer>
-            {item.date && (
-              <TodoItemDatePicker
-                selected={date}
-                item={item}
-                onChange={setDate}
-              />
-            )}
+            <div
+              style={{
+                width: "100%",
+                float: "right",
+                marginTop: 3,
+              }}
+            >
+              <div
+                style={{
+                  float: "right",
+                  marginRight: -25,
+                  fontSize: 12,
+                  color: "grey",
+                }}
+              >
+                <span style={{ marginRight: 5 }}>{project.title}</span>
+                {project.id === inboxId ? project.icon : <Icon name="dot" />}
+              </div>
+            </div>
           </div>
           <TodoButtonsContainer>
             <TodoEditButton onClick={handleToggle}>
@@ -204,4 +221,4 @@ const TodoItem = ({ item }) => {
   );
 };
 
-export default TodoItem;
+export default TodayProjectItem;

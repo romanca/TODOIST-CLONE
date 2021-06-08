@@ -3,7 +3,6 @@ import { useProjectActions } from "../../../Providers/ItemProvider";
 import { useModal } from "../../../Providers/ModalProvider";
 import Icon from "../../../shared/Icon";
 import styled from "styled-components";
-import { useParams } from "@reach/router";
 
 const DeleteButton = styled.button`
   background-color: #dd4b39;
@@ -17,6 +16,7 @@ const DeleteButton = styled.button`
   text-align: center;
   cursor: pointer;
 `;
+
 const CancelButton = styled.button`
   margin-left: 10px;
   font-weight: 700;
@@ -33,6 +33,7 @@ const CancelButton = styled.button`
   text-align: center;
   cursor: pointer;
 `;
+
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -91,7 +92,7 @@ const ContentText = styled.span`
 
 const ProjectMessage = () => {
   const { closeModalDialog } = useModal();
-  const { selected, removeProject } = useProjectActions();
+  const { selectedProject, removeProject } = useProjectActions();
 
   const handleDelete = (id) => {
     removeProject(id);
@@ -111,14 +112,14 @@ const ProjectMessage = () => {
         <TextContainer>
           <ContentText> Are you sure you want to delete a</ContentText>
           <SelectedTitleContainer>
-            {selected && selected.title}
+            {selectedProject && selectedProject.title}
           </SelectedTitleContainer>
           ?
         </TextContainer>
       </ContentContainer>
       <ButtonContainer>
         <CancelButton onClick={closeModalDialog}>Cancel</CancelButton>
-        <DeleteButton onClick={() => handleDelete(selected.id)}>
+        <DeleteButton onClick={() => handleDelete(selectedProject.id)}>
           Delete
         </DeleteButton>
       </ButtonContainer>

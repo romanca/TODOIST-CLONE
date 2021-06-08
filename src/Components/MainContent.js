@@ -85,7 +85,7 @@ const ContentHeaderDotsIconContainer = styled.div`
 
 const MainContent = () => {
   const { open, handleOpenClose } = useVisibiltyState();
-  const { selected } = useProjectActions();
+  const { selectedProject } = useProjectActions();
 
   return (
     <MainContentContainer>
@@ -93,7 +93,7 @@ const MainContent = () => {
         <ContentHeader>
           <HeaderContent>
             <HeaderContentTitleContainer>
-              {selected && selected.title}
+              {selectedProject && selectedProject.title}
             </HeaderContentTitleContainer>
             <HeaderContentButtonsContainer>
               <HeaderButton>

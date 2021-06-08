@@ -7,3 +7,11 @@ export function formatDateToTodoDate(date) {
   }
   return format(new Date(date), "dd.MMMM");
 }
+
+export function formatDateToProjectDate(date) {
+  if (!date) {
+    console.warn("fformatDateToProjectDate is not expecting null value");
+    return "";
+  }
+  return format(new Date(date), "EEE d MMMM");
+}
