@@ -13,6 +13,29 @@ import {
   todayTitle,
 } from "./constants";
 
+export const priorities = {
+  priority1: {
+    title: "Priority 1",
+    id: "priority1",
+    color: "rgb(209, 69, 59)",
+  },
+  priority2: {
+    title: "Priority 2",
+    id: "priority2",
+    color: "rgb(235, 137, 9)",
+  },
+  priority3: {
+    title: "Priority 3",
+    id: "priority3",
+    color: "rgb(36, 111, 224)",
+  },
+  priority4: {
+    title: "Priority 4",
+    id: "priority4",
+    color: "grey",
+  },
+};
+
 export const staticItems = {
   [favoritesId]: {
     title: favoritesTitle,
@@ -249,52 +272,30 @@ export const items = {
 
 export const filters = {
   id1: {
-    title: "Assigned to me",
-    number: 9,
+    title: "Priority 1",
     id: "id1",
-    filterMethod: (i) => i.priority === "Assigned to me",
+    filterMethod: (i) => i.priority.id === "priority1",
   },
   id2: {
-    title: "Assigned to others",
-    number: 9,
+    title: "Priority 2",
     id: "id2",
-    filterMethod: (i) => i.priority === "Assigned to others",
+    filterMethod: (i) => i.priority.id === "priority2",
   },
   id3: {
-    title: "Priority 1",
-    number: 9,
+    title: "Priority 3",
     id: "id3",
-    filterMethod: (i) => i.priority === "priority1",
+    filterMethod: (i) => i.priority.id === "priority3",
   },
   id4: {
-    title: "Priority 2",
-    number: 9,
+    title: "Priority 4",
     id: "id4",
-    filterMethod: (i) => i.priority === "priority2",
+    filterMethod: (i) => i.priority.id === "priority4",
   },
   id5: {
-    title: "Priority 3",
-    number: 9,
-    id: "id5",
-    filterMethod: (i) => i.priority === "priority3",
-  },
-  id6: {
-    title: "Priority 4",
-    number: 9,
-    id: "id6",
-    filterMethod: (i) => i.priority === "priority4",
-  },
-  id7: {
     title: "View all",
     number: 9,
-    id: "id7",
-    filterMethod: (i) => i.priority === "View all",
-  },
-  id8: {
-    title: "No due date",
-    number: 9,
-    id: "id8",
-    filterMethod: (i) => i.priority === "No due date",
+    id: "id5",
+    filterMethod: (i) => i.priority.id,
   },
 };
 

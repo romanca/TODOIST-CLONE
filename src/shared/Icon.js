@@ -29,10 +29,12 @@ const IconNamesMap = {
   bulb: "fa fa-lightbulb-o",
   arrows: "fa fa-arrows-v",
   flag: "fa fa-flag-o",
+  fullFlag: "fa fa-flag",
   listUl: "fa fa-list-ul",
   archive: "fa fa-archive",
   flag1: "fa fa-flag",
   info: "fa fa-info",
+  minus: "fa fa-minus",
 };
 
 const Icon = ({ name, style, color }) => {

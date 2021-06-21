@@ -138,7 +138,7 @@ const ProjectsPicker = ({
     .map((item) => (
       <ProjectsPickerBoxContentItemContainer onClick={onOptionClicked(item)}>
         <ProjectPickerIconContainer>
-          <Icon name="dot" color="grey" style={{ fontSize: 10 }} />
+          <Icon name="dot" color={item.color.color} style={{ fontSize: 10 }} />
         </ProjectPickerIconContainer>
         <ProjectsPickerBoxContentItemTitle>
           {item.title}
@@ -150,14 +150,14 @@ const ProjectsPicker = ({
     <div style={{ display: "flex", justifyContent: "center" }} ref={ref}>
       <ProjectsPickerButton onClick={handleOpenClose}>
         <ProjectPickerIconContainer>
-          <Icon name="dot" color="grey" style={{ fontSize: 10 }} />
+          {/* {selectedOption.id === inboxId ? defaultProject.icon : renderItems()} */}
         </ProjectPickerIconContainer>
         {selectedOption.title || defaultProject.title}
       </ProjectsPickerButton>
       {open && (
         <MainProjectPickersBoxContainer>
           <ProjectsPickerBoxPopperContainer>
-            <ProjectsPickerBoxPopper></ProjectsPickerBoxPopper>
+            <ProjectsPickerBoxPopper />
           </ProjectsPickerBoxPopperContainer>
           <ProjectsPickerInputContainer>
             <Input type="text" placeholder="Type a project" />

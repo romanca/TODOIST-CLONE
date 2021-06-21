@@ -1,9 +1,10 @@
-import { navigate } from "@reach/router";
+import { isRedirect, navigate } from "@reach/router";
 import React from "react";
 import styled from "styled-components";
 import { useProjectActions } from "../../../Providers/ItemProvider";
 import { useModal } from "../../../Providers/ModalProvider";
 import Icon from "../../../shared/Icon";
+import { selectedItems } from "../../../shared/mockData";
 import ColorPicker from "../../Pickers/ColorPicker";
 import SwitchInput from "./SwitchInput";
 
@@ -124,11 +125,26 @@ const InfoIconContainer = styled.div`
   border-radius: ${(props) => props.theme.spaces[0]};
   color: ${(props) => props.theme.colors.text};
 `;
+
+//chcecked item background is background-color: #f3f3f3;;
+//if is checked and hovered background is #ccc
+
 const ProjectsModalContent = () => {
   const { closeModalDialog } = useModal();
   const { createProject } = useProjectActions();
   const [title, setTitle] = React.useState("");
   const ref = React.useRef();
+  const defaultItem = selectedItems["id18"];
+  const [selectedOption, setSelectedOption] = React.useState(defaultItem);
+  const colors = selectedOption || defaultItem;
+
+  React.useEffect(() => {
+    OptionClicked();
+  }, []);
+
+  const OptionClicked = (value) => () => {
+    setSelectedOption(value);
+  };
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -142,11 +158,12 @@ const ProjectsModalContent = () => {
 
   const handleSubmitProject = React.useCallback(() => {
     const id = String(Date.now());
-    createProject(title, id);
+    const color = colors;
+    createProject(title, id, color);
     setTitle("");
     closeModalDialog();
-    navigate(`${id}`);
-  }, [title]);
+    navigate(`/project/${id}`);
+  }, [title, colors, closeModalDialog, createProject]);
 
   return (
     <MainContentContainer>
@@ -168,7 +185,10 @@ const ProjectsModalContent = () => {
             ref={ref}
           />
         </FormField>
-        <ColorPicker />
+        <ColorPicker
+          selectedOption={selectedOption}
+          OptionClicked={OptionClicked}
+        />
         <FormField>
           <SwitchInput />
         </FormField>

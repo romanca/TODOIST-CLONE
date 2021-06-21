@@ -1,11 +1,12 @@
 import React from "react";
-import Icon from "../shared/Icon";
 import ProjectsPicker from "./Pickers/ProjectsPicker";
 import styled from "styled-components";
 import DatePicker from "./Pickers/DatePicker";
 import { useTodoActions } from "../Providers/ItemProvider";
 import { useDefaultTodos } from "../hooks/selectors";
 import { useParams } from "@reach/router";
+import { inboxId, todayId } from "../shared/constants";
+import PriorityProjectPicker from "./Pickers/PriorityPicker";
 
 const FormInput = styled.input`
   color: ${(props) => props.theme.colors.text5};
@@ -15,28 +16,11 @@ const FormInput = styled.input`
   border: ${(props) => props.theme.spaces[8]} solid transparent;
   outline: none;
 `;
-const FormFlagButton = styled.div`
-  border-radius: ${(props) => props.theme.spaces[0]};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: ${(props) => props.theme.spaces[12]};
-  height: ${(props) => props.theme.spaces[12]};
-  color: ${(props) => props.theme.colors.muted10};
-  cursor: pointer;
-  border: none;
-  outline: none;
-  background-color: transparent;
-  font-size: ${(props) => props.theme.spaces[33]};
-`;
-const FormFlagButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  padding-bottom: ${(props) => props.theme.spaces[30]};
-`;
+
 const FormSubmitButtonsContainer = styled.div`
   padding-top: ${(props) => props.theme.spaces[30]};
 `;
+
 const AddTaskButton = styled.button`
   background-color: ${(props) => props.theme.colors.accent1};
   color: ${(props) => props.theme.colors.background};
@@ -53,6 +37,7 @@ const AddTaskButton = styled.button`
   outline: none;
   cursor: pointer;
 `;
+
 const CancelButton = styled.button`
   color: ${(props) => props.theme.colors.text3};
   cursor: pointer;
@@ -64,12 +49,14 @@ const CancelButton = styled.button`
   background-color: transparent;
   cursor: pointer;
 `;
+
 const MainToggleSubmitFormContainer = styled.div`
   display: block;
   padding-bottom: ${(props) => props.theme.spaces[32]};
   margin-bottom: ${(props) => props.theme.spaces[32]};
   margin-top: ${(props) => props.theme.spaces[30]};
 `;
+
 const SubmitFormInputContainer = styled.div`
   border: ${(props) => props.theme.spaces[8]} solid
     ${(props) => props.theme.colors.muted7};
@@ -78,6 +65,7 @@ const SubmitFormInputContainer = styled.div`
     ${(props) => props.theme.spaces[30]} ${(props) => props.theme.spaces[28]};
   cursor: text;
 `;
+
 const SubmitFormContentButtonsContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -85,6 +73,7 @@ const SubmitFormContentButtonsContainer = styled.div`
   flex-wrap: wrap;
   margin-top: ${(props) => props.theme.spaces[30]};
 `;
+
 const SubmitFormPickersContainer = styled.div`
   display: flex;
   align-items: center;
@@ -93,26 +82,43 @@ const SubmitFormPickersContainer = styled.div`
 `;
 
 const EditTodoInput = ({ handleToggle, item }) => {
-  const [date, setDate] = React.useState();
+  const [date, setDate] = React.useState("");
   const { editTodo } = useTodoActions();
   const [title, setTitle] = React.useState(item.title);
   const projects = useDefaultTodos();
   const { id } = useParams();
-  const defaultProject = Object.values(projects).find((i) => i.id === id);
-  const [selectedOption, setSelectedOption] = React.useState({});
+  const project = id === todayId ? inboxId : item.categoryId;
+  const defaultProject = Object.values(projects).find((i) => i.id === project);
+  const [selectedPriority, setSelectedPriority] = React.useState(item.priority);
+  const [selectedOption, setSelectedOption] = React.useState(defaultProject);
   const projectId = selectedOption.id || defaultProject.id;
+
+  const selectedItemPriority = selectedPriority;
 
   const onOptionClicked = (value) => () => {
     setSelectedOption(value);
   };
 
+  const selectPriority = (value) => () => {
+    setSelectedPriority(value);
+  };
+
   const handleEditTodo = React.useCallback(() => {
     const categoryId = projectId;
-    if (projectId) {
-      editTodo({ ...item, title, date, categoryId });
+    const priority = selectedItemPriority;
+    if (categoryId) {
+      editTodo({ ...item, title, date, categoryId, priority });
       handleToggle();
     }
-  }, [title, date, projectId]);
+  }, [
+    title,
+    date,
+    projectId,
+    selectedItemPriority,
+    handleToggle,
+    item,
+    editTodo,
+  ]);
 
   const handleChange = React.useCallback((e) => {
     setTitle(e.target.value);
@@ -142,11 +148,10 @@ const EditTodoInput = ({ handleToggle, item }) => {
                 projects={projects}
               />
             </SubmitFormPickersContainer>
-            <FormFlagButtonContainer>
-              <FormFlagButton>
-                <Icon name="flag" />
-              </FormFlagButton>
-            </FormFlagButtonContainer>
+            <PriorityProjectPicker
+              selectPriority={selectPriority}
+              selectedPriority={selectedPriority}
+            />
           </SubmitFormContentButtonsContainer>
         </SubmitFormInputContainer>
         <FormSubmitButtonsContainer>

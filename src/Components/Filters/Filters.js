@@ -20,9 +20,6 @@ const ContentTitleContainer = styled.div`
   align-items: center;
   word-break: break-all;
   padding: ${(props) => props.theme.spaces[1]};
-  justify-content: space-between;
-  width: ${(props) => props.theme.spaces[16]};
-  height: ${(props) => props.theme.spaces[12]};
   font-size: ${(props) => props.theme.spaces[14]};
   color: ${(props) => props.theme.colors.muted5};
 `;
@@ -33,10 +30,15 @@ const ContentIconContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 const FiltersTitle = styled.div`
   font-size: ${(props) => props.theme.spaces[14]};
   color: ${(props) => props.theme.colors.muted5};
   font-weight: ${(props) => props.theme.spaces[34]};
+`;
+
+const ContentProjectsContainer = styled.div`
+  display: flex;
 `;
 
 const Filters = () => {
@@ -55,8 +57,12 @@ const Filters = () => {
         .filter((i) => i.id === filtersId)
         .map((i) => (
           <div>
-            <ProjectsItemsContainer onClick={() => handleOpenCloseFavorites(i)}>
-              <ContentIconContainer>
+            <ProjectsItemsContainer
+              onMouseLeave={handleSwitchItem}
+              onMouseEnter={handleSwitchItem}
+              onClick={() => handleOpenCloseFavorites(i)}
+            >
+              <ContentProjectsContainer>
                 {!i.opened ? (
                   <ContentIconContainer>
                     <Icon name="rightArrow" color="rgba(0,0,0,.54);" />
@@ -66,12 +72,12 @@ const Filters = () => {
                     <Icon name="rightDown" color="rgba(0,0,0,.54);" />
                   </ContentIconContainer>
                 )}
-              </ContentIconContainer>
-              <ContentTitleContainer>
-                <FiltersTitle>Filters</FiltersTitle>
-              </ContentTitleContainer>
+                <ContentTitleContainer>
+                  <FiltersTitle>Filters</FiltersTitle>
+                </ContentTitleContainer>
+              </ContentProjectsContainer>
             </ProjectsItemsContainer>
-            {i.opened ? <FiltersList /> : ""}
+            {i.opened && <FiltersList />}
           </div>
         ))}
     </div>

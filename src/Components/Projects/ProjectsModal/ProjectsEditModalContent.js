@@ -137,13 +137,24 @@ const ProjectsEditModalContent = () => {
   const { closeModalDialog } = useModal();
   const { editProject, selectedProject } = useProjectActions();
   const [title, setTitle] = React.useState(selectedProject.title);
+  const defaultItem = selectedProject.color;
+  const [selectedOption, setSelectedOption] = React.useState(defaultItem);
+  const colors = selectedOption || defaultItem;
 
+  React.useEffect(() => {
+    OptionClicked();
+  }, []);
+
+  const OptionClicked = (value) => () => {
+    setSelectedOption(value);
+  };
   const handleChange = React.useCallback((e) => {
     setTitle(e.target.value);
   }, []);
 
   const handleEditProject = () => {
-    editProject({ ...selectedProject, title });
+    const color = colors;
+    editProject({ ...selectedProject, title, color });
     closeModalDialog();
   };
 
@@ -162,7 +173,10 @@ const ProjectsEditModalContent = () => {
           <FormTitle>Name</FormTitle>
           <FormInput type="text" value={title} onChange={handleChange} />
         </FormField>
-        <ColorPicker />
+        <ColorPicker
+          selectedOption={selectedOption}
+          OptionClicked={OptionClicked}
+        />
         <FormField>
           <SwitchInput />
         </FormField>

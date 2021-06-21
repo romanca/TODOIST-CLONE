@@ -33,19 +33,7 @@ const InfoContent = styled.div`
   font-size: ${(props) => props.theme.spaces[36]};
 `;
 
-const AddButton = styled.button`
-  display: block;
-  font-size: 13px;
-  line-height: 17px;
-  margin: 20px auto 0;
-  padding: 6px 12px 7px;
-  text-decoration: none;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  color: #fff;
-  cursor: pointer;
-  background-color: #dd4b39;
-`;
+ 
 
 const MainInfoContent = ({ item, toggle, handleToggle }) => {
   return (

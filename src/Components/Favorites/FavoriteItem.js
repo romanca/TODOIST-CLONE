@@ -59,7 +59,7 @@ const FavoriteItem = ({ to, item }) => {
     toggle,
     handleToggleOpen,
     handleToggleClose,
-    ref = { ref },
+    ref,
   } = useVisibiltyState();
   const todos = useTodos();
 

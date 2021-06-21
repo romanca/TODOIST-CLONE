@@ -6,6 +6,7 @@ import EditTodoInput from "./EditTodoInput";
 import TodoItemDropDown from "./DropDowns/TodoItemDropDownMenu";
 import { useDefaultTodos } from "../hooks/selectors";
 import { inboxId } from "../shared/constants";
+import { useTodoActions } from "../Providers/ItemProvider";
 
 const MainTodoItemContainer = styled.div`
   font-size: ${(props) => props.theme.spaces[14]};
@@ -150,12 +151,22 @@ const TodoDotsButton = styled.button`
 `;
 
 const TodayProjectItem = ({ item }) => {
-  const { toggle, handleToggle } = useVisibiltyState();
+  const { toggle, handleToggle, handleHover, hover } = useVisibiltyState();
+  const { completeTodo } = useTodoActions();
   const projectItems = useDefaultTodos();
   const project = React.useMemo(
     () => Object.values(projectItems).find((i) => i.id === item.categoryId),
-    [projectItems]
+    [projectItems, item.categoryId]
   );
+
+  console.log(item);
+
+  const handleCompleteTodo = (item) => {
+    completeTodo(item);
+    setTimeout(() => {
+      completeTodo(item);
+    }, 500);
+  };
 
   return (
     <div>
@@ -166,8 +177,54 @@ const TodayProjectItem = ({ item }) => {
               <Icon name="th" />
             </DropDownIconButtonContainer>
           </MainDropDownIconButtonContainer>
-          <CheckBoxContainer>
-            <CheckBoxButton></CheckBoxButton>
+          <CheckBoxContainer onClick={() => handleCompleteTodo(item)}>
+            <CheckBoxButton
+              onMouseEnter={handleHover}
+              onMouseLeave={handleHover}
+              style={{
+                border:
+                  item.priority.id === "priority4"
+                    ? "1px solid grey"
+                    : `2px solid ${item.priority.color}`,
+                background:
+                  item.priority.id === "priority1"
+                    ? "rgba(209,69,59,.1)"
+                    : item.priority.id === "priority2"
+                    ? "rgba(235,137,9,.1)"
+                    : item.priority.id === "priority3" && "rgba(36,111,224,.1)",
+              }}
+            >
+              {hover && (
+                <div
+                  style={{
+                    width: 16,
+                    height: 16,
+                    borderRadius: "50%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    fontSize: 8,
+                    fontWeight: 100,
+                    background:
+                      item.priority.id === "priority4" && "hsla(0,0%,50.2%,.1)",
+                  }}
+                >
+                  <Icon
+                    name="check"
+                    color={
+                      item.priority.id === "priority1"
+                        ? item.priority.color
+                        : item.priority.id === "priority2"
+                        ? item.priority.color
+                        : item.priority.id === "priority3"
+                        ? item.priority.color
+                        : item.priority.id === "priority4" &&
+                          item.priority.color
+                    }
+                  />
+                </div>
+              )}
+            </CheckBoxButton>
           </CheckBoxContainer>
           <div
             style={{
@@ -195,7 +252,11 @@ const TodayProjectItem = ({ item }) => {
                 }}
               >
                 <span style={{ marginRight: 5 }}>{project.title}</span>
-                {project.id === inboxId ? project.icon : <Icon name="dot" />}
+                {project.id === inboxId ? (
+                  project.icon
+                ) : (
+                  <Icon name="dot" color={project.color.color} />
+                )}
               </div>
             </div>
           </div>

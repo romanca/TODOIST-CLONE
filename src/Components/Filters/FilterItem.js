@@ -3,50 +3,53 @@ import styled from "styled-components";
 import Icon from "../../shared/Icon";
 
 const ItemsContainer = styled.div`
-  height: ${(props) => props.theme.spaces[10]};
-  width: ${(props) => props.theme.spaces[11]};
+  font-weight: 400;
+  border-radius: 5px;
+  width: 100%;
+  height: 34px;
   display: flex;
-  cursor: pointer;
-  padding-left: ${(props) => props.theme.spaces[1]};
+  justify-content: space-between;
+  align-items: center;
   :hover {
     background: ${(props) => props.theme.colors.muted3};
-    border-radius: ${(props) => props.theme.spaces[1]};
+    border-radius: 5px;
   }
 `;
 
 const ContentTitleContainer = styled.div`
+  margin-top: -2px;
+  color: #333;
+  font-size: 14px;
   display: flex;
+  justify-content: center;
   align-items: center;
-  word-break: break-all;
-  padding: ${(props) => props.theme.spaces[1]};
-  justify-content: space-between;
-  width: ${(props) => props.theme.spaces[16]};
-  height: ${(props) => props.theme.spaces[12]};
-  font-size: ${(props) => props.theme.spaces[14]};
-  color: ${(props) => props.theme.colors.muted5};
 `;
+
 const Title = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
+
 const ContentIconContainer = styled.div`
-  width: ${(props) => props.theme.spaces[5]};
+  width: 38px;
+  height: 32px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: ${(props) => props.theme.spaces[70]};
 `;
 
 const FilterItem = ({ item }) => {
   return (
     <ItemsContainer>
-      <ContentIconContainer>
-        <Icon name="drop" color="#158FAD" />
-      </ContentIconContainer>
-      <ContentTitleContainer>
-        <Title>{item.title}</Title>
-      </ContentTitleContainer>
+      <div style={{ display: "flex" }}>
+        <ContentIconContainer>
+          <Icon name="drop" color="#158FAD" />
+        </ContentIconContainer>
+        <ContentTitleContainer>
+          <Title>{item.title}</Title>
+        </ContentTitleContainer>
+      </div>
     </ItemsContainer>
   );
 };

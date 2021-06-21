@@ -9,6 +9,7 @@ import styled from "styled-components";
 import ProjectDropDown from "../DropDowns/ProjectDropDown";
 import MainInfoContent from "../../Components/MainInfoContent";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
+import CompletedTodosList from "./CompletedTodosList";
 
 const ContentHeader = styled.div`
   display: flex;
@@ -132,12 +133,19 @@ const ProjectItem = (props) => {
   const projectItems = useDefaultTodos();
   const item = React.useMemo(
     () => Object.values(projectItems).find((i) => i.id === props.id),
-    [projectItems]
+    [projectItems, props.id]
   );
   const { todos } = useTodos();
   const { id } = useParams();
-  const { open, handleOpenClose, ref, toggle, handleToggle } =
-    useVisibiltyState();
+  const {
+    open,
+    handleOpenClose,
+    ref,
+    toggle,
+    handleToggle,
+    visible,
+    handleVisible,
+  } = useVisibiltyState();
   const { editProject } = useProjectActions();
   const [title, setTitle] = React.useState(item.title);
 
@@ -152,15 +160,16 @@ const ProjectItem = (props) => {
 
   const renderTodosCounter = React.useCallback(() => {
     return Object.values(todos).filter((i) => i.categoryId === item.id).length;
-  }, [todos]);
+  }, [todos, item.id]);
 
   const renderTodos = React.useCallback(() => {
     return Object.values(todos)
       .filter((i) => i.categoryId === id)
+      .filter((i) => !i.visible)
       .map((i) => {
         return <TodoItem item={i} key={i.id} />;
       });
-  }, [todos]);
+  }, [todos, id]);
 
   return (
     <div>
@@ -189,16 +198,20 @@ const ProjectItem = (props) => {
             <HeaderButton>
               <HeaderButtonsIconContainer>
                 <Icon name="arrows" />
-                {/* <Icon name="longArrowDown" style={{ marginLeft: 2 }} /> */}
               </HeaderButtonsIconContainer>
               <HeaderButtonTitleContainer>Sort</HeaderButtonTitleContainer>
             </HeaderButton>
-            <ProjectDropDown item={item} />
+            <ProjectDropDown
+              item={item}
+              handleVisible={handleVisible}
+              visible={visible}
+            />
           </HeaderContentButtonsContainer>
         </HeaderContent>
       </ContentHeader>
       {renderTodosCounter() !== 0 && renderTodos()}
       <SubmitFormInput toggle={toggle} handleToggle={handleToggle} />
+      {renderTodosCounter() !== 0 && visible && <CompletedTodosList />}
       {renderTodosCounter() === 0 && (
         <MainInfoContent
           item={item}

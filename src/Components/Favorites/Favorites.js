@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useDefaultTodos, useStaticProjectsItems } from "../../hooks/selectors";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
 import { useProjectActions } from "../../Providers/ItemProvider";
-import { favoritesId, hamburgerId, inboxId } from "../../shared/constants";
+import { favoritesId, inboxId } from "../../shared/constants";
 import Icon from "../../shared/Icon";
 import FavoritesList from "./FavoritesList";
 
@@ -48,13 +48,16 @@ const Favorites = () => {
       Object.values(projects)
         .filter((i) => i.id !== inboxId)
         .filter((i) => i.favorite).length,
-    [projects, inboxId]
+    [projects]
   );
 
-  const handleOpenCloseFavorites = React.useCallback((item) => {
-    staticItems(item);
-    handleSwitchItem();
-  }, []);
+  const handleOpenCloseFavorites = React.useCallback(
+    (item) => {
+      staticItems(item);
+      handleSwitchItem();
+    },
+    [staticItems, handleSwitchItem]
+  );
 
   return projectsItems === 0 ? (
     ""

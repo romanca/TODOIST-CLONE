@@ -27,7 +27,7 @@ const SelectedItemContainer = styled.div`
 `;
 const SelectedItem = styled.div`
   cursor: pointer;
-  padding: ${(props) => props.theme.spaces[1]};
+  // padding: ${(props) => props.theme.spaces[1]};
   margin: ${(props) => props.theme.spaces[9]}
     ${(props) => props.theme.spaces[28]};
   :hover {

@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import useVisibiltyState from "../../hooks/useVisibiltyState";
 import { useProjectActions } from "../../Providers/ItemProvider";
-import { useProjectMessageDialog } from "../../Providers/ModalProvider";
 import Icon from "../../shared/Icon";
 
 const SelectedItemContainer = styled.div`
@@ -70,15 +68,9 @@ const CounterContainer = styled.div`
 
 const FavoriteItemDropDown = ({ item, open, handleOpenClose, handleClose }) => {
   const { favoriteProjects, handleSelected } = useProjectActions();
-  const openProjectModal = useProjectMessageDialog();
 
   const handleFavoriteProject = (item) => {
     favoriteProjects(item);
-    handleClose();
-  };
-
-  const handleRemoveProject = (item) => {
-    handleSelected(item);
     handleClose();
   };
 
@@ -96,7 +88,7 @@ const FavoriteItemDropDown = ({ item, open, handleOpenClose, handleClose }) => {
         <ContentIconContainer onClick={() => handleSelectProject(item)}>
           <Icon name="horizontalDots" color="grey" style={{ fontSize: 12 }} />
         </ContentIconContainer>
-        {open ? (
+        {open && (
           <div>
             <SelectedItemContainer>
               <SelectedItem>
@@ -117,8 +109,6 @@ const FavoriteItemDropDown = ({ item, open, handleOpenClose, handleClose }) => {
               </SelectedItem>
             </SelectedItemContainer>
           </div>
-        ) : (
-          ""
         )}
       </CounterContainer>
     </div>

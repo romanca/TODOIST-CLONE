@@ -93,7 +93,7 @@ const Projects = () => {
                   <ProjectsTitle>Projects</ProjectsTitle>
                 </ContentTitleContainer>
               </ContentProjectsContainer>
-              {switchItem ? (
+              {switchItem && (
                 <PlusButtonContainer onClick={openProjectModal}>
                   <Icon
                     name="plus"
@@ -101,11 +101,9 @@ const Projects = () => {
                     style={{ fontSize: 12 }}
                   />
                 </PlusButtonContainer>
-              ) : (
-                ""
               )}
             </ProjectsItemsContainer>
-            {i.opened ? <ProjectsList /> : ""}
+            {i.opened && <ProjectsList />}
           </div>
         ))}
     </div>

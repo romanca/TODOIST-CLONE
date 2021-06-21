@@ -6,6 +6,7 @@ import {
   useEditProjectsDialog,
   useProjectMessageDialog,
 } from "../../Providers/ModalProvider";
+import { inboxId } from "../../shared/constants";
 import Icon from "../../shared/Icon";
 
 const MainProjectDropDownContainer = styled.div`
@@ -82,7 +83,7 @@ const ContentHeaderDotsIconContainer = styled.div`
   color: ${(props) => props.theme.colors.text1};
 `;
 
-const ProjectDropDown = ({ item }) => {
+const ProjectDropDown = ({ item, handleVisible, visible }) => {
   const removeProjectDialog = useProjectMessageDialog();
   const openEditProjectModal = useEditProjectsDialog();
   const { handleSelected } = useProjectActions();
@@ -91,6 +92,11 @@ const ProjectDropDown = ({ item }) => {
   const handleSelectProject = (item) => {
     handleOpenClose();
     handleSelected(item);
+  };
+
+  const handleShowCompleted = () => {
+    handleOpenClose();
+    handleVisible();
   };
 
   return (
@@ -102,43 +108,64 @@ const ProjectDropDown = ({ item }) => {
           <Icon name="circle" />
         </ContentHeaderDotsIconContainer>
       </HeaderButton>
-      {open ? (
-        <MainProjectDropDownContainer>
-          <div onClick={handleOpenClose}>
-            <MenuItem onClick={openEditProjectModal}>
+      {open &&
+        (item.id === inboxId ? (
+          <MainProjectDropDownContainer onClick={handleShowCompleted}>
+            {!visible ? (
+              <MenuItem>
+                <IconMenuContainer>
+                  <CheckBoxButton>
+                    <Icon name="check" />
+                  </CheckBoxButton>
+                </IconMenuContainer>
+                <Title>Show completed tasks</Title>
+              </MenuItem>
+            ) : (
+              <MenuItem>
+                <IconMenuContainer>
+                  <CheckBoxButton>
+                    <Icon name="minus" />
+                  </CheckBoxButton>
+                </IconMenuContainer>
+                <Title>Hide completed tasks</Title>
+              </MenuItem>
+            )}
+          </MainProjectDropDownContainer>
+        ) : (
+          <MainProjectDropDownContainer>
+            <div onClick={handleOpenClose}>
+              <MenuItem onClick={openEditProjectModal}>
+                <IconMenuContainer>
+                  <Icon name="edit" />
+                </IconMenuContainer>
+                <Title>Edit project</Title>
+              </MenuItem>
+            </div>
+            <div onClick={handleOpenClose}>
+              <MenuItem onClick={removeProjectDialog}>
+                <IconMenuContainer>
+                  <Icon name="trash" />
+                </IconMenuContainer>
+                <Title>Remove project</Title>
+              </MenuItem>
+            </div>
+            <MenuSeparator />
+            <MenuItem>
               <IconMenuContainer>
-                <Icon name="edit" />
+                <CheckBoxButton>
+                  <Icon name="check" />
+                </CheckBoxButton>
               </IconMenuContainer>
-              <Title>Edit project</Title>
+              <Title>Show completed tasks</Title>
             </MenuItem>
-          </div>
-          <div onClick={handleOpenClose}>
-            <MenuItem onClick={removeProjectDialog}>
+            <MenuItem>
               <IconMenuContainer>
-                <Icon name="trash" />
+                <Icon name="archive" />
               </IconMenuContainer>
-              <Title>Remove project</Title>
+              <Title>Archive</Title>
             </MenuItem>
-          </div>
-          <MenuSeparator />
-          <MenuItem>
-            <IconMenuContainer>
-              <CheckBoxButton>
-                <Icon name="check" />
-              </CheckBoxButton>
-            </IconMenuContainer>
-            <Title>Show completed tasks</Title>
-          </MenuItem>
-          <MenuItem>
-            <IconMenuContainer>
-              <Icon name="archive" />
-            </IconMenuContainer>
-            <Title>Archive</Title>
-          </MenuItem>
-        </MainProjectDropDownContainer>
-      ) : (
-        ""
-      )}
+          </MainProjectDropDownContainer>
+        ))}
     </div>
   );
 };

@@ -2,10 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import useVisibiltyState from "../../../hooks/useVisibiltyState";
 
-const CheckBoxInput = styled.input`
-  position: absolute;
-  opacity: ${(props) => props.theme.spaces[24]};
-`;
 const SwitchButton = styled.span`
   position: absolute;
   top: ${(props) => props.theme.spaces[0]};
@@ -15,6 +11,7 @@ const SwitchButton = styled.span`
   border-radius: ${(props) => props.theme.spaces[25]};
   background: ${(props) => props.theme.colors.background1};
 `;
+
 const AddToFavoritesContainer = styled.div`
   display: flex;
   font-weight: ${(props) => props.theme.spaces[26]};
@@ -24,6 +21,7 @@ const AddToFavoritesContainer = styled.div`
   margin: ${(props) => props.theme.spaces[28]}
     ${(props) => props.theme.spaces[28]} ${(props) => props.theme.spaces[29]};
 `;
+
 const SwitchContainer = styled.div`
   position: relative;
   display: inline-block;

@@ -9,7 +9,6 @@ const ColorPickerIconTitle = styled.span`
     ${(props) => props.theme.spaces[2]};
   font-size: ${(props) => props.theme.spaces[14]};
 `;
-
 const DropDownSelectColorPicker = styled.div`
   max-height: ${(props) => props.theme.spaces[38]};
   overflow-y: scroll;
@@ -73,47 +72,28 @@ const SelectedItemContentContainer = styled.div`
 //chcecked item background is background-color: #f3f3f3;;
 //if is checked and hovered background is #ccc
 
-const defaultOption = selectedItems["id18"];
-const defaultItem = [
-  <Icon name="dot" color={defaultOption.color} />,
-  <ColorPickerIconTitle>{defaultOption.title}</ColorPickerIconTitle>,
-];
-
-const ColorPicker = () => {
+const ColorPicker = ({ selectedOption, OptionClicked }) => {
   const { open, handleClose, handleOpenClose } = useVisibiltyState();
-  const [selectedOption, setSelectedOption] = React.useState(defaultItem);
-
-  React.useEffect(() => {
-    OptionClicked();
-  }, []);
-
-  const OptionClicked = (value) => () => {
-    setSelectedOption(value);
-    handleClose();
-  };
 
   return (
     <FormField>
       <FormTitle>Color</FormTitle>
       <ColorPickerButton onClick={handleOpenClose}>
         <ColorPickerIconTitle>
-          {selectedOption || defaultItem}
+          <Icon name="dot" color={selectedOption.color} />
+          {selectedOption.title}
         </ColorPickerIconTitle>
       </ColorPickerButton>
       {open ? (
         <DropDownSelectColorPicker>
           {Object.values(selectedItems).map((i) => (
-            <SelectItemContainer
-              key={i.id}
-              onClick={OptionClicked([
-                <Icon name="dot" color={i.color} />,
-                <ColorPickerIconTitle>{i.title}</ColorPickerIconTitle>,
-              ])}
-            >
-              <SelectedItemContentContainer>
+            <SelectItemContainer key={i.id}>
+              <SelectedItemContentContainer onClick={handleClose}>
                 <div>
                   <Icon name="dot" color={i.color} />
-                  <ColorPickerIconTitle>{i.title}</ColorPickerIconTitle>
+                  <ColorPickerIconTitle onClick={OptionClicked(i)}>
+                    {i.title}
+                  </ColorPickerIconTitle>
                 </div>
                 <div>
                   <Icon name="check" color="#202020" />

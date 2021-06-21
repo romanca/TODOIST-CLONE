@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import SearchInput from "./SearchInput";
 import Icon from "../shared/Icon";
-import { useStaticProjectsItems } from "../hooks/selectors";
-import { hamburgerId } from "../shared/constants";
 
 const Container = styled.div`
   height: ${(props) => props.theme.spaces[17]};

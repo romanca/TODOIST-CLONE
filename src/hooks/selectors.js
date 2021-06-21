@@ -1,4 +1,4 @@
-import { useItems, useStaticItems } from "../Providers/ItemProvider";
+import { useItems, useStaticItems, useTodos } from "../Providers/ItemProvider";
 import { icon, inboxId, todayId } from "../shared/constants";
 
 export const useDefaultTodos = () => {
@@ -27,4 +27,9 @@ export const useDefaultTodos = () => {
 export const useStaticProjectsItems = () => {
   const { staticProjectItems } = useStaticItems();
   return { ...staticProjectItems };
+};
+
+export const useCompletedTodos = () => {
+  const { todos } = useTodos();
+  return Object.values(todos).filter((i) => !i.visible);
 };

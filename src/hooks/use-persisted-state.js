@@ -11,7 +11,7 @@ export default function usePersistedState(lsKey, initialState) {
 
   useEffect(() => {
     localStorage.setItem(lsKey, JSON.stringify({ value: state }));
-  }, [state]);
+  }, [state, lsKey]);
 
   return [state, setState];
 }

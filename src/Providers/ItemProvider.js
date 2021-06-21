@@ -26,25 +26,6 @@ const ItemProvider = ({ children }) => {
   const [selectedProjectId, setSelectedProjectId] = React.useState();
   const [selectedTodoId, setSelectedTodotId] = React.useState();
 
-  const bootstrap = React.useCallback(async () => {
-    try {
-      const projectsItems = await projectsItems;
-      const staticProjectItems = await staticProjectItems;
-      const staticProjects = await staticProjects;
-      const todos = await todos;
-      setProjectsItems(projectsItems);
-      setStaticProjectItems(staticProjectItems);
-      setStaticProjects(staticProjects);
-      setTodos(todos);
-    } catch (error) {
-      // TODO handle error
-    }
-  }, [setProjectsItems, setStaticProjectItems, setStaticProjects, setTodos]);
-
-  React.useEffect(() => {
-    bootstrap();
-  }, [bootstrap]);
-
   const selectedProject = React.useMemo(
     () => Object.values(projectsItems).find((i) => i.id === selectedProjectId),
     [projectsItems, selectedProjectId]
@@ -63,40 +44,50 @@ const ItemProvider = ({ children }) => {
     setSelectedTodotId(i.id);
   }, []);
 
-  const createProject = React.useCallback((title, id) => {
-    setProjectsItems((current) => {
-      const newItem = {
-        ...current,
-        [id]: Object.assign({
-          title,
-          id,
-          favorite: false,
-        }),
-      };
-      return newItem;
-    });
-  }, []);
+  const createProject = React.useCallback(
+    (title, id, color) => {
+      setProjectsItems((current) => {
+        const newItem = {
+          ...current,
+          [id]: Object.assign({
+            title,
+            id,
+            favorite: false,
+            color,
+          }),
+        };
+        return newItem;
+      });
+    },
+    [setProjectsItems]
+  );
 
-  const removeProject = React.useCallback((id) => {
-    setProjectsItems((current) => {
-      const newState = { ...current };
-      delete newState[id];
-      return newState;
-    });
-  }, []);
+  const removeProject = React.useCallback(
+    (id) => {
+      setProjectsItems((current) => {
+        const newState = { ...current };
+        delete newState[id];
+        return newState;
+      });
+    },
+    [setProjectsItems]
+  );
 
-  const editProject = React.useCallback((item) => {
-    setProjectsItems((current) => {
-      const oldItem = current[item.id];
-      return {
-        ...current,
-        [item.id]: {
-          ...oldItem,
-          ...item,
-        },
-      };
-    });
-  }, []);
+  const editProject = React.useCallback(
+    (item) => {
+      setProjectsItems((current) => {
+        const oldItem = current[item.id];
+        return {
+          ...current,
+          [item.id]: {
+            ...oldItem,
+            ...item,
+          },
+        };
+      });
+    },
+    [setProjectsItems]
+  );
 
   const favoriteProjects = (item) => {
     setProjectsItems(
@@ -126,42 +117,69 @@ const ItemProvider = ({ children }) => {
     );
   };
 
-  const createTodo = React.useCallback((title, categoryId, date) => {
-    const newId = String(Date.now());
-    setTodos((current) => {
-      const newItem = {
-        ...current,
-        [newId]: Object.assign({
-          title,
-          id: newId,
-          categoryId,
-          date,
-        }),
-      };
-      return newItem;
-    });
-  }, []);
+  const createTodo = React.useCallback(
+    (title, categoryId, date, priority, completed, visible) => {
+      const newId = String(Date.now());
+      setTodos((current) => {
+        const newItem = {
+          ...current,
+          [newId]: Object.assign({
+            title,
+            id: newId,
+            categoryId,
+            date,
+            priority,
+            completed,
+            visible,
+          }),
+        };
+        return newItem;
+      });
+    },
+    [setTodos]
+  );
 
-  const removeTodo = React.useCallback((id) => {
-    setTodos((current) => {
-      const newState = { ...current };
-      delete newState[id];
-      return newState;
-    });
-  }, []);
+  const removeTodo = React.useCallback(
+    (id) => {
+      setTodos((current) => {
+        const newState = { ...current };
+        delete newState[id];
+        return newState;
+      });
+    },
+    [setTodos]
+  );
 
-  const editTodo = React.useCallback((item) => {
-    setTodos((current) => {
-      const oldItem = current[item.id];
-      return {
-        ...current,
-        [item.id]: {
-          ...oldItem,
-          ...item,
-        },
-      };
-    });
-  }, []);
+  const editTodo = React.useCallback(
+    (item) => {
+      setTodos((current) => {
+        const oldItem = current[item.id];
+        return {
+          ...current,
+          [item.id]: {
+            ...oldItem,
+            ...item,
+          },
+        };
+      });
+    },
+    [setTodos]
+  );
+
+  const completeTodo = (item) => {
+    setTodos(
+      Object.values(todos).map((i) => {
+        if (i === item) {
+          return {
+            ...i,
+            completed: !i.completed,
+            visible: !i.visible,
+          };
+        }
+        return i;
+      })
+    );
+  };
 
   return (
     <Context.Provider
@@ -182,6 +200,7 @@ const ItemProvider = ({ children }) => {
         staticItems,
         editProject,
         editTodo,
+        completeTodo,
       }}
     >
       {children}
@@ -211,14 +230,21 @@ export const useProjectActions = () => {
 };
 
 export const useTodoActions = () => {
-  const { createTodo, handleSelectedTodo, selectedTodo, removeTodo, editTodo } =
-    React.useContext(Context);
+  const {
+    createTodo,
+    handleSelectedTodo,
+    selectedTodo,
+    removeTodo,
+    editTodo,
+    completeTodo,
+  } = React.useContext(Context);
   return {
     createTodo,
     removeTodo,
     handleSelectedTodo,
     selectedTodo,
     editTodo,
+    completeTodo,
   };
 };
 
