@@ -1,14 +1,14 @@
 import React from "react";
-import ProjectsPicker from "./Pickers/ProjectsPicker";
 import styled from "styled-components";
-import DatePicker from "./Pickers/DatePicker";
-import { useTodoActions } from "../Providers/ItemProvider";
 import { useParams } from "@reach/router";
-import { useDefaultTodos } from "../hooks/selectors";
-import { inboxId, todayId } from "../shared/constants";
-import useVisibiltyState from "../hooks/useVisibiltyState";
-import PriorityProjectPicker from "./Pickers/PriorityPicker";
-import { priorities } from "../shared/mockData";
+import { useTodoActions } from "../../Providers/ItemProvider";
+import { useDefaultTodos } from "../../hooks/selectors";
+import useVisibiltyState from "../../hooks/useVisibiltyState";
+import { inboxId, todayId } from "../../shared/constants";
+import { priorities } from "../../shared/mockData";
+import ProjectsPicker from "../Pickers/ProjectsPicker";
+import PriorityProjectPicker from "../Pickers/PriorityPicker";
+import DatePicker from "../Pickers/DatePicker";
 
 const AddButton = styled.button`
   display: flex;
@@ -22,6 +22,7 @@ const AddButton = styled.button`
   margin-top: ${(props) => props.theme.spaces[14]};
   background: transparent;
 `;
+
 const AddButtonTitle = styled.div`
   display: flex;
   align-items: center;
@@ -33,8 +34,9 @@ const AddButtonTitle = styled.div`
   width: ${(props) => props.theme.spaces[67]};
   font-size: ${(props) => props.theme.spaces[69]};
 `;
+
 const FormInput = styled.input`
-  color: ${(props) => props.theme.colors.text5};
+  color: ${(props) => props.theme.colors.text};
   width: calc(100% - 8px);
   font-size: ${(props) => props.theme.spaces[14]};
   word-break: break-word;
@@ -62,6 +64,7 @@ const AddTaskButton = styled.button`
   outline: none;
   cursor: pointer;
 `;
+
 const CancelButton = styled.button`
   color: ${(props) => props.theme.colors.text3};
   cursor: pointer;
@@ -73,12 +76,14 @@ const CancelButton = styled.button`
   background-color: transparent;
   cursor: pointer;
 `;
+
 const MainToggleSubmitFormContainer = styled.div`
   display: block;
   padding-bottom: ${(props) => props.theme.spaces[32]};
   margin-bottom: ${(props) => props.theme.spaces[32]};
   margin-top: ${(props) => props.theme.spaces[30]};
 `;
+
 const SubmitFormInputContainer = styled.div`
   border: ${(props) => props.theme.spaces[8]} solid
     ${(props) => props.theme.colors.muted7};
@@ -87,18 +92,22 @@ const SubmitFormInputContainer = styled.div`
     ${(props) => props.theme.spaces[30]} ${(props) => props.theme.spaces[28]};
   cursor: text;
 `;
+
 const SubmitFormContentButtonsContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: ${(props) => props.theme.spaces[30]};
 `;
+
 const SubmitFormPickersContainer = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: ${(props) => props.theme.spaces[30]};
   max-width: ${(props) => props.theme.spaces[27]};
 `;
+
+const Container = styled.div``;
 
 const SubmitFormInput = () => {
   const [date, setDate] = React.useState("");
@@ -114,13 +123,9 @@ const SubmitFormInput = () => {
   const [selectedPriority, setSelectedPriority] =
     React.useState(defaultPriority);
   const { toggle, handleToggle } = useVisibiltyState();
-
-  const projectId = selectedOption.id || defaultProject.id;
-  const selectedItemPriority = selectedPriority;
-
-  const onOptionClicked = (value) => () => {
-    setSelectedOption(value);
-  };
+  const projectId =
+    (selectedOption && selectedOption.id) ||
+    (defaultProject && defaultProject.id);
 
   React.useEffect(() => {
     if (toggle) {
@@ -130,26 +135,9 @@ const SubmitFormInput = () => {
     }
   }, [ref, toggle]);
 
-  const handleSubmit = React.useCallback(() => {
-    const categoryId = projectId;
-    const priority = selectedItemPriority;
-    const completed = false;
-    const visible = false;
-    if (categoryId) {
-      createTodo(title, categoryId, date, priority, completed, visible);
-      setTitle("");
-      setDate("");
-      setSelectedOption(categoryId);
-      setSelectedPriority(defaultPriority);
-    }
-  }, [
-    title,
-    projectId,
-    date,
-    selectedItemPriority,
-    createTodo,
-    defaultPriority,
-  ]);
+  const onOptionClicked = (i) => {
+    setSelectedOption(i);
+  };
 
   const handleCancel = () => {
     setDate("");
@@ -168,9 +156,23 @@ const SubmitFormInput = () => {
     setTitle(e.target.value);
   }, []);
 
-  const selectPriority = (value) => () => {
-    setSelectedPriority(value);
+  const selectPriority = (i) => {
+    setSelectedPriority(i);
   };
+
+  const handleSubmit = React.useCallback(() => {
+    const categoryId = projectId;
+    const priority = selectedPriority;
+    const completed = false;
+    const visible = false;
+    if (categoryId) {
+      createTodo(title, categoryId, date, priority, completed, visible);
+      setTitle("");
+      setDate("");
+      setSelectedOption(categoryId);
+      setSelectedPriority(defaultPriority);
+    }
+  }, [title, projectId, date, selectedPriority, createTodo, defaultPriority]);
 
   return (
     <MainToggleSubmitFormContainer>
@@ -180,10 +182,10 @@ const SubmitFormInput = () => {
           Add task
         </AddButton>
       ) : (
-        <div>
+        <Container>
           <SubmitFormInputContainer>
             <FormInput
-              placeholder="e.g., Renew gym every May 1st #Health"
+              placeholder="Task name"
               type="text"
               value={title}
               onChange={handleChange}
@@ -226,7 +228,7 @@ const SubmitFormInput = () => {
             )}
             <CancelButton onClick={handleCancel}>Cancel</CancelButton>
           </FormSubmitButtonsContainer>
-        </div>
+        </Container>
       )}
     </MainToggleSubmitFormContainer>
   );

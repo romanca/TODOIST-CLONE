@@ -3,8 +3,8 @@ import { filters } from "../../shared/mockData";
 import { useParams } from "@reach/router";
 import { useTodos } from "../../Providers/ItemProvider";
 import styled from "styled-components";
-import FilterDropDown from "../DropDowns/FilterDropDown";
-import TodayProjectItem from "../TodayProjectItem";
+// import FilterDropDown from "../DropDowns/FilterDropDown";
+import TodayProjectItem from "../../Components/Projects/TodayProject/TodayProjectItem";
 
 const ContentHeader = styled.div`
   display: flex;
@@ -29,40 +29,17 @@ const HeaderContent = styled.div`
     ${(props) => props.theme.spaces[9]};
 `;
 
-const HeaderButton = styled.button`
-  display: flex;
-  align-items: center;
-  color: grey;
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  padding: ${(props) => props.theme.spaces[28]};
-  margin-right: -5px;
-  margin-top: 10px;
-`;
-
 const HeaderContentTitleContainer = styled.span`
   font-size: ${(props) => props.theme.spaces[33]};
   font-weight: ${(props) => props.theme.spaces[34]};
-  padding: 4px;
-  border-radius: 5px;
+  padding: ${(props) => props.theme.spaces[9]};
+  border-radius: ${(props) => props.theme.spaces[1]};
   :hover {
     background: ${(props) => props.theme.colors.muted3};
   }
 `;
 
-const HeaderButtonsIconContainer = styled.div`
-  font-size: ${(props) => props.theme.spaces[14]};
-  color: ${(props) => props.theme.colors.text3};
-`;
-
-const HeaderButtonTitleContainer = styled.div`
-  font-size: ${(props) => props.theme.spaces[36]};
-  margin-left: ${(props) => props.theme.spaces[1]};
-  margin-right: ${(props) => props.theme.spaces[2]};
-  color: ${(props) => props.theme.colors.text3};
-`;
+const Container = styled.div``;
 
 const Items = (props) => {
   const { todos } = useTodos();
@@ -122,13 +99,13 @@ const Items = (props) => {
   // };
 
   return (
-    <div>
+    <Container>
       <ContentHeader>
         <HeaderContent>
           <HeaderContentTitleContainer>
             {filter && filter.title}
           </HeaderContentTitleContainer>
-          <FilterDropDown />
+          {/* <FilterDropDown /> */}
         </HeaderContent>
       </ContentHeader>
       {Object.values(todos)
@@ -137,7 +114,7 @@ const Items = (props) => {
         .map((i) => {
           return <TodayProjectItem item={i} key={i.id} />;
         })}
-    </div>
+    </Container>
   );
 };
 export default Items;

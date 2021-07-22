@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
 import Icon from "../../shared/Icon";
 import { priorities } from "../../shared/mockData";
@@ -19,52 +19,67 @@ const PriorityPickerButton = styled.div`
 `;
 
 const PriorityPickerContainer = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  z-index: 1;
-  margin-top: -5px;
+  margin-top: ${(props) => props.theme.spaces[75]};
   cursor: pointer;
+  :hover {
+    background: ${(props) => props.theme.colors.muted3};
+    border-radius: ${(props) => props.theme.spaces[0]};
+  }
 `;
 
 const PriorityPickerPopUp = styled.div`
   min-height: inherit;
-  padding: 0;
-  border-radius: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 8%);
+  border-radius: ${(props) => props.theme.spaces[1]};
+  border: ${(props) => props.theme.spaces[8]} solid rgba(0, 0, 0, 0.1);
+  box-shadow: ${(props) => props.theme.spaces[28]}
+    ${(props) => props.theme.spaces[39]} ${(props) => props.theme.spaces[9]}
+    ${(props) => props.theme.spaces[28]} rgb(0 0 0 / 8%);
   background: white;
-  width: 275px;
+  width: ${(props) => props.theme.spaces[71]};
+  position: fixed;
+  margin-top: ${(props) => props.theme.spaces[91]};
 `;
 
 const PriorityPickerItem = styled.div`
-  padding: 4px 10px;
+  padding: ${(props) => props.theme.spaces[9]}
+    ${(props) => props.theme.spaces[30]};
   display: flex;
   align-items: center;
+  :hover {
+    background: ${(props) => props.theme.colors.muted8};
+  }
 `;
 
 const ItemTitle = styled.div`
   flex-grow: 1;
-  margin: 0 10px;
+  margin: ${(props) => props.theme.spaces[28]}
+    ${(props) => props.theme.spaces[9]};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  height: 24px;
-  line-height: 24px;
-  font-size: 13px;
+  height: ${(props) => props.theme.spaces[12]};
+  line-height: ${(props) => props.theme.spaces[12]};
+  font-size: ${(props) => props.theme.spaces[36]};
 `;
 
 const PriorityIconContainer = styled.div`
-  height: 24px;
-  width: 24px;
+  height: ${(props) => props.theme.spaces[12]};
+  width: ${(props) => props.theme.spaces[12]};
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
+  font-size: ${(props) => props.theme.spaces[33]};
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const PriorityProjectPicker = ({ selectedPriority, selectPriority }) => {
   const { open, handleOpenClose, ref } = useVisibiltyState();
+  const { spaces, colors } = useTheme();
 
   return (
     <PriorityPickerContainer onClick={handleOpenClose} ref={ref}>
@@ -74,14 +89,16 @@ const PriorityProjectPicker = ({ selectedPriority, selectPriority }) => {
           color={selectedPriority.color}
         />
       </PriorityPickerButton>
-      <div style={{ position: "absolute", marginTop: 23 }} ref={ref}>
+      <ContentContainer ref={ref}>
         {open && (
           <PriorityPickerPopUp>
             {Object.values(priorities).map((i) => (
               <PriorityPickerItem
                 key={i.id}
-                onClick={selectPriority(i)}
-                style={{ background: i.id === selectedPriority.id && "grey" }}
+                onClick={() => selectPriority(i)}
+                style={{
+                  background: i.id === selectedPriority.id && colors["muted8"],
+                }}
               >
                 <PriorityIconContainer>
                   <Icon
@@ -90,11 +107,17 @@ const PriorityProjectPicker = ({ selectedPriority, selectPriority }) => {
                   />
                 </PriorityIconContainer>
                 <ItemTitle>{i.title}</ItemTitle>
+                {i.id === selectedPriority.id && (
+                  <Icon
+                    name="check"
+                    style={{ fontSize: spaces[15], color: colors["muted12"] }}
+                  />
+                )}
               </PriorityPickerItem>
             ))}
           </PriorityPickerPopUp>
         )}
-      </div>
+      </ContentContainer>
     </PriorityPickerContainer>
   );
 };

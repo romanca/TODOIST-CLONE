@@ -1,7 +1,7 @@
 import React from "react";
-import styled from "styled-components";
-import SearchInput from "./SearchInput";
+import styled, { useTheme } from "styled-components";
 import Icon from "../shared/Icon";
+import SearchInput from "./Inputs/SearchInput";
 
 const Container = styled.div`
   height: ${(props) => props.theme.spaces[17]};
@@ -36,14 +36,16 @@ const LeftIconButtonsContainer = styled.div`
 `;
 
 const Header = ({ item, handleOpenCloseSideBar }) => {
+  const { colors } = useTheme();
+
   return (
     <Container>
       <LeftSideButtonsContainer>
         <LeftIconButtonsContainer onClick={() => handleOpenCloseSideBar(item)}>
-          <Icon name="bars" color="#909090" />
+          <Icon name="bars" color={colors["muted15"]} />
         </LeftIconButtonsContainer>
         <LeftIconButtonsContainer>
-          <Icon name="home" color="#909090" />
+          <Icon name="home" color={colors["muted15"]} />
         </LeftIconButtonsContainer>
         <SearchInput />
       </LeftSideButtonsContainer>

@@ -1,6 +1,6 @@
 import React from "react";
 import Icon from "../../shared/Icon";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
 
 const MainContainer = styled.div``;
@@ -106,6 +106,7 @@ const InfoProjectsButtonTitleContainer = styled.span`
 
 const InfoProjectsButton = () => {
   const { open, handleOpen, handleClose } = useVisibiltyState();
+  const { colors } = useTheme();
 
   return (
     <MainContainer>
@@ -115,7 +116,7 @@ const InfoProjectsButton = () => {
             <BoxContentContainer>
               <BoxContentTitle>
                 <BoxIconContainer>
-                  <Icon name="bulb" color="rgb(255, 146, 51)" />
+                  <Icon name="bulb" color={colors["accent2"]} />
                 </BoxIconContainer>
                 <BoxTitleContainer>How can I use Projects?</BoxTitleContainer>
               </BoxContentTitle>

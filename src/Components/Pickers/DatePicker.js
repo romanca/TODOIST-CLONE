@@ -2,7 +2,7 @@ import { getDay, getMonth, getYear } from "date-fns";
 import React from "react";
 import DatePickerRaw from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { formatDateToTodoDate } from "../../shared/date-formatter";
 import Icon from "../../shared/Icon";
 
@@ -22,16 +22,82 @@ const FormScheduleButton = styled.button`
   width: ${(props) => props.theme.spaces[44]};
   background-color: transparent;
   outline: none;
+  :hover {
+    background: ${(props) => props.theme.colors.muted3};
+  }
 `;
-
 
 const TodoDateContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  margin: 0;
-  padding: 0;
-  min-height: 16px;
+  margin: ${(props) => props.theme.spaces[28]};
+  padding: ${(props) => props.theme.spaces[28]};
+  min-height: ${(props) => props.theme.spaces[37]};
+  cursor: pointer;
+`;
+
+const TodayIconContainer = styled.div`
+  height: ${(props) => props.theme.spaces[15]};
+  width: ${(props) => props.theme.spaces[15]};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: ${(props) => props.theme.spaces[8]}
+    ${(props) => props.theme.spaces[9]} ${(props) => props.theme.spaces[0]}
+    ${(props) => props.theme.spaces[28]};
+`;
+
+const Container = styled.div``;
+
+const TodayTitle = styled.span`
+  color: ${(props) => props.theme.colors.secondary1};
+`;
+
+const DatePickerContainer = styled.div`
+  margin: ${(props) => props.theme.spaces[8]};
+  margin-top: ${(props) => props.theme.spaces[83]};
+  background-color: ${(props) => props.theme.colors.background};
+  border-radius: ${(props) => props.theme.spaces[0]};
+`;
+
+const FormatDateContainer = styled.div`
+  display: flex;
+  padding: ${(props) => props.theme.spaces[43]}
+    ${(props) => props.theme.spaces[30]} ${(props) => props.theme.spaces[43]}
+    ${(props) => props.theme.spaces[36]};
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const FormatDateTitle = styled.div`
+  margin-left: ${(props) => props.theme.spaces[0]};
+`;
+
+const DateSelectorContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: ${(props) => props.theme.spaces[9]}
+    ${(props) => props.theme.spaces[30]} ${(props) => props.theme.spaces[37]}
+    ${(props) => props.theme.spaces[9]};
+`;
+
+const DateContainer = styled.div`
+  font-weight: ${(props) => props.theme.spaces[34]};
+  font-size: ${(props) => props.theme.spaces[36]};
+  display: flex;
+`;
+
+const MonthDate = styled.div`
+  margin-right: ${(props) => props.theme.spaces[1]};
+`;
+
+const DecreaseIncreaseMonthButton = styled.button`
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: ${(props) => props.theme.colors.text};
   cursor: pointer;
 `;
 
@@ -46,41 +112,32 @@ class DatePickerInput extends React.Component {
     const todayValue =
       finalValue === todayDateValue ? (
         <TodoDateContainer>
-          <div
+          <TodayIconContainer
             style={{
-              height: 12,
-              width: 12,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
               color: finalValue === todayDateValue && "green",
-              margin: "1px 4px 3px 0px",
             }}
           >
             <Icon name="calendar1" style={{ fontSize: 10 }} />
-          </div>
-          <span style={{ color: "green" }}>Today</span>
+          </TodayIconContainer>
+          <TodayTitle>Today</TodayTitle>
         </TodoDateContainer>
       ) : (
-        <div>
+        <Container>
           <TodoDateContainer>
-            <div
+            <TodayIconContainer
               style={{
-                height: 12,
-                width: 12,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "1px 4px 3px 0px",
+                color: finalValue === todayDateValue && "green",
               }}
             >
               <Icon name="calendar1" style={{ fontSize: 10 }} />
-            </div>
-            <span style={{ color: finalValue !== todayDateValue && "grey" }}>
+            </TodayIconContainer>
+            <Container
+              style={{ color: finalValue !== todayDateValue && "#555" }}
+            >
               {finalValue}
-            </span>
+            </Container>
           </TodoDateContainer>
-        </div>
+        </Container>
       );
 
     return (
@@ -96,10 +153,11 @@ const isWeekday = (date) => {
 
 const renderDayContents = (date) => {
   const tooltipText = `Tooltip for date: ${date}`;
-  return <span title={tooltipText}>{date}</span>;
+  return <Container title={tooltipText}>{date}</Container>;
 };
 
 const DatePicker = ({ onChange, selected, placeholder }) => {
+  const { spaces } = useTheme();
   const months = [
     "January",
     "February",
@@ -116,93 +174,42 @@ const DatePicker = ({ onChange, selected, placeholder }) => {
   ];
 
   return (
-    <div>
+    <Container>
       <DatePickerRaw
         onChange={onChange}
         selected={selected}
         // minDate={new Date()}
         customInput={<DatePickerInput placeholderText={placeholder} />}
         renderDayContents={renderDayContents}
-        filterDate={isWeekday}
+        // filterDate={isWeekday}
         renderCustomHeader={({ decreaseMonth, increaseMonth, date }) => (
-          <div
-            style={{
-              margin: 0,
-              marginTop: -8,
-              backgroundColor: "white",
-              borderRadius: 3,
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                padding: "8px 10px 8px 13px",
-                alignItems: "center",
-                justifyContent: "flex-start",
-              }}
-            >
-              <div
-                style={{
-                  marginLeft: 3,
-                }}
-              >
-                {formatDateToTodoDate(today)}
-              </div>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                padding: "4px 10px 4px 16px",
-              }}
-            >
-              <span className="react-datepicker__current-month">
-                <div
-                  style={{
-                    fontWeight: 700,
-                    fontSize: 13,
-                    display: "flex",
-                  }}
-                >
-                  <span style={{ marginRight: 5 }}>
-                    {months[getMonth(date)]}
-                  </span>
-                  <span>{getYear(date)}</span>
-                </div>
-              </span>
-              <div>
-                <button
+          <DatePickerContainer>
+            <FormatDateContainer>
+              <FormatDateTitle>{formatDateToTodoDate(today)}</FormatDateTitle>
+            </FormatDateContainer>
+            <DateSelectorContainer>
+              <Container className="react-datepicker__current-month">
+                <DateContainer>
+                  <MonthDate>{months[getMonth(date)]}</MonthDate>
+                  <Container>{getYear(date)}</Container>
+                </DateContainer>
+              </Container>
+              <Container>
+                <DecreaseIncreaseMonthButton
+                  style={{ marginRight: spaces[30] }}
                   onClick={decreaseMonth}
-                  style={{
-                    border: "none",
-                    outline: "none",
-                    backgroundColor: "transparent",
-                    color: "grey",
-                    cursor: "pointer",
-                    marginRight: 10,
-                  }}
                 >
                   <Icon name="leftArrow" />
-                </button>
-                <button
-                  onClick={increaseMonth}
-                  style={{
-                    border: "none",
-                    outline: "none",
-                    backgroundColor: "transparent",
-                    color: "grey",
-                    cursor: "pointer",
-                  }}
-                >
+                </DecreaseIncreaseMonthButton>
+                <DecreaseIncreaseMonthButton onClick={increaseMonth}>
                   <Icon name="rightArrow" />
-                </button>
-              </div>
-            </div>
-          </div>
+                </DecreaseIncreaseMonthButton>
+              </Container>
+            </DateSelectorContainer>
+          </DatePickerContainer>
         )}
       />
-    </div>
+    </Container>
   );
 };
 

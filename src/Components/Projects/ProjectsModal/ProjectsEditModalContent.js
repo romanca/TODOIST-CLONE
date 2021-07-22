@@ -1,10 +1,10 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { useProjectActions } from "../../../Providers/ItemProvider";
 import { useModal } from "../../../Providers/ModalProvider";
 import Icon from "../../../shared/Icon";
 import ColorPicker from "../../Pickers/ColorPicker";
-import SwitchInput from "./SwitchInput";
+import SwitchInput from "../../Inputs/SwitchInput";
 
 const MainContentContainer = styled.div`
   width: ${(props) => props.theme.spaces[23]};
@@ -140,10 +140,10 @@ const ProjectsEditModalContent = () => {
   const defaultItem = selectedProject.color;
   const [selectedOption, setSelectedOption] = React.useState(defaultItem);
   const colors = selectedOption || defaultItem;
-
-  React.useEffect(() => {
-    OptionClicked();
-  }, []);
+  const { spaces } = useTheme();
+  const [favorteItem, setFavoriteItem] = React.useState(
+    selectedProject.favorite
+  );
 
   const OptionClicked = (value) => () => {
     setSelectedOption(value);
@@ -154,8 +154,13 @@ const ProjectsEditModalContent = () => {
 
   const handleEditProject = () => {
     const color = colors;
-    editProject({ ...selectedProject, title, color });
+    const favorite = favorteItem;
+    editProject({ ...selectedProject, title, color, favorite });
     closeModalDialog();
+  };
+
+  const handleFavoriteChange = () => {
+    setFavoriteItem((current) => !current);
   };
 
   return (
@@ -178,7 +183,7 @@ const ProjectsEditModalContent = () => {
           OptionClicked={OptionClicked}
         />
         <FormField>
-          <SwitchInput />
+          <SwitchInput value={favorteItem} onChange={handleFavoriteChange} />
         </FormField>
       </ContentContainer>
       <ContentFooter>
@@ -189,7 +194,7 @@ const ProjectsEditModalContent = () => {
           <AddButton
             onClick={handleEditProject}
             type="button"
-            style={{ opacity: 0.5 }}
+            style={{ opacity: spaces[87] }}
             disabled
           >
             Add

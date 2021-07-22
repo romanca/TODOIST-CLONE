@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { useStaticProjectsItems } from "../../hooks/selectors";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
 import { useProjectActions } from "../../Providers/ItemProvider";
@@ -56,37 +56,39 @@ const ContentProjectsContainer = styled.div`
   display: flex;
 `;
 
+const Container = styled.div``;
+
 const Projects = () => {
   const projects = useStaticProjectsItems();
   const { staticItems } = useProjectActions();
   const { switchItem, handleSwitchItem } = useVisibiltyState();
   const openProjectModal = useProjectsDialog();
+  const { colors, spaces } = useTheme();
 
   const handleOpenCloseFavorites = (item) => {
     staticItems(item);
   };
 
   return (
-    <div>
+    <Container>
       {Object.values(projects)
         .filter((i) => i.id === projectsId)
         .map((i) => (
-          <div>
+          <Container>
             <ProjectsItemsContainer
               onMouseLeave={handleSwitchItem}
               onMouseEnter={handleSwitchItem}
             >
               <ContentProjectsContainer
-                style={{ display: "flex" }}
                 onClick={() => handleOpenCloseFavorites(i)}
               >
                 {!i.opened ? (
                   <ContentIconContainer>
-                    <Icon name="rightArrow" color="rgba(0,0,0,.54);" />
+                    <Icon name="rightArrow" color={colors["text6"]} />
                   </ContentIconContainer>
                 ) : (
                   <ContentIconContainer>
-                    <Icon name="rightDown" color="rgba(0,0,0,.54);" />
+                    <Icon name="rightDown" color={colors["text6"]} />
                   </ContentIconContainer>
                 )}
                 <ContentTitleContainer>
@@ -97,16 +99,16 @@ const Projects = () => {
                 <PlusButtonContainer onClick={openProjectModal}>
                   <Icon
                     name="plus"
-                    color="rgba(0,0,0,.54);"
-                    style={{ fontSize: 12 }}
+                    color={colors["text6"]}
+                    style={{ fontSize: spaces[15] }}
                   />
                 </PlusButtonContainer>
               )}
             </ProjectsItemsContainer>
             {i.opened && <ProjectsList />}
-          </div>
+          </Container>
         ))}
-    </div>
+    </Container>
   );
 };
 export default Projects;

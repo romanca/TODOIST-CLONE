@@ -8,48 +8,61 @@ const useVisibiltyState = () => {
   const [hover, setHover] = React.useState(false);
   const ref = React.useRef(null);
 
-  const handleOpenClose = () => {
+  const handleOpenClose = React.useCallback(() => {
     setOpen((current) => !current);
-  };
-  const handleVisible = () => {
+  }, []);
+
+  const handleVisible = React.useCallback(() => {
     setVisible((current) => !current);
-  };
-  const handleVisibleOpen = () => {
+  }, []);
+
+  const handleVisibleOpen = React.useCallback(() => {
     setVisible(true);
-  };
-  const handleVisibleClose = () => {
+  }, []);
+
+  const handleVisibleClose = React.useCallback(() => {
     setVisible(false);
-  };
-  const handleSwitchItem = () => {
+  }, []);
+
+  const handleSwitchItem = React.useCallback(() => {
     setSwitchItem((current) => !current);
-  };
-  const handleToggle = () => {
+  }, []);
+
+  const handleToggle = React.useCallback(() => {
     setToggle((current) => !current);
-  };
-  const handleToggleOpen = () => {
+  }, []);
+
+  const handleToggleOpen = React.useCallback(() => {
     setToggle(true);
-  };
-  const handleToggleClose = () => {
+  }, []);
+
+  const handleToggleClose = React.useCallback(() => {
     setToggle(false);
-  };
-  const handleClose = () => {
+  }, []);
+
+  const handleClose = React.useCallback(() => {
     setOpen(false);
-  };
-  const handleOpen = () => {
+  }, []);
+
+  const handleOpen = React.useCallback(() => {
     setOpen(true);
-  };
-  const toggleFalse = () => {
+  }, []);
+
+  const toggleFalse = React.useCallback(() => {
     setToggle(false);
-  };
-  const handleHoverOpen = () => {
+  }, []);
+
+  const handleHoverOpen = React.useCallback(() => {
     setHover(true);
-  };
-  const handleHoverClose = () => {
+  }, []);
+
+  const handleHoverClose = React.useCallback(() => {
     setHover(false);
-  };
-  const handleHover = () => {
+  }, []);
+
+  const handleHover = React.useCallback(() => {
     setHover((current) => !current);
-  };
+  }, []);
 
   React.useEffect(() => {
     const handleClickOutside = (e) => {
@@ -57,13 +70,20 @@ const useVisibiltyState = () => {
         handleClose();
         handleHoverClose();
         handleToggleClose();
+        handleVisibleClose();
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return function cleanup() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [ref]);
+  }, [
+    ref,
+    handleClose,
+    handleHoverClose,
+    handleToggleClose,
+    handleVisibleClose,
+  ]);
 
   return {
     open,

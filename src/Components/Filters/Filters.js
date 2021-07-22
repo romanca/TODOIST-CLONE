@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { useStaticProjectsItems } from "../../hooks/selectors";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
 import { useProjectActions } from "../../Providers/ItemProvider";
@@ -41,10 +41,13 @@ const ContentProjectsContainer = styled.div`
   display: flex;
 `;
 
+const Container = styled.div``;
+
 const Filters = () => {
   const { handleSwitchItem } = useVisibiltyState();
   const filters = useStaticProjectsItems();
   const { staticItems } = useProjectActions();
+  const { colors } = useTheme();
 
   const handleOpenCloseFavorites = (item) => {
     staticItems(item);
@@ -52,11 +55,11 @@ const Filters = () => {
   };
 
   return (
-    <div>
+    <Container>
       {Object.values(filters)
         .filter((i) => i.id === filtersId)
         .map((i) => (
-          <div>
+          <Container>
             <ProjectsItemsContainer
               onMouseLeave={handleSwitchItem}
               onMouseEnter={handleSwitchItem}
@@ -65,11 +68,11 @@ const Filters = () => {
               <ContentProjectsContainer>
                 {!i.opened ? (
                   <ContentIconContainer>
-                    <Icon name="rightArrow" color="rgba(0,0,0,.54);" />
+                    <Icon name="rightArrow" color={colors["text6"]} />
                   </ContentIconContainer>
                 ) : (
                   <ContentIconContainer>
-                    <Icon name="rightDown" color="rgba(0,0,0,.54);" />
+                    <Icon name="rightDown" color={colors["text6"]} />
                   </ContentIconContainer>
                 )}
                 <ContentTitleContainer>
@@ -78,9 +81,9 @@ const Filters = () => {
               </ContentProjectsContainer>
             </ProjectsItemsContainer>
             {i.opened && <FiltersList />}
-          </div>
+          </Container>
         ))}
-    </div>
+    </Container>
   );
 };
 export default Filters;

@@ -1,22 +1,22 @@
 import { Link } from "@reach/router";
 import React from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
 import { useTodos } from "../../Providers/ItemProvider";
 import Icon from "../../shared/Icon";
 import DropDown from "../DropDowns/DropDown";
 
 const ItemsContainer = styled.div`
-  font-weight: 400;
-  border-radius: 5px;
-  width: 100%;
-  height: 34px;
+  font-weight: ${(props) => props.theme.spaces[26]};
+  border-radius: ${(props) => props.theme.spaces[1]};
+  width: ${(props) => props.theme.spaces[27]};
+  height: ${(props) => props.theme.spaces[10]};
   display: flex;
   justify-content: space-between;
   align-items: center;
   :hover {
     background: ${(props) => props.theme.colors.muted3};
-    border-radius: 5px;
+    border-radius: ${(props) => props.theme.spaces[1]};
   }
 `;
 
@@ -27,31 +27,31 @@ const Title = styled.div`
 `;
 
 const TogglingButtonContainer = styled.div`
-  width: 38px;
-  height: 34px;
+  width: ${(props) => props.theme.spaces[85]};
+  height: ${(props) => props.theme.spaces[10]};
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: -2px;
-  font-size: 12px;
+  margin-top: ${(props) => props.theme.spaces[56]};
+  font-size: ${(props) => props.theme.spaces[15]};
   color: grey;
   cursor: pointer;
 `;
 
 const ContentTitleContainer = styled.div`
   display: flex;
-  margin-top: -2px;
-  color: #333;
-  font-size: 14px;
+  margin-top: ${(props) => props.theme.spaces[56]};
+  color: ${(props) => props.theme.colors.muted5};
+  font-size: ${(props) => props.theme.spaces[14]};
 `;
 
 const ContentIconContainer = styled.div`
-  width: 38px;
-  height: 32px;
+  width: ${(props) => props.theme.spaces[85]};
+  height: ${(props) => props.theme.spaces[31]};
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 10px;
+  font-size: ${(props) => props.theme.spaces[30]};
 `;
 
 const StyledLink = styled(Link)`
@@ -75,17 +75,19 @@ const ProjectTitle = ({ item, to }) => {
     open,
     handleClose,
   } = useVisibiltyState();
+  const { colors, spaces } = useTheme();
 
   const renderTodosCounter = React.useCallback(() => {
-    return Object.values(todos).filter((i) => i.categoryId === item.id).length;
+    return Object.values(todos)
+      .filter((i) => i.categoryId === item.id)
+      .filter((i) => !i.visible).length;
   }, [todos, item.id]);
 
   return (
     <ItemsContainer
       style={{
-        backgroundColor: hover && "#ececec",
-        borderRadius: 5 && open && "#ececec",
-        // borderRadius: 5,
+        backgroundColor: hover && colors["muted3"],
+        borderRadius: spaces[1] && open && colors["muted3"],
       }}
       onMouseEnter={handleToggleOpen}
       onMouseLeave={open ? handleToggleOpen : handleToggleClose}
@@ -110,7 +112,7 @@ const ProjectTitle = ({ item, to }) => {
             handleClose={handleClose}
           />
         ) : (
-          renderTodosCounter()
+          renderTodosCounter() !== 0 && renderTodosCounter()
         )}
       </TogglingButtonContainer>
     </ItemsContainer>

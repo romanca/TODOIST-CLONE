@@ -1,13 +1,8 @@
 import React from "react";
-import {
-  useProjectActions,
-  useTodoActions,
-  useTodos,
-} from "../../../Providers/ItemProvider";
-import { useModal } from "../../../Providers/ModalProvider";
-import Icon from "../../../shared/Icon";
+import { useTodoActions } from "../../Providers/ItemProvider";
+import { useModal } from "../../Providers/ModalProvider";
 import styled from "styled-components";
-import { navigate } from "@reach/router";
+import Icon from "../../shared/Icon";
 
 const DeleteButton = styled.button`
   background-color: ${(props) => props.theme.colors.accent1};
@@ -75,7 +70,7 @@ const ProjectMessageIconContainer = styled.div`
   height: ${(props) => props.theme.spaces[32]};
   width: ${(props) => props.theme.spaces[32]};
   border: ${(props) => props.theme.spaces[8]} solid
-    ${(props) => props.theme.colors.text77};
+    ${(props) => props.theme.colors.text7};
   border-radius: ${(props) => props.theme.spaces[25]};
 `;
 
@@ -104,20 +99,13 @@ const ContentText = styled.span`
   margin-right: ${(props) => props.theme.spaces[1]};
 `;
 
-const ProjectMessage = () => {
+const TodoMessage = () => {
   const { closeModalDialog } = useModal();
-  const { selectedProject, removeProject } = useProjectActions();
-  const { removeTodo } = useTodoActions();
-  const { todos } = useTodos();
-  const todo = Object.values(todos).filter(
-    (i) => i.categoryId === selectedProject.id
-  );
+  const { selectedTodo, removeTodo } = useTodoActions();
 
   const handleDelete = (id) => {
-    removeProject(id);
+    removeTodo(id);
     closeModalDialog();
-    navigate(`/project/inbox`);
-    removeTodo(todo);
   };
 
   return (
@@ -133,18 +121,18 @@ const ProjectMessage = () => {
         <TextContainer>
           <ContentText> Are you sure you want to delete a</ContentText>
           <SelectedTitleContainer>
-            {selectedProject && selectedProject.title}
+            {selectedTodo && selectedTodo.title}
           </SelectedTitleContainer>
           ?
         </TextContainer>
       </ContentContainer>
       <ButtonContainer>
         <CancelButton onClick={closeModalDialog}>Cancel</CancelButton>
-        <DeleteButton onClick={() => handleDelete(selectedProject.id)}>
+        <DeleteButton onClick={() => handleDelete(selectedTodo.id)}>
           Delete
         </DeleteButton>
       </ButtonContainer>
     </MainContainer>
   );
 };
-export default ProjectMessage;
+export default TodoMessage;

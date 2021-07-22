@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { useDefaultTodos, useStaticProjectsItems } from "../../hooks/selectors";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
 import { useProjectActions } from "../../Providers/ItemProvider";
@@ -26,17 +26,21 @@ const ContentTitleContainer = styled.div`
   font-size: ${(props) => props.theme.spaces[14]};
   color: ${(props) => props.theme.colors.muted5};
 `;
+
 const ContentIconContainer = styled.div`
   width: ${(props) => props.theme.spaces[5]};
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+
 const FavoritesMainTitle = styled.div`
   font-size: ${(props) => props.theme.spaces[14]};
   color: ${(props) => props.theme.colors.muted5};
   font-weight: ${(props) => props.theme.spaces[34]};
 `;
+
+const Container = styled.div``;
 
 const Favorites = () => {
   const { handleSwitchItem } = useVisibiltyState();
@@ -50,6 +54,7 @@ const Favorites = () => {
         .filter((i) => i.favorite).length,
     [projects]
   );
+  const { colors } = useTheme();
 
   const handleOpenCloseFavorites = React.useCallback(
     (item) => {
@@ -59,34 +64,36 @@ const Favorites = () => {
     [staticItems, handleSwitchItem]
   );
 
-  return projectsItems === 0 ? (
-    ""
-  ) : (
-    <div>
-      {Object.values(favorites)
-        .filter((i) => i.id === favoritesId)
-        .map((i) => (
-          <div>
-            <ProjectsItemsContainer onClick={() => handleOpenCloseFavorites(i)}>
-              <ContentIconContainer>
-                {!i.opened ? (
-                  <ContentIconContainer>
-                    <Icon name="rightArrow" color="rgba(0,0,0,.54);" />
-                  </ContentIconContainer>
-                ) : (
-                  <ContentIconContainer>
-                    <Icon name="rightDown" color="rgba(0,0,0,.54);" />
-                  </ContentIconContainer>
-                )}
-              </ContentIconContainer>
-              <ContentTitleContainer>
-                <FavoritesMainTitle>{i.title}</FavoritesMainTitle>
-              </ContentTitleContainer>
-            </ProjectsItemsContainer>
-            {i.opened ? <FavoritesList /> : ""}
-          </div>
-        ))}
-    </div>
+  return (
+    projectsItems !== 0 && (
+      <Container>
+        {Object.values(favorites)
+          .filter((i) => i.id === favoritesId)
+          .map((i) => (
+            <Container>
+              <ProjectsItemsContainer
+                onClick={() => handleOpenCloseFavorites(i)}
+              >
+                <ContentIconContainer>
+                  {!i.opened ? (
+                    <ContentIconContainer>
+                      <Icon name="rightArrow" color={colors["text6"]} />
+                    </ContentIconContainer>
+                  ) : (
+                    <ContentIconContainer>
+                      <Icon name="rightDown" color={colors["text6"]} />
+                    </ContentIconContainer>
+                  )}
+                </ContentIconContainer>
+                <ContentTitleContainer>
+                  <FavoritesMainTitle>{i.title}</FavoritesMainTitle>
+                </ContentTitleContainer>
+              </ProjectsItemsContainer>
+              {i.opened && <FavoritesList />}
+            </Container>
+          ))}
+      </Container>
+    )
   );
 };
 export default Favorites;

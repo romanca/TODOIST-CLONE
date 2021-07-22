@@ -3,8 +3,8 @@ import styled from "styled-components";
 import Favorites from "./Favorites/Favorites";
 import Filters from "./Filters/Filters";
 import Projects from "./Projects/Projects";
-import StaticProjects from "./StaticProjects";
-import Today from "./Today";
+import StaticProjects from "./Projects/StaticProjects";
+import Today from "./Projects/TodayProject/Today";
 
 const SideBarContainer = styled.div`
   height: calc(100vh - 44px);

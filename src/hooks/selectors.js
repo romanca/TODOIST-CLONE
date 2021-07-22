@@ -33,3 +33,13 @@ export const useCompletedTodos = () => {
   const { todos } = useTodos();
   return Object.values(todos).filter((i) => !i.visible);
 };
+
+export const useSearchProjectsTodos = () => {
+  const { todos } = useTodos();
+  const { projectsItems } = useItems();
+
+  return {
+    ...todos,
+    ...projectsItems,
+  };
+};

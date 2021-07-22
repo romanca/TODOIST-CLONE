@@ -1,12 +1,12 @@
 import React from "react";
-import Icon from "../shared/Icon";
-import styled from "styled-components";
-import useVisibiltyState from "../hooks/useVisibiltyState";
-import EditTodoInput from "./EditTodoInput";
-import TodoItemDropDown from "./DropDowns/TodoItemDropDownMenu";
-import { useDefaultTodos } from "../hooks/selectors";
-import { inboxId } from "../shared/constants";
-import { useTodoActions } from "../Providers/ItemProvider";
+import styled, { useTheme } from "styled-components";
+import useVisibiltyState from "../../../hooks/useVisibiltyState";
+import EditTodoInput from "../../Inputs/EditTodoInput";
+import { useTodoActions } from "../../../Providers/ItemProvider";
+import { useDefaultTodos } from "../../../hooks/selectors";
+import Icon from "../../../shared/Icon";
+import { inboxId } from "../../../shared/constants";
+import TodoItemDropDown from "../../DropDowns/TodoItemDropDownMenu";
 
 const MainTodoItemContainer = styled.div`
   font-size: ${(props) => props.theme.spaces[14]};
@@ -63,11 +63,11 @@ const CheckBoxButton = styled.span`
 const TodoTitleContainer = styled.div`
   flex: ${(props) => props.theme.spaces[35]};
   margin-right: ${(props) => props.theme.spaces[20]};
-  font-size: ${(props) => props.theme.spaces[14]}
+  font-size: ${(props) => props.theme.spaces[14]};
   wordwrap: break-word;
   wordbreak: break-word;
   display: flex;
-  margin-bottom: 3px;
+  margin-bottom: ${(props) => props.theme.spaces[0]};
 `;
 
 const TodoTitle = styled.div`
@@ -150,6 +150,39 @@ const TodoDotsButton = styled.button`
   background-color: transparent;
 `;
 
+const Container = styled.div``;
+
+const CheckBoxIconContainer = styled.div`
+  width: ${(props) => props.theme.spaces[37]};
+  height: ${(props) => props.theme.spaces[37]};
+  border-radius: ${(props) => props.theme.spaces[25]};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: ${(props) => props.theme.spaces[43]};
+  font-weight: ${(props) => props.theme.spaces[7]};
+`;
+
+const TitleContainer = styled.div`
+  flex: ${(props) => props.theme.spaces[35]};
+  padding: ${(props) => props.theme.spaces[39]}
+    ${(props) => props.theme.spaces[28]};
+  margin-right: ${(props) => props.theme.spaces[20]};
+`;
+
+const ProjectContainer = styled.div`
+  width: ${(props) => props.theme.spaces[27]};
+  float: right;
+  margin-top: ${(props) => props.theme.spaces[0]};
+`;
+
+const ProjectTitleContainer = styled.div`
+  float: right;
+  margin-right: ${(props) => props.theme.spaces[97]};
+  font-size: ${(props) => props.theme.spaces[15]};
+  color: ${(props) => props.theme.colors.text7};
+`;
+
 const TodayProjectItem = ({ item }) => {
   const { toggle, handleToggle, handleHover, hover } = useVisibiltyState();
   const { completeTodo } = useTodoActions();
@@ -158,8 +191,7 @@ const TodayProjectItem = ({ item }) => {
     () => Object.values(projectItems).find((i) => i.id === item.categoryId),
     [projectItems, item.categoryId]
   );
-
-  console.log(item);
+  const { colors } = useTheme();
 
   const handleCompleteTodo = (item) => {
     completeTodo(item);
@@ -169,7 +201,7 @@ const TodayProjectItem = ({ item }) => {
   };
 
   return (
-    <div>
+    <Container>
       {!toggle ? (
         <MainTodoItemContainer>
           <MainDropDownIconButtonContainer>
@@ -191,22 +223,14 @@ const TodayProjectItem = ({ item }) => {
                     ? "rgba(209,69,59,.1)"
                     : item.priority.id === "priority2"
                     ? "rgba(235,137,9,.1)"
-                    : item.priority.id === "priority3" && "rgba(36,111,224,.1)",
+                    : item.priority.id === "priority3" && colors["text8"],
               }}
             >
               {hover && (
-                <div
+                <CheckBoxIconContainer
                   style={{
-                    width: 16,
-                    height: 16,
-                    borderRadius: "50%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    fontSize: 8,
-                    fontWeight: 100,
                     background:
-                      item.priority.id === "priority4" && "hsla(0,0%,50.2%,.1)",
+                      item.priority.id === "priority4" && colors["muted13"],
                   }}
                 >
                   <Icon
@@ -222,44 +246,25 @@ const TodayProjectItem = ({ item }) => {
                           item.priority.color
                     }
                   />
-                </div>
+                </CheckBoxIconContainer>
               )}
             </CheckBoxButton>
           </CheckBoxContainer>
-          <div
-            style={{
-              flex: 1,
-              padding: "2px 0",
-              marginRight: 30,
-            }}
-          >
+          <TitleContainer>
             <TodoTitleContainer>
               <TodoTitle>{item.title}</TodoTitle>
             </TodoTitleContainer>
-            <div
-              style={{
-                width: "100%",
-                float: "right",
-                marginTop: 3,
-              }}
-            >
-              <div
-                style={{
-                  float: "right",
-                  marginRight: -25,
-                  fontSize: 12,
-                  color: "grey",
-                }}
-              >
+            <ProjectContainer>
+              <ProjectTitleContainer>
                 <span style={{ marginRight: 5 }}>{project.title}</span>
                 {project.id === inboxId ? (
                   project.icon
                 ) : (
                   <Icon name="dot" color={project.color.color} />
                 )}
-              </div>
-            </div>
-          </div>
+              </ProjectTitleContainer>
+            </ProjectContainer>
+          </TitleContainer>
           <TodoButtonsContainer>
             <TodoEditButton onClick={handleToggle}>
               <Icon name="edit" />
@@ -278,7 +283,7 @@ const TodayProjectItem = ({ item }) => {
       ) : (
         <EditTodoInput handleToggle={handleToggle} item={item} />
       )}
-    </div>
+    </Container>
   );
 };
 

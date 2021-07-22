@@ -9,6 +9,7 @@ const ColorPickerIconTitle = styled.span`
     ${(props) => props.theme.spaces[2]};
   font-size: ${(props) => props.theme.spaces[14]};
 `;
+
 const DropDownSelectColorPicker = styled.div`
   max-height: ${(props) => props.theme.spaces[38]};
   overflow-y: scroll;
@@ -21,6 +22,7 @@ const DropDownSelectColorPicker = styled.div`
     ${(props) => props.theme.spaces[39]} ${(props) => props.theme.spaces[9]}
     ${(props) => props.theme.spaces[28]} ${(props) => props.theme.colors.muted1};
   background: ${(props) => props.theme.colors.background1};
+  cursor: pointer;
 `;
 
 const SelectItemContainer = styled.div`
@@ -36,6 +38,7 @@ const SelectItemContainer = styled.div`
     background-color: ${(props) => props.theme.colors.muted8};
   }
 `;
+
 const ColorPickerButton = styled.button`
   width: ${(props) => props.theme.spaces[27]};
   font-size: ${(props) => props.theme.spaces[14]};
@@ -46,6 +49,7 @@ const ColorPickerButton = styled.button`
   display: flex;
   background-color: inherit;
   outline: none;
+  cursor: pointer;
 `;
 
 const FormField = styled.div`
@@ -54,6 +58,7 @@ const FormField = styled.div`
   flex-flow: row wrap;
   justify-content: space-between;
 `;
+
 const FormTitle = styled.div`
   font-size: ${(props) => props.theme.spaces[14]};
   width: ${(props) => props.theme.spaces[25]};
@@ -63,12 +68,15 @@ const FormTitle = styled.div`
     ${(props) => props.theme.spaces[28]} ${(props) => props.theme.spaces[29]};
   color: ${(props) => props.theme.colors.text};
 `;
+
 const SelectedItemContentContainer = styled.div`
   width: ${(props) => props.theme.spaces[41]};
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
+
+const Container = styled.div``
 //chcecked item background is background-color: #f3f3f3;;
 //if is checked and hovered background is #ccc
 
@@ -81,29 +89,25 @@ const ColorPicker = ({ selectedOption, OptionClicked }) => {
       <ColorPickerButton onClick={handleOpenClose}>
         <ColorPickerIconTitle>
           <Icon name="dot" color={selectedOption.color} />
-          {selectedOption.title}
         </ColorPickerIconTitle>
+        {selectedOption && selectedOption.title}
       </ColorPickerButton>
-      {open ? (
-        <DropDownSelectColorPicker>
+      {open && (
+        <DropDownSelectColorPicker onClick={handleClose}>
           {Object.values(selectedItems).map((i) => (
-            <SelectItemContainer key={i.id}>
-              <SelectedItemContentContainer onClick={handleClose}>
-                <div>
+            <SelectItemContainer key={i.id} onClick={OptionClicked(i)}>
+              <SelectedItemContentContainer>
+                <Container>
                   <Icon name="dot" color={i.color} />
-                  <ColorPickerIconTitle onClick={OptionClicked(i)}>
-                    {i.title}
-                  </ColorPickerIconTitle>
-                </div>
-                <div>
+                  <ColorPickerIconTitle>{i.title}</ColorPickerIconTitle>
+                </Container>
+                <Container>
                   <Icon name="check" color="#202020" />
-                </div>
+                </Container>
               </SelectedItemContentContainer>
             </SelectItemContainer>
           ))}
         </DropDownSelectColorPicker>
-      ) : (
-        ""
       )}
     </FormField>
   );

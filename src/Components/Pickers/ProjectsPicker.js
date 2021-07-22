@@ -1,8 +1,8 @@
 import React from "react";
 import Icon from "../../shared/Icon";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
-import { inboxId, todayId } from "../../shared/constants";
+import { inbox, inboxId, inboxTitle, todayId } from "../../shared/constants";
 
 const ProjectsPickerButton = styled.button`
   display: flex;
@@ -18,6 +18,9 @@ const ProjectsPickerButton = styled.button`
   background-color: transparent;
   outline: none;
   cursor: pointer;
+  :hover {
+    background: ${(props) => props.theme.colors.muted3};
+  }
 `;
 
 const ProjectPickerIconContainer = styled.div`
@@ -39,7 +42,7 @@ const MainProjectPickersBoxContainer = styled.div`
     ${(props) => props.theme.spaces[39]} ${(props) => props.theme.spaces[9]}
     ${(props) => props.theme.spaces[28]} rgb(0 0 0 / 8%);
   z-index: ${(props) => props.theme.spaces[47]};
-  margin-top: 40px;
+  margin-top: ${(props) => props.theme.spaces[92]};
   position: absolute;
 `;
 
@@ -112,6 +115,11 @@ const ProjectsPickerBoxContentItemTitle = styled.span`
   color: ${(props) => props.theme.colors.text3};
 `;
 
+const ContenContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const ProjectsPicker = ({
   selectedOption,
   defaultProject,
@@ -119,12 +127,15 @@ const ProjectsPicker = ({
   onOptionClicked,
 }) => {
   const { open, handleOpenClose, ref } = useVisibiltyState();
+  const { spaces, colors } = useTheme();
 
   const renderDefaultProject = Object.values(projects)
     .filter((i) => i.id !== todayId)
     .filter((i) => i.id === inboxId)
     .map((item) => (
-      <ProjectsPickerBoxContentItemContainer onClick={onOptionClicked(item)}>
+      <ProjectsPickerBoxContentItemContainer
+        onClick={() => onOptionClicked(item)}
+      >
         <ProjectPickerIconContainer>{item.icon}</ProjectPickerIconContainer>
         <ProjectsPickerBoxContentItemTitle>
           {item.title}
@@ -136,9 +147,15 @@ const ProjectsPicker = ({
     .filter((i) => i.id !== todayId)
     .filter((i) => i.id !== inboxId)
     .map((item) => (
-      <ProjectsPickerBoxContentItemContainer onClick={onOptionClicked(item)}>
+      <ProjectsPickerBoxContentItemContainer
+        onClick={() => onOptionClicked(item)}
+      >
         <ProjectPickerIconContainer>
-          <Icon name="dot" color={item.color.color} style={{ fontSize: 10 }} />
+          <Icon
+            name="dot"
+            color={item.color.color}
+            style={{ fontSize: spaces[30] }}
+          />
         </ProjectPickerIconContainer>
         <ProjectsPickerBoxContentItemTitle>
           {item.title}
@@ -147,12 +164,31 @@ const ProjectsPicker = ({
     ));
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }} ref={ref}>
+    <ContenContainer ref={ref}>
       <ProjectsPickerButton onClick={handleOpenClose}>
         <ProjectPickerIconContainer>
-          {/* {selectedOption.id === inboxId ? defaultProject.icon : renderItems()} */}
+          <div>
+            {selectedOption.id === inboxId || defaultProject.id === inboxId ? (
+              <Icon name="inbox" />
+            ) : (
+              <Icon name="dot" style={{ fontSize: 10 }} />
+            )}
+          </div>
+          {/* {selectedOption && selectedOption.id === inboxId ? (
+            <Icon name="inbox" color={colors["primary2"]} />
+          ) : (
+            <Icon
+              name="dot"
+              color={
+                (selectedOption && selectedOption?.color?.color) ||
+                (defaultProject && defaultProject?.color?.color)
+              }
+              style={{ fontSize: spaces[43] }}
+            />
+          )} */}
         </ProjectPickerIconContainer>
-        {selectedOption.title || defaultProject.title}
+        {(selectedOption && selectedOption.title) ||
+          (defaultProject && defaultProject.title)}
       </ProjectsPickerButton>
       {open && (
         <MainProjectPickersBoxContainer>
@@ -168,7 +204,7 @@ const ProjectsPicker = ({
           </ProjectsPickerBoxContentContainer>
         </MainProjectPickersBoxContainer>
       )}
-    </div>
+    </ContenContainer>
   );
 };
 export default ProjectsPicker;

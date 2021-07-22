@@ -35,6 +35,7 @@ const IconNamesMap = {
   flag1: "fa fa-flag",
   info: "fa fa-info",
   minus: "fa fa-minus",
+  list: "fa fa-list",
 };
 
 const Icon = ({ name, style, color }) => {

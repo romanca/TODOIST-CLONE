@@ -6,15 +6,26 @@ export const theme = {
     text3: "#555",
     text4: "#777", //dark grey
     text5: "rgba(0, 0, 0, 0.4)", // black
+    text6: "rgba(0,0,0,.54)",
+    text7: "grey",
+    text8: "rgba(36,111,224,.1)",
     background: "white", //white
     background1: "#fff",
     background2: "#f5f5f5", //very light grey mostly white
     background3: "#f0f0f0", //very light grey
     background4: "#dcdcdc", //very light grey
     primary: "#07c", //strong blue
+    primary1: "#158FAD",
+    primary2: "#246fe0",
+    primary3: "teal",
     secondary: "#05a", //green
+    secondary1: "green",
     accent: "#db4c3f", //bright red
     accent1: "#dd4b39", //bright red
+    accent2: "rgb(255, 146, 51)", //orange
+    accent3: "rgba(209,69,59,.1)",
+    accent4: "rgba(235,137,9,.1)",
+    accent5: "rgba(36,111,224,.1)",
     muted: "#f7f7f7", //grey
     muted1: "#f1f1f1",
     muted2: "#D3D3D3",
@@ -26,6 +37,11 @@ export const theme = {
     muted8: "#f3f3f3", // very light grey
     muted9: "#ccc", //Light gray
     muted10: "#c0c0c0", //light grey
+    muted11: "#999",
+    muted12: "#535a5b",
+    muted13: "#808080",
+    muted14: "rgb(128, 128, 128)",
+    muted15: "#909090",
   },
   radii: ["10px"],
   styles: ["none"],
@@ -111,5 +127,32 @@ export const theme = {
     "215px", //78
     "170px", //79
     "150px", //80
+    "-120px", //81
+    "1em", //82
+    "-8px", //83
+    2, //84
+    "38px", //85
+    "180px", //86
+    0.5, // 87
+    "-3px", //88
+    "450px", //89
+    "-451px", //90
+    "135px", //91
+    "40px", //92
+    34, //93
+    18, //94
+    12, //95
+    14, //96
+    "-25px", //97
+    "-20px", //98
+    "-1px", //99
+    "25px", //100
+    "114px", //101
+    "73px", //102
+    "650px", //103
+    "0.75em", //104
+    "0.5em", //105
+    "60px", //106
+    "-135px", //107
   ],
 };

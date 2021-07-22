@@ -1,15 +1,14 @@
 import React from "react";
-import ProjectsPicker from "./Pickers/ProjectsPicker";
-import styled from "styled-components";
-import DatePicker from "./Pickers/DatePicker";
-import { useTodoActions } from "../Providers/ItemProvider";
-import { useDefaultTodos } from "../hooks/selectors";
-import { useParams } from "@reach/router";
-import { inboxId, todayId } from "../shared/constants";
-import PriorityProjectPicker from "./Pickers/PriorityPicker";
+import styled, { useTheme } from "styled-components";
+import { useTodoActions } from "../../Providers/ItemProvider";
+import { useDefaultTodos } from "../../hooks/selectors";
+import { inboxId, todayId } from "../../shared/constants";
+import PriorityProjectPicker from "../Pickers/PriorityPicker";
+import DatePicker from "../Pickers/DatePicker";
+import ProjectsPicker from "../Pickers/ProjectsPicker";
 
 const FormInput = styled.input`
-  color: ${(props) => props.theme.colors.text5};
+  color: ${(props) => props.theme.colors.text};
   width: calc(100% - 8px);
   font-size: ${(props) => props.theme.spaces[14]};
   word-break: break-word;
@@ -81,22 +80,24 @@ const SubmitFormPickersContainer = styled.div`
   max-width: ${(props) => props.theme.spaces[27]};
 `;
 
-const EditTodoInput = ({ handleToggle, item }) => {
+const Container = styled.div``;
+
+const TodoDetailsEditTodoInput = ({ handleToggle, item }) => {
   const [date, setDate] = React.useState("");
   const { editTodo } = useTodoActions();
   const [title, setTitle] = React.useState(item.title);
   const projects = useDefaultTodos();
-  const { id } = useParams();
-  const project = id === todayId ? inboxId : item.categoryId;
+  const project = item.categoryId === todayId ? inboxId : item.categoryId;
   const defaultProject = Object.values(projects).find((i) => i.id === project);
   const [selectedPriority, setSelectedPriority] = React.useState(item.priority);
   const [selectedOption, setSelectedOption] = React.useState(defaultProject);
   const projectId = selectedOption.id || defaultProject.id;
+  const { spaces } = useTheme();
 
   const selectedItemPriority = selectedPriority;
 
-  const onOptionClicked = (value) => () => {
-    setSelectedOption(value);
+  const onOptionClicked = (i) => {
+    setSelectedOption(i);
   };
 
   const selectPriority = (value) => () => {
@@ -126,7 +127,7 @@ const EditTodoInput = ({ handleToggle, item }) => {
 
   return (
     <MainToggleSubmitFormContainer>
-      <div>
+      <Container>
         <SubmitFormInputContainer>
           <FormInput
             placeholder="e.g., Renew gym every May 1st #Health"
@@ -157,18 +158,18 @@ const EditTodoInput = ({ handleToggle, item }) => {
         <FormSubmitButtonsContainer>
           {title ? (
             <AddTaskButton type="button" onClick={handleEditTodo}>
-              Add task
+              Save
             </AddTaskButton>
           ) : (
-            <AddTaskButton type="button" style={{ opacity: 0.5 }} disabled>
-              Add task
+            <AddTaskButton type="button" style={{ opacity: spaces[87] }} disabled>
+              Save
             </AddTaskButton>
           )}
           <CancelButton onClick={handleToggle}>Cancel</CancelButton>
         </FormSubmitButtonsContainer>
-      </div>
+      </Container>
     </MainToggleSubmitFormContainer>
   );
 };
 
-export default EditTodoInput;
+export default TodoDetailsEditTodoInput;

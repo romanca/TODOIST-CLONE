@@ -45,14 +45,14 @@ const ItemProvider = ({ children }) => {
   }, []);
 
   const createProject = React.useCallback(
-    (title, id, color) => {
+    (title, id, color, favorite) => {
       setProjectsItems((current) => {
         const newItem = {
           ...current,
           [id]: Object.assign({
             title,
             id,
-            favorite: false,
+            favorite,
             color,
           }),
         };
@@ -62,16 +62,18 @@ const ItemProvider = ({ children }) => {
     [setProjectsItems]
   );
 
-  const removeProject = React.useCallback(
-    (id) => {
-      setProjectsItems((current) => {
-        const newState = { ...current };
-        delete newState[id];
-        return newState;
-      });
-    },
-    [setProjectsItems]
-  );
+  const removeProject = (id) => {
+    setProjectsItems((current) => {
+      const newState = { ...current };
+      delete newState[id];
+      return newState;
+    });
+    Object.values(todos).forEach((i) => {
+      if (i.categoryId === id) {
+        removeTodo(i.id);
+      }
+    });
+  };
 
   const editProject = React.useCallback(
     (item) => {

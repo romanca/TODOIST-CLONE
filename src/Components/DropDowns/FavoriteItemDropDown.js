@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { useProjectActions } from "../../Providers/ItemProvider";
+import {
+  useEditProjectsDialog,
+  useProjectMessageDialog,
+} from "../../Providers/ModalProvider";
 import Icon from "../../shared/Icon";
 
 const SelectedItemContainer = styled.div`
@@ -66,21 +70,41 @@ const CounterContainer = styled.div`
   font-size: ${(props) => props.theme.spaces[15]};
 `;
 
+const Container = styled.div`
+  display: flex;
+`;
+
 const FavoriteItemDropDown = ({ item, open, handleOpenClose, handleClose }) => {
   const { favoriteProjects, handleSelected } = useProjectActions();
+  const openProjectModal = useProjectMessageDialog();
+  const openEditProjectModal = useEditProjectsDialog();
 
-  const handleFavoriteProject = (item) => {
-    favoriteProjects(item);
-    handleClose();
-  };
+  const handleFavoriteProject = React.useCallback(
+    (item) => {
+      favoriteProjects(item);
+      handleClose();
+    },
+    [favoriteProjects, handleClose]
+  );
 
-  const handleSelectProject = (item) => {
-    handleOpenClose();
-    handleSelected(item);
-  };
+  const handleSelectProject = React.useCallback(
+    (item) => {
+      handleOpenClose();
+      handleSelected(item);
+    },
+    [handleOpenClose, handleSelected]
+  );
+
+  const handleEditProject = React.useCallback(
+    (i) => {
+      handleSelected(i);
+      handleClose();
+    },
+    [handleSelected, handleClose]
+  );
 
   return (
-    <div style={{ display: "flex" }}>
+    <Container>
       {/* <ContentIconContainer>
       <Icon name="th" color="rgba(0,0,0,.54);" />
     </ContentIconContainer> */}
@@ -89,10 +113,10 @@ const FavoriteItemDropDown = ({ item, open, handleOpenClose, handleClose }) => {
           <Icon name="horizontalDots" color="grey" style={{ fontSize: 12 }} />
         </ContentIconContainer>
         {open && (
-          <div>
+          <Container>
             <SelectedItemContainer>
-              <SelectedItem>
-                <SelectedItemContent>
+              <SelectedItem onClick={() => handleEditProject(item)}>
+                <SelectedItemContent onClick={openEditProjectModal}>
                   <SelectedItemIconContainer>
                     <Icon name="edit" />
                   </SelectedItemIconContainer>
@@ -108,10 +132,10 @@ const FavoriteItemDropDown = ({ item, open, handleOpenClose, handleClose }) => {
                 </SelectedItemContent>
               </SelectedItem>
             </SelectedItemContainer>
-          </div>
+          </Container>
         )}
       </CounterContainer>
-    </div>
+    </Container>
   );
 };
 export default FavoriteItemDropDown;

@@ -1,5 +1,4 @@
 {
-  "homepage": "http://romanca.github.io/todoist-clone",
   "name": "todoist-clone",
   "version": "0.1.0",
   "private": true,
@@ -17,12 +16,11 @@
     "react-icons": "^4.2.0",
     "react-poppop": "^1.5.0",
     "react-scripts": "4.0.3",
+    "react-styled-toggle": "^1.0.18",
     "styled-components": "^5.2.3",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "predeploy": "npm run deploy",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -46,7 +44,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "gh-pages": "^3.2.2"
-  }
+  "devDependencies": {}
 }

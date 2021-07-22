@@ -1,25 +1,25 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import Icon from "../../shared/Icon";
 
 const ItemsContainer = styled.div`
-  font-weight: 400;
-  border-radius: 5px;
-  width: 100%;
-  height: 34px;
+  font-weight: ${(props) => props.theme.spaces[26]};
+  border-radius: ${(props) => props.theme.spaces[1]};
+  width: ${(props) => props.theme.spaces[27]};
+  height: ${(props) => props.theme.spaces[10]};
   display: flex;
   justify-content: space-between;
   align-items: center;
   :hover {
     background: ${(props) => props.theme.colors.muted3};
-    border-radius: 5px;
+    border-radius: ${(props) => props.theme.spaces[1]};
   }
 `;
 
 const ContentTitleContainer = styled.div`
-  margin-top: -2px;
-  color: #333;
-  font-size: 14px;
+  margin-top: ${(props) => props.theme.spaces[56]};
+  color: ${(props) => props.theme.colors.muted5};
+  font-size: ${(props) => props.theme.spaces[14]};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,24 +32,30 @@ const Title = styled.div`
 `;
 
 const ContentIconContainer = styled.div`
-  width: 38px;
-  height: 32px;
+  width: ${(props) => props.theme.spaces[85]};
+  height: ${(props) => props.theme.spaces[31]};
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
+const Container = styled.div`
+  display: flex;
+`;
+
 const FilterItem = ({ item }) => {
+  const { colors } = useTheme();
+
   return (
     <ItemsContainer>
-      <div style={{ display: "flex" }}>
+      <Container>
         <ContentIconContainer>
-          <Icon name="drop" color="#158FAD" />
+          <Icon name="drop" color={colors["primary1"]} />
         </ContentIconContainer>
         <ContentTitleContainer>
           <Title>{item.title}</Title>
         </ContentTitleContainer>
-      </div>
+      </Container>
     </ItemsContainer>
   );
 };

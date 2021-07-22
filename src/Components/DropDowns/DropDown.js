@@ -27,12 +27,10 @@ const SelectedItemContainer = styled.div`
 `;
 const SelectedItem = styled.div`
   cursor: pointer;
-  // padding: ${(props) => props.theme.spaces[1]};
   margin: ${(props) => props.theme.spaces[9]}
     ${(props) => props.theme.spaces[28]};
   :hover {
     background: ${(props) => props.theme.colors.background2};
-    border-radius: ${(props) => props.theme.spaces[1]};
   }
 `;
 const SelectedItemContent = styled.div`
@@ -76,6 +74,10 @@ const CounterContainer = styled.div`
   user-select: none;
 `;
 
+const Container = styled.div`
+  display: flex;
+`;
+
 const DropDown = ({
   item,
   handleHover,
@@ -87,29 +89,41 @@ const DropDown = ({
   const openProjectModal = useProjectMessageDialog();
   const openEditProjectModal = useEditProjectsDialog();
 
-  const handleFavoriteProject = (item) => {
-    favoriteProjects(item);
-    handleClose();
-  };
+  const handleFavoriteProject = React.useCallback(
+    (i) => {
+      favoriteProjects(i);
+      handleClose();
+    },
+    [favoriteProjects, handleClose]
+  );
 
-  const handleRemoveProject = (item) => {
-    handleSelected(item);
-    handleClose();
-  };
+  const handleRemoveProject = React.useCallback(
+    (i) => {
+      handleSelected(i);
+      handleClose();
+    },
+    [handleSelected, handleClose]
+  );
 
-  const handleEditProject = (item) => {
-    handleSelected(item);
-    handleClose();
-  };
+  const handleEditProject = React.useCallback(
+    (i) => {
+      handleSelected(i);
+      handleClose();
+    },
+    [handleSelected, handleClose]
+  );
 
-  const handleSelectProject = (item) => {
-    handleOpenClose();
-    handleSelected(item);
-    handleHover();
-  };
+  const handleSelectProject = React.useCallback(
+    (i) => {
+      handleOpenClose();
+      handleSelected(i);
+      handleHover();
+    },
+    [handleOpenClose, handleSelected, handleHover]
+  );
 
   return (
-    <div style={{ display: "flex" }}>
+    <Container>
       {/* <ContentIconContainer>
           <Icon name="th" color="rgba(0,0,0,.54);" />
         </ContentIconContainer> */}
@@ -122,8 +136,8 @@ const DropDown = ({
             }}
           />
         </ContentIconContainer>
-        {open ? (
-          <div>
+        {open && (
+          <Container>
             <SelectedItemContainer>
               <SelectedItem onClick={() => handleEditProject(item)}>
                 <SelectedItemContent onClick={openEditProjectModal}>
@@ -141,9 +155,7 @@ const DropDown = ({
                   <Content>Remove Project</Content>
                 </SelectedItemContent>
               </SelectedItem>
-              {item.favorite ? (
-                ""
-              ) : (
+              {!item.favorite && (
                 <SelectedItem onClick={() => handleFavoriteProject(item)}>
                   <SelectedItemContent>
                     <SelectedItemIconContainer>
@@ -154,12 +166,10 @@ const DropDown = ({
                 </SelectedItem>
               )}
             </SelectedItemContainer>
-          </div>
-        ) : (
-          ""
+          </Container>
         )}
       </CounterContainer>
-    </div>
+    </Container>
   );
 };
 

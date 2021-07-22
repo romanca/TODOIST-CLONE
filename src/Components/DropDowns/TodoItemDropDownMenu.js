@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
 import { useTodoActions } from "../../Providers/ItemProvider";
 import { useTodoMessageDialog } from "../../Providers/ModalProvider";
@@ -8,27 +8,35 @@ import { priorities } from "../../shared/mockData";
 
 const MainTodoItemDropDownContainer = styled.div`
   position: absolute;
-  background-color: #fff;
-  border-radius: 3px;
-  border: 1px solid #ddd;
-  box-shadow: 0 1px 8px 0 rgb(0 0 0 / 8%);
-  margin: 0;
-  padding: 4px 0px;
-  width: 250px;
-  margin-left: -120px;
-  z-index: 1000;
+  background-color: ${(props) => props.theme.colors.background1};
+  border-radius: ${(props) => props.theme.spaces[0]};
+  border: ${(props) => props.theme.spaces[8]} solid
+    ${(props) => props.theme.colors.muted7};
+  box-shadow: ${(props) => props.theme.spaces[28]}
+    ${(props) => props.theme.spaces[8]} ${(props) => props.theme.spaces[43]}
+    ${(props) => props.theme.spaces[28]} rgb(0 0 0 / 8%);
+  margin: ${(props) => props.theme.spaces[28]};
+  padding: ${(props) => props.theme.spaces[9]}
+    ${(props) => props.theme.spaces[28]};
+  width: ${(props) => props.theme.spaces[52]};
+  margin-left: ${(props) => props.theme.spaces[81]};
+  z-index: ${(props) => props.theme.spaces[1000]};
 `;
 
 const MenuItem = styled.div`
-  padding: 4px 10px;
+  padding: ${(props) => props.theme.spaces[9]}
+    ${(props) => props.theme.spaces[30]};
   display: flex;
+  :hover {
+    background: ${(props) => props.theme.colors.muted3};
+  }
 `;
 
 const IconMenuContainer = styled.div`
   color: grey;
-  height: 24px;
-  width: 24px;
-  margin-right: 10px;
+  height: ${(props) => props.theme.spaces[12]};
+  width: ${(props) => props.theme.spaces[12]};
+  margin-right: ${(props) => props.theme.spaces[30]};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,71 +46,89 @@ const Title = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 13px;
+  font-size: ${(props) => props.theme.spaces[36]};
 `;
 
 const MenuSeparator = styled.div`
-  margin: 4px;
-  border-bottom: 1px solid #ddd;
+  margin: ${(props) => props.theme.spaces[9]};
+  border-bottom: ${(props) => props.theme.spaces[8]} solid
+    ${(props) => props.theme.colors.muted7};
 `;
 
 const PriorityTitle = styled.div`
-  font-size: 11px;
-  margin-bottom: 1em;
+  font-size: ${(props) => props.theme.spaces[68]};
+  margin-bottom: ${(props) => props.theme.spaces[82]};
   display: flex;
   justify-content: flex-start;
 `;
 
-const PriorityItem = styled.div`
-  display: inline-block;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
-  padding: 1px;
-  font-size: 20px;
-`;
-
 const PriorityItemIconContainer = styled.div`
-  margin: 0px 0px 0px 26px;
-  border: 1px solid transparent;
-  border-radius: 3px;
+  margin: ${(props) => props.theme.spaces[28]}
+    ${(props) => props.theme.spaces[28]} ${(props) => props.theme.spaces[28]}
+    ${(props) => props.theme.spaces[4]};
+  border: ${(props) => props.theme.spaces[8]} solid transparent;
+  border-radius: ${(props) => props.theme.spaces[0]};
   cursor: pointer;
-  width: 24px;
-  height: 24px;
-  padding: 1px;
-  font-size: 20px;
+  width: ${(props) => props.theme.spaces[12]};
+  height: ${(props) => props.theme.spaces[12]};
+  padding: ${(props) => props.theme.spaces[8]};
+  font-size: ${(props) => props.theme.spaces[33]};
   display: flex;
-  justify-content: ;
+  justify-content: center;
+  align-items: center;
+  :hover {
+    background: ${(props) => props.theme.colors.muted3};
+    border-radius: ${(props) => props.theme.spaces[0]};
+  }
 `;
 
 const PriorityItemContainer = styled.div`
-  padding: 4px 10px;
+  padding: ${(props) => props.theme.spaces[9]}
+    ${(props) => props.theme.spaces[30]};
 `;
 
 const IconItemsContainer = styled.div`
   display: flex;
-  padding: 0px;
-  margin-left: -8px;
+  padding: ${(props) => props.theme.spaces[28]};
+  margin-left: ${(props) => props.theme.spaces[83]};
 `;
 
-const TodoItemDropDown = ({ item, handleToggle }) => {
+const Container = styled.div`
+  z-index: ${(props) => props.theme.spaces[47]};
+`;
+
+const IconButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${(props) => props.theme.spaces[12]};
+  height: ${(props) => props.theme.spaces[12]};
+  border-radius: ${(props) => props.theme.spaces[0]};
+  :hover {
+    background: ${(props) => props.theme.colors.muted3};
+    width: ${(props) => props.theme.spaces[12]};
+    height: ${(props) => props.theme.spaces[12]};
+    border-radius: ${(props) => props.theme.spaces[0]};
+  }
+`;
+
+const TodoItemDropDown = ({
+  item,
+  handleToggle,
+  open,
+  handleOpenClose,
+  ref,
+}) => {
   const openTodoModal = useTodoMessageDialog();
   const { handleSelectedTodo, editTodo } = useTodoActions();
-  const { ref, open, handleOpenClose } = useVisibiltyState();
   const [selectedPriority, setSelectedPriority] = React.useState(item.priority);
+  const { colors, spaces } = useTheme();
 
-  const selectedItemPriority = selectedPriority;
-
-  const selectPriority = (value) => () => {
-    setSelectedPriority(value);
+  const selectPriority = (i) => {
+    editTodo({ ...item, priority: i });
+    setSelectedPriority(i);
+    handleOpenClose();
   };
-
-  const handleEditSelectedTodo = React.useCallback(() => {
-    const priority = selectedItemPriority;
-    editTodo({ ...item, priority });
-  }, [selectedItemPriority]);
 
   const handleSelectTodo = (item) => {
     handleSelectedTodo(item);
@@ -110,76 +136,57 @@ const TodoItemDropDown = ({ item, handleToggle }) => {
   };
 
   return (
-    <div ref={ref}>
-      <div onClick={() => handleSelectTodo(item)}>
+    <Container>
+      <IconButtonContainer
+        onClick={() => handleSelectTodo(item)}
+        style={{
+          background: open && colors["muted3"],
+        }}
+      >
         <Icon name="horizontalDots" />
-      </div>
-      {open ? (
-        <MainTodoItemDropDownContainer>
+      </IconButtonContainer>
+      {open && (
+        <MainTodoItemDropDownContainer ref={ref}>
           <MenuItem onClick={handleToggle}>
             <IconMenuContainer>
               <Icon name="edit" />
             </IconMenuContainer>
             <Title>Edit task</Title>
           </MenuItem>
-          <div onClick={handleOpenClose}>
+          <Container onClick={handleOpenClose}>
             <MenuItem onClick={openTodoModal}>
               <IconMenuContainer>
                 <Icon name="trash" />
               </IconMenuContainer>
               <Title>Remove task</Title>
             </MenuItem>
-          </div>
+          </Container>
           <MenuSeparator />
           <PriorityItemContainer>
             <PriorityTitle>Priority</PriorityTitle>
             <IconItemsContainer>
               {Object.values(priorities).map((i) => (
-                <div
+                <PriorityItemIconContainer
+                  style={{
+                    border: i.id === selectedPriority.id && `1px solid #aaa`,
+                    borderRadius: i.id === selectedPriority.id && spaces[0],
+                  }}
                   key={i.id}
-                  onClick={selectPriority(i)}
-                  style={{ background: i.id === selectedPriority.id && "grey" }}
+                  onClick={() => {
+                    selectPriority(i);
+                  }}
                 >
-                  <div
-                    style={{
-                      background: i.id === selectedPriority.id && "grey",
-                    }}
-                  >
-                    <Icon
-                      name={i.id === "priority4" ? "flag" : "fullFlag"}
-                      color={i.color}
-                    />
-                  </div>
-                  <button onClick={handleEditSelectedTodo}>add</button>
-                </div>
+                  <Icon
+                    name={i.id === "priority4" ? "flag" : "fullFlag"}
+                    color={i.color}
+                  />
+                </PriorityItemIconContainer>
               ))}
-              {/* {Object.values(priorities).map((i) => (
-                <div style={{ padding: 0 }} onClick={onOptionClicked(i)}>
-                  <div
-                    style={{ marginLeft: -15 }}
-                    onClick={handleEditSelectedTodo}
-                  >
-                    <PriorityItemIconContainer
-                    // style={{
-                    //   border:
-                    //     i.id === selectedPriority.id && "1px solid grey",
-                    // }}
-                    >
-                      <Icon
-                        name={i.id === "priority4" ? "flag" : "fullFlag"}
-                        color={i.color}
-                      />
-                    </PriorityItemIconContainer>
-                  </div>
-                </div>
-              ))} */}
             </IconItemsContainer>
           </PriorityItemContainer>
         </MainTodoItemDropDownContainer>
-      ) : (
-        ""
       )}
-    </div>
+    </Container>
   );
 };
 

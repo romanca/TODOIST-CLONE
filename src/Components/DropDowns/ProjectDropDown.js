@@ -11,28 +11,37 @@ import Icon from "../../shared/Icon";
 
 const MainProjectDropDownContainer = styled.div`
   position: absolute;
-  inset: 0px auto auto 0px;
+  inset: ${(props) => props.theme.spaces[28]} auto auto
+    ${(props) => props.theme.spaces[28]};
   transform: translate(1090px, 105px);
-  background-color: #fff;
+  background-color: ${(props) => props.theme.colors.background1};
   border-collapse: separate;
-  border-radius: 3px;
-  border: 1px solid #ddd;
-  box-shadow: 0 1px 8px 0 rgb(0 0 0 / 8%);
-  margin: 0;
-  padding: 4px 0;
-  width: 250px;
-  z-index: 1000;
+  border-radius: ${(props) => props.theme.spaces[0]};
+  border: ${(props) => props.theme.spaces[8]} solid
+    ${(props) => props.theme.colors.muted7};
+  box-shadow: ${(props) => props.theme.spaces[28]}
+    ${(props) => props.theme.spaces[8]} ${(props) => props.theme.spaces[43]}
+    ${(props) => props.theme.spaces[28]} rgb(0 0 0 / 8%);
+  margin: ${(props) => props.theme.spaces[28]};
+  padding: ${(props) => props.theme.spaces[9]}
+    ${(props) => props.theme.spaces[28]};
+  width: ${(props) => props.theme.spaces[52]};
+  z-index: ${(props) => props.theme.spaces[47]}; ;
 `;
 const MenuItem = styled.div`
-  padding: 4px 10px;
+  padding: ${(props) => props.theme.spaces[9]}
+    ${(props) => props.theme.spaces[30]};
   display: flex;
   cursor: pointer;
+  :hover {
+    background: ${(props) => props.theme.colors.muted3};
+  }
 `;
 const IconMenuContainer = styled.div`
   color: grey;
-  height: 24px;
-  width: 24px;
-  margin-right: 10px;
+  height: ${(props) => props.theme.spaces[12]};
+  width: ${(props) => props.theme.spaces[12]};
+  margin-right: ${(props) => props.theme.spaces[30]};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,11 +50,12 @@ const Title = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 13px;
+  font-size: ${(props) => props.theme.spaces[36]};
 `;
 const MenuSeparator = styled.div`
-  margin: 4px;
-  border-bottom: 1px solid #ddd;
+  margin: ${(props) => props.theme.spaces[9]};
+  border-bottom: ${(props) => props.theme.spaces[8]}; solid ${(props) =>
+  props.theme.colors.muted7};
 `;
 
 const CheckBoxButton = styled.span`
@@ -58,7 +68,7 @@ const CheckBoxButton = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: ${(props) => props.theme.spaces[30]};
 `;
 
 const HeaderButton = styled.button`
@@ -70,7 +80,10 @@ const HeaderButton = styled.button`
   border: none;
   outline: none;
   padding: ${(props) => props.theme.spaces[28]};
-  margin: ${(props) => props.theme.spaces[28]};
+  :hover {
+    background: ${(props) => props.theme.colors.muted3};
+    border-radius: ${(props) => props.theme.spaces[0]};
+  }
 `;
 
 const ContentHeaderDotsIconContainer = styled.div`
@@ -81,7 +94,10 @@ const ContentHeaderDotsIconContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   color: ${(props) => props.theme.colors.text1};
+  padding: ${(props) => props.theme.spaces[0]};
 `;
+
+const Container = styled.div``;
 
 const ProjectDropDown = ({ item, handleVisible, visible }) => {
   const removeProjectDialog = useProjectMessageDialog();
@@ -89,18 +105,21 @@ const ProjectDropDown = ({ item, handleVisible, visible }) => {
   const { handleSelected } = useProjectActions();
   const { ref, open, handleOpenClose } = useVisibiltyState();
 
-  const handleSelectProject = (item) => {
-    handleOpenClose();
-    handleSelected(item);
-  };
+  const handleSelectProject = React.useCallback(
+    (item) => {
+      handleOpenClose();
+      handleSelected(item);
+    },
+    [handleSelected, handleOpenClose]
+  );
 
-  const handleShowCompleted = () => {
+  const handleShowCompleted = React.useCallback(() => {
     handleOpenClose();
     handleVisible();
-  };
+  }, [handleOpenClose, handleVisible]);
 
   return (
-    <div ref={ref}>
+    <Container ref={ref}>
       <HeaderButton onClick={() => handleSelectProject(item)}>
         <ContentHeaderDotsIconContainer>
           <Icon name="circle" />
@@ -133,40 +152,51 @@ const ProjectDropDown = ({ item, handleVisible, visible }) => {
           </MainProjectDropDownContainer>
         ) : (
           <MainProjectDropDownContainer>
-            <div onClick={handleOpenClose}>
+            <Container onClick={handleOpenClose}>
               <MenuItem onClick={openEditProjectModal}>
                 <IconMenuContainer>
                   <Icon name="edit" />
                 </IconMenuContainer>
                 <Title>Edit project</Title>
               </MenuItem>
-            </div>
-            <div onClick={handleOpenClose}>
+            </Container>
+            <Container onClick={handleOpenClose}>
               <MenuItem onClick={removeProjectDialog}>
                 <IconMenuContainer>
                   <Icon name="trash" />
                 </IconMenuContainer>
                 <Title>Remove project</Title>
               </MenuItem>
-            </div>
+            </Container>
             <MenuSeparator />
-            <MenuItem>
-              <IconMenuContainer>
-                <CheckBoxButton>
-                  <Icon name="check" />
-                </CheckBoxButton>
-              </IconMenuContainer>
-              <Title>Show completed tasks</Title>
-            </MenuItem>
-            <MenuItem>
+            {!visible ? (
+              <MenuItem onClick={handleShowCompleted}>
+                <IconMenuContainer>
+                  <CheckBoxButton>
+                    <Icon name="check" />
+                  </CheckBoxButton>
+                </IconMenuContainer>
+                <Title>Show completed tasks</Title>
+              </MenuItem>
+            ) : (
+              <MenuItem onClick={handleShowCompleted}>
+                <IconMenuContainer>
+                  <CheckBoxButton>
+                    <Icon name="minus" />
+                  </CheckBoxButton>
+                </IconMenuContainer>
+                <Title>Hide completed tasks</Title>
+              </MenuItem>
+            )}
+            {/* <MenuItem>
               <IconMenuContainer>
                 <Icon name="archive" />
               </IconMenuContainer>
               <Title>Archive</Title>
-            </MenuItem>
+            </MenuItem> */}
           </MainProjectDropDownContainer>
         ))}
-    </div>
+    </Container>
   );
 };
 export default ProjectDropDown;

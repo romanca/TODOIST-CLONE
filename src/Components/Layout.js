@@ -20,7 +20,11 @@ const ContentContainer = styled.div`
   max-width: ${(props) => props.theme.spaces[54]};
 `;
 
-const LayoutContainer = styled.div``;
+const Container = styled.div``;
+
+const Content = styled.div`
+  display: flex;
+`;
 
 const Layout = (props) => {
   const items = useStaticProjectsItems();
@@ -33,26 +37,21 @@ const Layout = (props) => {
   };
 
   return (
-    <div>
+    <Container>
       {Object.values(items)
         .filter((i) => i.id === hamburgerId)
         .map((i) => (
-          <LayoutContainer key={i.id}>
+          <Container key={i.id}>
             <Header item={i} handleOpenCloseSideBar={handleOpenCloseSideBar} />
-            <div style={{ display: "flex" }}>
+            <Content>
               {!i.opened && <SideBar />}
               <MainContentContainer>
                 <ContentContainer>{props.children}</ContentContainer>
               </MainContentContainer>
-            </div>
-          </LayoutContainer>
+            </Content>
+          </Container>
         ))}
-    </div>
+    </Container>
   );
 };
 export default Layout;
-
-//notes
-
-/* <MainInfoContent /> */
-/* Should be switched according to the content */

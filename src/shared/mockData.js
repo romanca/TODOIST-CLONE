@@ -175,100 +175,50 @@ export const selectedItems = {
   },
 };
 
-export const projects = {
-  id1: {
-    title: "project1",
-    number: 9,
-    id: "id1",
-    // filterMethod: (i) => i.categoryId === "id1",
-    filterMethod: (i) => i.categoryId === "project1",
-    favorite: false,
-  },
-  id2: {
-    title: "project2",
-    number: 9,
-    id: "id2",
-    filterMethod: (i) => i.categoryId === "project2",
-
-    favorite: false,
-  },
-  id3: {
-    title: "project3",
-    number: 9,
-    id: "id3",
-    filterMethod: (i) => i.categoryId === "project1",
-
-    favorite: false,
-  },
-  id4: {
-    title: "project4",
-    number: 9,
-    id: "id4",
-    filterMethod: (i) => i.categoryId === "project1",
-
-    favorite: false,
-  },
-  id5: {
-    title: "project5",
-    number: 9,
-    id: "id5",
-    filterMethod: (i) => i.categoryId === "project3",
-
-    favorite: false,
-  },
-  id6: {
-    title: "project6",
-    number: 9,
-    id: "id6",
-    filterMethod: (i) => i.categoryId === "project1",
-    favorite: false,
-  },
-};
-
-export const items = {
-  id1: {
-    title: "Todo 1 Todo 1Todo 1Todo 1Todo 1Todo 1Todo 1 ",
-    number: 9,
-    id: "id1",
-    priority: "priority1",
-    categoryId: "inbox",
-  },
-  id2: {
-    title: "Todo 2 ",
-    number: 9,
-    id: "id2",
-    priority: "priority2",
-    categoryId: "inbox",
-  },
-  id3: {
-    title: "Todo 3 ",
-    number: 9,
-    id: "id3",
-    priority: "priority3",
-    categoryId: "project1",
-  },
-  id4: {
-    title: "Todo 4 ",
-    number: 9,
-    id: "id4",
-    priority: "priority4",
-    categoryId: "project1",
-  },
-  id5: {
-    title: "Todo 5 ",
-    number: 9,
-    id: "id5",
-    priority: "priority1",
-    categoryId: "project5",
-  },
-  id6: {
-    title: "Todo 6 ",
-    number: 9,
-    id: "id6",
-    priority: "priority1",
-    categoryId: "project6",
-  },
-};
+// export const items = {
+//   id1: {
+//     title: "Todo 1 Todo 1Todo 1Todo 1Todo 1Todo 1Todo 1 ",
+//     number: 9,
+//     id: "id1",
+//     priority: "priority1",
+//     categoryId: "inbox",
+//   },
+//   id2: {
+//     title: "Todo 2 ",
+//     number: 9,
+//     id: "id2",
+//     priority: "priority2",
+//     categoryId: "inbox",
+//   },
+//   id3: {
+//     title: "Todo 3 ",
+//     number: 9,
+//     id: "id3",
+//     priority: "priority3",
+//     categoryId: "project1",
+//   },
+//   id4: {
+//     title: "Todo 4 ",
+//     number: 9,
+//     id: "id4",
+//     priority: "priority4",
+//     categoryId: "project1",
+//   },
+//   id5: {
+//     title: "Todo 5 ",
+//     number: 9,
+//     id: "id5",
+//     priority: "priority1",
+//     categoryId: "project5",
+//   },
+//   id6: {
+//     title: "Todo 6 ",
+//     number: 9,
+//     id: "id6",
+//     priority: "priority1",
+//     categoryId: "project6",
+//   },
+// };
 
 export const filters = {
   id1: {

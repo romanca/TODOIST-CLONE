@@ -1,17 +1,19 @@
 import { Link } from "@reach/router";
 import React from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import useVisibiltyState from "../../hooks/useVisibiltyState";
 import { useTodos } from "../../Providers/ItemProvider";
+import Icon from "../../shared/Icon";
 import FavoriteItemDropDown from "../DropDowns/FavoriteItemDropDown";
 
 const ItemsContainer = styled.div`
+  font-weight: ${(props) => props.theme.spaces[26]};
+  border-radius: ${(props) => props.theme.spaces[1]};
+  width: ${(props) => props.theme.spaces[27]};
   height: ${(props) => props.theme.spaces[10]};
-  width: ${(props) => props.theme.spaces[11]};
   display: flex;
-  cursor: pointer;
   justify-content: space-between;
-  padding-left: ${(props) => props.theme.spaces[1]};
+  align-items: center;
   :hover {
     background: ${(props) => props.theme.colors.muted3};
     border-radius: ${(props) => props.theme.spaces[1]};
@@ -23,29 +25,37 @@ const Title = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-const ContentTitleContainer = styled.div`
+
+const TogglingButtonContainer = styled.div`
+  width: ${(props) => props.theme.spaces[85]};
+  height: ${(props) => props.theme.spaces[10]};
   display: flex;
+  justify-content: center;
   align-items: center;
-  word-break: break-all;
-  padding: ${(props) => props.theme.spaces[1]};
-  justify-content: space-between;
-  width: ${(props) => props.theme.spaces[80]};
-  width: 130px;
-  height: ${(props) => props.theme.spaces[12]};
-  font-size: ${(props) => props.theme.spaces[14]};
-  color: ${(props) => props.theme.colors.muted5};
+  margin-top: ${(props) => props.theme.spaces[56]};
+  font-size: ${(props) => props.theme.spaces[15]};
+  color: grey;
+  cursor: pointer;
 `;
 
-const CounterContainer = styled.div`
+const ContentTitleContainer = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${(props) => props.theme.colors.muted4};
-  font-size: ${(props) => props.theme.spaces[15]};
+  margin-top: ${(props) => props.theme.spaces[56]};
+  color: ${(props) => props.theme.colors.muted5};
+  font-size: ${(props) => props.theme.spaces[14]};
 `;
 
 const ContentIconContainer = styled.div`
-  width: ${(props) => props.theme.spaces[5]};
+  width: ${(props) => props.theme.spaces[85]};
+  height: ${(props) => props.theme.spaces[31]};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: ${(props) => props.theme.spaces[30]};
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -59,38 +69,51 @@ const FavoriteItem = ({ to, item }) => {
     toggle,
     handleToggleOpen,
     handleToggleClose,
+    hover,
     ref,
   } = useVisibiltyState();
   const todos = useTodos();
+  const { colors } = useTheme();
+
+  // const renderTodosCounter = React.useCallback(() => {
+  //   return Object.values(todos).filter((i) => i.categoryId === item.id).length;
+  // }, [todos, item.id]);
+  const renderTodosCounter = React.useCallback(() => {
+    return Object.values(todos)
+      .filter((i) => i.categoryId === item.id)
+      .filter((i) => !i.visible).length;
+  }, [todos, item.id]);
 
   return (
     <ItemsContainer
+      style={{
+        backgroundColor: hover && colors["muted3"],
+        borderRadius: 5 && open && colors["muted3"],
+      }}
       onMouseEnter={handleToggleOpen}
       onMouseLeave={open ? handleToggleOpen : handleToggleClose}
       ref={ref}
     >
-      <Link to={to} style={{ textDecoration: "none", width: 15 }}>
+      <StyledLink to={to}>
+        <ContentIconContainer>
+          <Icon name="dot" color={item.color.color} />
+        </ContentIconContainer>
         <ContentTitleContainer>
           <Title>{item.title}</Title>
         </ContentTitleContainer>
-      </Link>
-      {toggle ? (
-        <FavoriteItemDropDown
-          item={item}
-          open={open}
-          handleOpenClose={handleOpenClose}
-          handleClose={handleClose}
-        />
-      ) : (
-        <ContentIconContainer>
-          <CounterContainer>
-            {
-              Object.values(todos).filter((i) => i.categoryId === item.id)
-                .length
-            }
-          </CounterContainer>
-        </ContentIconContainer>
-      )}
+      </StyledLink>
+      <TogglingButtonContainer>
+        {toggle ? (
+          <FavoriteItemDropDown
+            item={item}
+            open={open}
+            handleOpenClose={handleOpenClose}
+            handleClose={handleClose}
+          />
+        ) : (
+          renderTodosCounter() !== 0 && renderTodosCounter()
+        )}
+      </TogglingButtonContainer>
     </ItemsContainer>
   );
 };

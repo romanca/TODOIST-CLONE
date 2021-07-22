@@ -1,12 +1,12 @@
-import { isRedirect, navigate } from "@reach/router";
 import React from "react";
-import styled from "styled-components";
+import { navigate } from "@reach/router";
+import styled, { useTheme } from "styled-components";
 import { useProjectActions } from "../../../Providers/ItemProvider";
 import { useModal } from "../../../Providers/ModalProvider";
 import Icon from "../../../shared/Icon";
 import { selectedItems } from "../../../shared/mockData";
 import ColorPicker from "../../Pickers/ColorPicker";
-import SwitchInput from "./SwitchInput";
+import SwitchInput from "../../Inputs/SwitchInput";
 
 const MainContentContainer = styled.div`
   width: ${(props) => props.theme.spaces[23]};
@@ -136,11 +136,9 @@ const ProjectsModalContent = () => {
   const ref = React.useRef();
   const defaultItem = selectedItems["id18"];
   const [selectedOption, setSelectedOption] = React.useState(defaultItem);
+  const [favorteItem, setFavoriteItem] = React.useState(false);
   const colors = selectedOption || defaultItem;
-
-  React.useEffect(() => {
-    OptionClicked();
-  }, []);
+  const { spaces } = useTheme();
 
   const OptionClicked = (value) => () => {
     setSelectedOption(value);
@@ -156,14 +154,19 @@ const ProjectsModalContent = () => {
     setTitle(e.target.value);
   }, []);
 
+  const handleFavoriteChange = () => {
+    setFavoriteItem((current) => !current);
+  };
+
   const handleSubmitProject = React.useCallback(() => {
     const id = String(Date.now());
     const color = colors;
-    createProject(title, id, color);
+    const favorite = favorteItem;
+    createProject(title, id, color, favorite);
     setTitle("");
     closeModalDialog();
     navigate(`/project/${id}`);
-  }, [title, colors, closeModalDialog, createProject]);
+  }, [title, colors, closeModalDialog, createProject, favorteItem]);
 
   return (
     <MainContentContainer>
@@ -190,7 +193,7 @@ const ProjectsModalContent = () => {
           OptionClicked={OptionClicked}
         />
         <FormField>
-          <SwitchInput />
+          <SwitchInput value={favorteItem} onChange={handleFavoriteChange} />
         </FormField>
       </ContentContainer>
       <ContentFooter>
@@ -201,7 +204,7 @@ const ProjectsModalContent = () => {
           <AddButton
             onClick={handleSubmitProject}
             type="button"
-            style={{ opacity: 0.5 }}
+            style={{ opacity: spaces[87] }}
             disabled
           >
             Add
