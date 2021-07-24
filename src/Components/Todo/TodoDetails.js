@@ -328,7 +328,8 @@ const TodoDetails = () => {
                 color={colors["primary2"]}
               />
             ) : (
-              <Icon name="dot" color={selectedOption?.color?.color} />
+              // <Icon name="dot" color={selectedOption?.color?.color} />
+              <Icon name="dot" />
             )}
           </TodosProjectsIconContainer>
           <TodosProjectsTitleContainer>
@@ -457,7 +458,7 @@ const TodoDetails = () => {
                               ) : (
                                 <Icon
                                   name="dot"
-                                  color={i?.color?.color}
+                                  // color={i?.color?.color}
                                   style={{ fontSize: spaces[30] }}
                                 />
                               )}
