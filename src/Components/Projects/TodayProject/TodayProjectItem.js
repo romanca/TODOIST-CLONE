@@ -80,9 +80,9 @@ const TodoTitle = styled.div`
 
 const TodoButtonsContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   height: ${(props) => props.theme.spaces[12]};
-  margin-right: ${(props) => props.theme.spaces[65]};
+  /* margin-right: ${(props) => props.theme.spaces[65]}; */
   margin-top: ${(props) => props.theme.spaces[43]};
   padding-left: ${(props) => props.theme.spaces[37]};
   position: absolute;
@@ -106,34 +106,12 @@ const TodoEditButton = styled.button`
   outline: none;
   background-color: transparent;
   cursor: pointer;
-`;
-
-const TodoScheduleButton = styled.button`
-  width: ${(props) => props.theme.spaces[12]};
-  height: ${(props) => props.theme.spaces[12]};
-  color: ${(props) => props.theme.colors.text2};
-  font-size: ${(props) => props.theme.spaces[14]};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: ${(props) => props.theme.spaces[8]} solid transparent;
-  outline: none;
-  cursor: pointer;
-  background-color: transparent;
-`;
-
-const TodoCommentButton = styled.button`
-  width: ${(props) => props.theme.spaces[12]};
-  height: ${(props) => props.theme.spaces[12]};
-  color: ${(props) => props.theme.colors.text3};
-  font-size: ${(props) => props.theme.spaces[14]};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: ${(props) => props.theme.spaces[8]} solid transparent;
-  outline: none;
-  background-color: transparent;
-  cursor: pointer;
+  :hover {
+    background: ${(props) => props.theme.colors.muted3};
+    width: ${(props) => props.theme.spaces[12]};
+    height: ${(props) => props.theme.spaces[12]};
+    border-radius: ${(props) => props.theme.spaces[0]};
+  }
 `;
 
 const TodoDotsButton = styled.button`
@@ -184,11 +162,23 @@ const ProjectTitleContainer = styled.div`
 `;
 
 const TodayProjectItem = ({ item }) => {
-  const { toggle, handleToggle, handleHover, hover } = useVisibiltyState();
+  const {
+    toggle,
+    handleToggle,
+    handleHover,
+    hover,
+    handleOpenClose,
+    open,
+    ref,
+    handleClose,
+  } = useVisibiltyState();
   const { completeTodo } = useTodoActions();
   const projectItems = useDefaultTodos();
   const project = React.useMemo(
-    () => Object.values(projectItems).find((i) => i.id === item.categoryId),
+    () =>
+      item
+        ? Object.values(projectItems).find((i) => i.id === item.categoryId)
+        : [],
     [projectItems, item.categoryId]
   );
   const { colors } = useTheme();
@@ -200,15 +190,18 @@ const TodayProjectItem = ({ item }) => {
     }, 500);
   };
 
+  const handleEditTodo = () => {
+    handleToggle();
+    handleClose();
+  };
+
+  if (!item || !project) return null;
+
   return (
     <Container>
       {!toggle ? (
         <MainTodoItemContainer>
-          <MainDropDownIconButtonContainer>
-            <DropDownIconButtonContainer>
-              <Icon name="th" />
-            </DropDownIconButtonContainer>
-          </MainDropDownIconButtonContainer>
+          <MainDropDownIconButtonContainer></MainDropDownIconButtonContainer>
           <CheckBoxContainer onClick={() => handleCompleteTodo(item)}>
             <CheckBoxButton
               onMouseEnter={handleHover}
@@ -266,17 +259,17 @@ const TodayProjectItem = ({ item }) => {
             </ProjectContainer>
           </TitleContainer>
           <TodoButtonsContainer>
-            <TodoEditButton onClick={handleToggle}>
+            <TodoEditButton onClick={handleEditTodo}>
               <Icon name="edit" />
             </TodoEditButton>
-            <TodoScheduleButton>
-              <Icon name="calendar1" />
-            </TodoScheduleButton>
-            <TodoCommentButton>
-              <Icon name="comment" />
-            </TodoCommentButton>
             <TodoDotsButton>
-              <TodoItemDropDown item={item} handleToggle={handleToggle} />
+              <TodoItemDropDown
+                item={item}
+                handleToggle={handleToggle}
+                handleOpenClose={handleOpenClose}
+                open={open}
+                divRef={ref}
+              />
             </TodoDotsButton>
           </TodoButtonsContainer>
         </MainTodoItemContainer>

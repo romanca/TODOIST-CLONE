@@ -129,6 +129,13 @@ const ProjectsPicker = ({
   const { open, handleOpenClose, ref } = useVisibiltyState();
   const { spaces, colors } = useTheme();
 
+  const usedOption =
+    typeof selectedOption === "string"
+      ? { id: selectedOption }
+      : selectedOption
+      ? selectedOption
+      : defaultProject;
+
   const renderDefaultProject = Object.values(projects)
     .filter((i) => i.id !== todayId)
     .filter((i) => i.id === inboxId)
@@ -168,7 +175,7 @@ const ProjectsPicker = ({
       <ProjectsPickerButton onClick={handleOpenClose}>
         <ProjectPickerIconContainer>
           <div>
-            {selectedOption.id === inboxId || defaultProject.id === inboxId ? (
+            {usedOption.id === inboxId ? (
               <Icon name="inbox" />
             ) : (
               <Icon name="dot" style={{ fontSize: 10 }} />

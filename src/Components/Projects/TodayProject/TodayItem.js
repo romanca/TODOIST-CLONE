@@ -1,11 +1,10 @@
 import React from "react";
-import useVisibiltyState from "../../hooks/useVisibiltyState";
-import { formatDateToTodoDate } from "../../shared/date-formatter";
 import styled from "styled-components";
-import MainInfoContent from "../MainInfoContent";
-import SubmitFormInput from "../SubmitFormInput";
 import { useCompletedTodos, useDefaultTodos } from "../../../hooks/selectors";
 import TodayProjectItem from "./TodayProjectItem";
+import useVisibiltyState from "../../../hooks/useVisibiltyState";
+import { formatDateToTodoDate } from "../../../shared/date-formatter";
+import SubmitFormInput from "../../Inputs/SubmitFormInput";
 
 const HeaderContentTitleContainer = styled.div`
   display: flex;
@@ -43,31 +42,6 @@ const TitleDate = styled.div`
   margin-top: ${(props) => props.theme.spaces[0]};
 `;
 
-// const SortButtonContainer = styled.div`
-//   display: flex;
-//   align-items: center;
-//   color: #333;
-// `;
-
-// const SortButton = styled.button`
-//   display: flex;
-//   align-items: center;
-//   margin-left: 16px;
-//   text-decoration: none;
-//   color: grey;
-//   border-radius: 3px;
-//   cursor: pointer;
-//   border: 1px solid transparent;
-//   outline: none;
-//   background: transparent;
-// `;
-
-// const SortButtonTitle = styled.span`
-//   font-size: 12px;
-//   margin-left: 6px;
-//   margin-right: 6px;
-// `;
-
 const ContentContainer = styled.div`
   max-width: ${(props) => props.theme.spaces[54]};
   margin: ${(props) => props.theme.spaces[8]} auto;
@@ -87,39 +61,8 @@ const HeaderContainer = styled.div`
   padding-top: ${(props) => props.theme.spaces[55]};
 `;
 
-// const ContentSection = styled.div``;
-
-// const SectionHeader = styled.div`
-//   display: flex;
-//   align-items: center;
-//   position: -webkit-sticky;
-//   position: sticky;
-//   top: var(--view-header-height);
-//   background-color: #fff;
-//   border: #ddd;
-//   font-size: 14px;
-//   border-bottom: 1px solid #f0f0f0;
-//   padding: 0;
-//   z-index: 2;
-// `;
-
-// const SectionHeaderTitle = styled.h2`
-//   display: flex;
-//   align-items: center;
-//   position: -webkit-sticky;
-//   position: sticky;
-//   top: var(--view-header-height);
-//   background-color: #fff;
-//   border: #ddd;
-//   font-size: 14px;
-//   border-bottom: 1px solid #f0f0f0;
-//   padding: 0;
-//   z-index: 2;
-//   width: 100%;
-//   background: green;
-// `;
-
 const TodayItem = (props) => {
+  console.log("halloo");
   const projectItems = useDefaultTodos();
   const item = React.useMemo(
     () => Object.values(projectItems).find((i) => i.id === props.id),
@@ -139,7 +82,10 @@ const TodayItem = (props) => {
     return Object.values(todos)
       .filter((i) => formatDateToTodoDate(i.date) <= formatedCurrentDay)
       .filter((i) => i.date !== "")
-      .map((i) => <TodayProjectItem item={i} key={i.id} />);
+      .map((i) => {
+        console.log({ i, todos });
+        return <TodayProjectItem item={i} key={i.id} />;
+      });
   };
 
   return (
@@ -151,29 +97,17 @@ const TodayItem = (props) => {
             <TitleDate>{formatedCurrentDay}</TitleDate>
           </TitleContainer>
         </HeaderContentTitleContainer>
-        {/* <SortButtonContainer>
-          <SortButton>
-            <Icon name="longArrowDown" style={{ fontSize: 16 }} />
-            <Icon name="longArrowUp" style={{ marginLeft: 2, fontSize: 16 }} />
-            <SortButtonTitle>Sort</SortButtonTitle>
-          </SortButton>
-        </SortButtonContainer> */}
       </HeaderContainer>
       <ContentContainer>
-        {/* <ContentSection>
-          <SectionHeader>
-            <SectionHeaderTitle>Overdue</SectionHeaderTitle>
-          </SectionHeader>
-        </ContentSection> */}
-        {renderTodosCounter() !== 0 && renderTodos()}
+        {renderTodos()}
         <SubmitFormInput toggle={toggle} handleToggle={handleToggle} />
-        {renderTodosCounter === 0 && (
+        {/* {renderTodosCounter === 0 && (
           <MainInfoContent
             item={item}
             toggle={toggle}
             handleToggle={handleToggle}
           />
-        )}
+        )} */}
       </ContentContainer>
     </Container>
   );

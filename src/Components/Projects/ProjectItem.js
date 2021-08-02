@@ -202,18 +202,6 @@ const ProjectItem = (props) => {
             </Container>
           )}
           <HeaderContentButtonsContainer>
-            {/* <HeaderButton>
-              <HeaderButtonsIconContainer>
-                <Icon name="comment" />
-              </HeaderButtonsIconContainer>
-              <HeaderButtonTitleContainer>Comments</HeaderButtonTitleContainer>
-            </HeaderButton>
-            <HeaderButton>
-              <HeaderButtonsIconContainer>
-                <Icon name="arrows" />
-              </HeaderButtonsIconContainer>
-              <HeaderButtonTitleContainer>Sort</HeaderButtonTitleContainer>
-            </HeaderButton> */}
             <ProjectDropDown
               item={item}
               handleVisible={handleVisible}

@@ -7,6 +7,16 @@ const useVisibiltyState = () => {
   const [toggle, setToggle] = React.useState(false);
   const [hover, setHover] = React.useState(false);
   const ref = React.useRef(null);
+  const [expand, setExpand] = React.useState(false);
+  const inputRef = React.useRef(null);
+
+  const handleExpand = () => {
+    setExpand(true);
+  };
+
+  const handleDexpand = () => {
+    setExpand(false);
+  };
 
   const handleOpenClose = React.useCallback(() => {
     setOpen((current) => !current);
@@ -71,6 +81,7 @@ const useVisibiltyState = () => {
         handleHoverClose();
         handleToggleClose();
         handleVisibleClose();
+        handleDexpand();
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -83,6 +94,7 @@ const useVisibiltyState = () => {
     handleHoverClose,
     handleToggleClose,
     handleVisibleClose,
+    handleDexpand,
   ]);
 
   return {
@@ -106,6 +118,10 @@ const useVisibiltyState = () => {
     handleHover,
     handleVisibleOpen,
     handleVisibleClose,
+    expand,
+    handleDexpand,
+    handleExpand,
+    inputRef,
   };
 };
 export default useVisibiltyState;

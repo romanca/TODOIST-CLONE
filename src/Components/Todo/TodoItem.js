@@ -61,7 +61,7 @@ const TodoButtonsContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   height: ${(props) => props.theme.spaces[12]};
-  margin-right: ${(props) => props.theme.spaces[65]};
+  /* margin-right: ${(props) => props.theme.spaces[65]}; */
   margin-top: ${(props) => props.theme.spaces[43]};
   padding-left: ${(props) => props.theme.spaces[37]};
   position: absolute;
@@ -189,11 +189,6 @@ const TodoItem = ({ item }) => {
               onMouseLeave={open ? handleVisibleOpen : handleVisibleClose}
               onMouseEnter={handleVisibleOpen}
             >
-              {/* <MainDropDownIconButtonContainer>
-                <DropDownIconButtonContainer>
-                  <Icon name="th" />
-                </DropDownIconButtonContainer>
-              </MainDropDownIconButtonContainer> */}
               <CheckBoxContainer onClick={() => handleCompleteTodo(item)}>
                 <CheckBoxButton
                   onMouseEnter={handleHover}

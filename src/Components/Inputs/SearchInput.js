@@ -28,7 +28,8 @@ const Input = styled.input`
   background: ${(props) => props.theme.colors.background};
   border: none;
   outline: none;
-  width: ${(props) => props.theme.spaces[27]};
+  /* width: ${(props) => props.theme.spaces[27]}; */
+  width: 450px;
   display: inline-block;
   text-align: start;
 `;
@@ -58,6 +59,7 @@ const CrossContainer = styled.div`
     background: ${(props) => props.theme.colors.muted3};
     border-radius: ${(props) => props.theme.spaces[0]};
     cursor: pointer;
+  }
 `;
 
 const Plus = styled.div`
@@ -139,9 +141,7 @@ const ProjectTitleContainer = styled.div`
 const Container = styled.div``;
 
 const SearchInput = () => {
-  const [expand, setExpand] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
-  const { ref } = useVisibiltyState();
   const inputRef = React.useRef(null);
   const expandedWidth = 450;
   const { todos } = useTodos();
@@ -153,7 +153,7 @@ const SearchInput = () => {
 
   React.useEffect(() => {
     if (document.activeElement === inputRef) {
-      setExpand(true);
+      setVisible(true);
     }
   }, []);
 
@@ -161,33 +161,38 @@ const SearchInput = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleVisible = () => {
-    setVisible((current) => !current);
+  const handleVisibleTrue = () => {
+    setVisible(true);
   };
 
-  const handleExpand = () => {
-    setExpand(true);
-    handleVisible();
-  };
-
-  const handleClose = () => {
-    handleVisible();
-    setExpand(false);
-    setSearchTerm("");
+  const handleVisibleFalse = () => {
+    setVisible(false);
   };
 
   const handleEditSelectedTodo = (i) => {
     handleSelectedTodo(i);
-    handleClose();
     openTododetailsModal();
+    handleVisibleFalse();
   };
+
+  React.useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (inputRef.current && !inputRef.current.contains(e.target)) {
+        handleVisibleFalse();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return function cleanup() {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [inputRef, handleVisibleFalse]);
 
   const searchProjects = Object.values(projectsItems)
     .filter((i) => i.title.toLowerCase().includes(searchTerm.toLowerCase()))
     .map((i) => {
       const to = `project/${i.id}`;
       return (
-        <StyledLink to={to} onClick={handleClose}>
+        <StyledLink to={to} onClick={handleVisibleFalse}>
           <SearchItemContainer>
             <IconContainer>
               <Icon name="dot" color={i.color.color} />
@@ -219,315 +224,32 @@ const SearchInput = () => {
     });
 
   return (
-    <SearchContainer style={{ width: expand && expandedWidth }}>
+    <SearchContainer style={{ width: 450 }}>
       <IconSearchContainer>
         <Icon name="search" />
       </IconSearchContainer>
       <Input
         placeholder="Find"
-        onFocus={handleExpand}
-        onBlur={handleClose}
-        ref={inputRef}
+        onClick={handleVisibleTrue}
         value={searchTerm}
         onChange={handleChange}
       />
       {visible && (
-        <CrossContainer onClick={handleClose}>
+        <CrossContainer onClick={handleVisibleFalse}>
           <Plus>+</Plus>
         </CrossContainer>
       )}
-      {
-        searchTodos.length || searchProjects.length ? (
-          <Container>
-            {visible && (
-              <CollapsiblePanelContainer>
-                {searchProjects}
-                {searchTodos}
-              </CollapsiblePanelContainer>
-            )}
-          </Container>
-        ) : null
-        // <div>
-        //   {visible && (
-        //     <div
-        //       style={{
-        //         width: 439,
-        //         height: "fit content",
-        //         border: "1px solid transparent",
-        //         position: "absolute",
-        //         marginTop: 30,
-        //         borderRadius: 4,
-        //         background: "#fff",
-        //         boxShadow: "0 1px 8px 0 rgb(0 0 0 / 8%)",
-        //         zIndex: 1,
-        //         marginLeft: -451,
-        //         color: "grey",
-        //         padding: " 4px 0 4px 11px",
-        //         fontSize: 13,
-        //       }}
-        //     >
-        //       No tasks matching
-        //     </div>
-        //   )}
-        // </div>
-      }
+      {searchTodos.length || searchProjects.length ? (
+        <Container ref={inputRef}>
+          {visible && (
+            <CollapsiblePanelContainer>
+              {searchProjects}
+              {searchTodos}
+            </CollapsiblePanelContainer>
+          )}
+        </Container>
+      ) : null}
     </SearchContainer>
   );
 };
 export default SearchInput;
-
-// import { Link } from "@reach/router";
-// import React from "react";
-// import styled from "styled-components";
-// import { useDefaultTodos } from "../hooks/selectors";
-// import useVisibiltyState from "../hooks/useVisibiltyState";
-// import { useItems, useTodoActions, useTodos } from "../Providers/ItemProvider";
-// import { useTodoDetailsDialog } from "../Providers/ModalProvider";
-// import Icon from "../shared/Icon";
-
-// const SearchContainer = styled.div`
-//   justify-content: center;
-//   display: flex;
-//   height: ${(props) => props.theme.spaces[4]};
-//   width: ${(props) => props.theme.spaces[6]};
-//   border-radius: ${(props) => props.theme.spaces[0]};
-//   border: ${(props) => props.theme.spaces[8]} solid
-//     ${(props) => props.theme.colors.background};
-//   margin-left: ${(props) => props.theme.spaces[1]};
-//   background: white;
-// `;
-
-// const Input = styled.input`
-//   background: ${(props) => props.theme.colors.background};
-//   border: none;
-//   outline: none;
-//   width: ${(props) => props.theme.spaces[27]};
-//   display: inline-block;
-//   text-align: start;
-// `;
-
-// const IconSearchContainer = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   padding-left: ${(props) => props.theme.spaces[3]};
-//   padding-right: ${(props) => props.theme.spaces[3]};
-//   color: ${(props) => props.theme.colors.text2};
-//   background: ${(props) => props.theme.colors.background};
-// `;
-
-// // const IconCrossContainer = styled.div`
-// //   display: flex;
-// //   align-items: center;
-// //   justify-content: center;
-// //   padding-left: ${(props) => props.theme.spaces[3]};
-// //   padding-right: ${(props) => props.theme.spaces[3]};
-// //   color: ${(props) => props.theme.colors.text};
-// //   background: ${(props) => props.theme.colors.background};
-// //   transform: rotate(45deg);
-// //   font-size: 40px;
-// //   :hover {
-// //     background: ${(props) => props.theme.colors.muted2};
-// //     border-radius: ${(props) => props.theme.spaces[9]};
-// //     cursor: pointer;
-// //   }
-// // `;
-// const CrossContainer = styled.button`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   margin-top: 1px;
-//   margin-left: ${(props) => props.theme.spaces[3]};
-//   margin-right: ${(props) => props.theme.spaces[3]};
-//   font-size: 30px;
-//   background: white;
-//   width: 24px;
-//   height: 24px;
-//   border: 1px solid transparent;
-//   outline: none;
-//   :hover {
-//     background: ${(props) => props.theme.colors.muted3};
-//     border-radius: 3px;
-//     cursor: pointer;
-// `;
-
-// const Plus = styled.div`
-//   transform: rotate(45deg);
-//   margin-top: 1px;
-//   margin-right: 1px;
-//   color: ${(props) => props.theme.colors.text4};
-// `;
-
-// const SearchItemContainer = styled.div`
-//   padding: 10px;
-//   height: 38px;
-//   box-sizing: border-box;
-//   display: flex;
-//   align-items: center;
-//   white-space: nowrap;
-//   color: #202020;
-//   cursor: pointer;
-// `;
-
-// const IconContainer = styled.div`
-//   width: 24px;
-//   height: 24px;
-//   margin-right: 10px;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   font-size: 12px;
-// `;
-
-// const TitleContainer = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   font-size: 13px;
-//   color: #202020;
-//   cursor: pointer;
-//   margin-right: 1em;
-// `;
-
-// const StyledLink = styled(Link)`
-//   text-decoration: none;
-// `;
-
-// const SearchInput = () => {
-//   const [expand, setExpand] = React.useState(false);
-//   const [visible, setVisible] = React.useState(false);
-//   const { open, handleOpen } = useVisibiltyState();
-//   const inputRef = React.useRef(null);
-//   const expandedWidth = 450;
-//   const { todos } = useTodos();
-//   const projects = useDefaultTodos();
-//   const { projectsItems } = useItems();
-//   const [searchTerm, setSearchTerm] = React.useState("");
-//   const openTododetailsModal = useTodoDetailsDialog();
-//   const { handleSelectedTodo } = useTodoActions();
-
-//   console.log(searchTerm);
-
-//   React.useEffect(() => {
-//     if (document.activeElement === inputRef) {
-//       setExpand(true);
-//     }
-//   }, []);
-
-//   const handleChange = (e) => {
-//     setSearchTerm(e.target.value);
-//   };
-
-//   const handleVisible = () => {
-//     setVisible((current) => !current);
-//   };
-
-//   const handleExpand = () => {
-//     setExpand(true);
-//     handleVisible();
-//   };
-//   const handleCollaps = () => {
-//     setExpand(false);
-//     handleVisible();
-//   };
-
-//   const handleClose = () => {
-//     handleVisible();
-//     setExpand(false);
-//     openTododetailsModal();
-//   };
-
-//   const handleEditSelectedTodo = (i) => {
-//     handleSelectedTodo(i);
-//   };
-
-//   const searchProjects = Object.values(projectsItems)
-//     .filter((i) => i.title.toLowerCase().includes(searchTerm.toLowerCase()))
-//     .map((i) => {
-//       const to = `project/${i.id}`;
-//       return (
-//         <StyledLink to={to}>
-//           <SearchItemContainer>
-//             <IconContainer>
-//               <Icon name="dot" color={i.color.color} />
-//             </IconContainer>
-//             <TitleContainer>{i.title}</TitleContainer>
-//           </SearchItemContainer>
-//         </StyledLink>
-//       );
-//     });
-
-//   const searchTodos = Object.values(todos)
-//     .filter((i) => i.title.toLowerCase().includes(searchTerm.toLowerCase()))
-//     .map((i) => {
-//       const project = Object.values(projects).find(
-//         (p) => p.id === i.categoryId
-//       );
-//       return (
-//         <SearchItemContainer onClick={() => handleEditSelectedTodo(i)}>
-//           <IconContainer>
-//             <div
-//               style={{
-//                 width: 12,
-//                 height: 12,
-//                 borderRadius: "50%",
-//                 border: "1px solid grey",
-//               }}
-//             ></div>
-//           </IconContainer>
-//           <TitleContainer>{i.title}</TitleContainer>
-//           <div
-//             style={{
-//               color: "#999",
-//               color: "#999",
-//               fontSize: 13,
-//             }}
-//           >
-//             {project.title}
-//           </div>
-//         </SearchItemContainer>
-//       );
-//     });
-
-//   return (
-//     <SearchContainer style={{ width: expand && expandedWidth }}>
-//       <IconSearchContainer>
-//         <Icon name="search" />
-//       </IconSearchContainer>
-//       <Input
-//         placeholder="Find"
-//         onFocus={handleExpand}
-//         onBlur={handleCollaps}
-//         ref={inputRef}
-//         value={searchTerm}
-//         onChange={handleChange}
-//       />
-
-//       {visible && (
-//         <CrossContainer>
-//           <Plus>+</Plus>
-//         </CrossContainer>
-//       )}
-//       {visible && (
-//         <div
-//           style={{
-//             width: 450,
-//             minHeight: 20,
-//             height: "fit-content",
-//             border: "1px solid transparent",
-//             position: "absolute",
-//             marginTop: 30,
-//             borderRadius: 4,
-//             background: "#fff",
-//             boxShadow: "0 1px 8px 0 rgb(0 0 0 / 8%)",
-//             zIndex: 1000,
-//           }}
-//         >
-//           {searchProjects}
-//           {searchTodos}
-//         </div>
-//       )}
-//     </SearchContainer>
-//   );
-// };
-// export default SearchInput;

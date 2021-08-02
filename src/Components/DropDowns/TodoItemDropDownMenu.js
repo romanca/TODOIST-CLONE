@@ -117,7 +117,7 @@ const TodoItemDropDown = ({
   handleToggle,
   open,
   handleOpenClose,
-  ref,
+  divRef,
 }) => {
   const openTodoModal = useTodoMessageDialog();
   const { handleSelectedTodo, editTodo } = useTodoActions();
@@ -146,7 +146,7 @@ const TodoItemDropDown = ({
         <Icon name="horizontalDots" />
       </IconButtonContainer>
       {open && (
-        <MainTodoItemDropDownContainer ref={ref}>
+        <MainTodoItemDropDownContainer ref={divRef}>
           <MenuItem onClick={handleToggle}>
             <IconMenuContainer>
               <Icon name="edit" />
