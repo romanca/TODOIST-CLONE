@@ -36,7 +36,6 @@ const CheckBoxButton = styled.span`
   height: ${(props) => props.theme.spaces[32]};
   width: ${(props) => props.theme.spaces[32]};
   border-radius: ${(props) => props.theme.spaces[25]};
-  // z-index: 2;
 `;
 
 const TodoTitleContainer = styled.div`
