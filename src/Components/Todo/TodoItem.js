@@ -41,11 +41,11 @@ const CheckBoxButton = styled.span`
 const TodoTitleContainer = styled.div`
   flex: ${(props) => props.theme.spaces[35]};
   margin-right: ${(props) => props.theme.spaces[20]};
-  font-size: ${(props) => props.theme.spaces[14]}
-  wordwrap: break-word;
-  wordbreak: break-word;
+  font-size: ${(props) => props.theme.spaces[14]};
+  word-wrap: break-word;
+  word-break: break-word;
   display: flex;
-  margin-bottom:  ${(props) => props.theme.spaces[0]};
+  margin-bottom: ${(props) => props.theme.spaces[0]};
 `;
 
 const TodoTitle = styled.div`
