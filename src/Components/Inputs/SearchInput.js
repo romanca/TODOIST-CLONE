@@ -143,7 +143,6 @@ const Container = styled.div``;
 const SearchInput = () => {
   const [visible, setVisible] = React.useState(false);
   const inputRef = React.useRef(null);
-  const expandedWidth = 450;
   const { todos } = useTodos();
   const projects = useDefaultTodos();
   const { projectsItems } = useItems();

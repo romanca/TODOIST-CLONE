@@ -26,7 +26,7 @@ const App = () => {
           <LocationProvider history={history}>
             <Router>
               <Layout path="/">
-                <Redirect noThrow from="/" to="project/inbox" />
+                <Redirect noThrow from="/" to="/project/inbox" />
                 <ProjectItem path="project/:id" />
                 <TodayItem path="today/:id" />
                 <Items path="filter/:id" />

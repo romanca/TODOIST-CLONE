@@ -82,8 +82,7 @@ const TodoButtonsContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   height: ${(props) => props.theme.spaces[12]};
-  /* margin-right: ${(props) => props.theme.spaces[65]}; */
-  margin-top: ${(props) => props.theme.spaces[43]};
+  margin-top: ${(props) => props.theme.spaces[1]};
   padding-left: ${(props) => props.theme.spaces[37]};
   position: absolute;
   right: ${(props) => props.theme.spaces[28]};
@@ -201,7 +200,7 @@ const TodayProjectItem = ({ item }) => {
     <Container>
       {!toggle ? (
         <MainTodoItemContainer>
-          <MainDropDownIconButtonContainer>cwe</MainDropDownIconButtonContainer>
+          <MainDropDownIconButtonContainer></MainDropDownIconButtonContainer>
           <CheckBoxContainer onClick={() => handleCompleteTodo(item)}>
             <CheckBoxButton
               onMouseEnter={handleHover}
