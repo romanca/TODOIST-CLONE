@@ -118,6 +118,7 @@ const TodoItemDropDown = ({
   open,
   handleOpenClose,
   divRef,
+  handleClose,
 }) => {
   const openTodoModal = useTodoMessageDialog();
   const { handleSelectedTodo, editTodo } = useTodoActions();
@@ -127,12 +128,17 @@ const TodoItemDropDown = ({
   const selectPriority = (i) => {
     editTodo({ ...item, priority: i });
     setSelectedPriority(i);
-    handleOpenClose();
+    handleClose();
   };
 
   const handleSelectTodo = (item) => {
     handleSelectedTodo(item);
     handleOpenClose();
+  };
+
+  const handleEditTodo = () => {
+    handleClose();
+    handleToggle();
   };
 
   return (
@@ -147,13 +153,13 @@ const TodoItemDropDown = ({
       </IconButtonContainer>
       {open && (
         <MainTodoItemDropDownContainer ref={divRef}>
-          <MenuItem onClick={handleToggle}>
+          <MenuItem onClick={handleEditTodo}>
             <IconMenuContainer>
               <Icon name="edit" />
             </IconMenuContainer>
             <Title>Edit task</Title>
           </MenuItem>
-          <Container onClick={handleOpenClose}>
+          <Container onClick={handleClose}>
             <MenuItem onClick={openTodoModal}>
               <IconMenuContainer>
                 <Icon name="trash" />

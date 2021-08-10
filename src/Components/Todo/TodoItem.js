@@ -168,6 +168,7 @@ const TodoItem = ({ item }) => {
     handleVisibleOpen,
     handleVisibleClose,
     ref,
+    handleClose,
   } = useVisibiltyState();
   const [date, setDate] = React.useState("");
   const { colors } = useTheme();
@@ -259,7 +260,8 @@ const TodoItem = ({ item }) => {
                       handleToggle={handleToggle}
                       open={open}
                       handleOpenClose={handleOpenClose}
-                      ref={ref}
+                      handleClose={handleClose}
+                      divRef={ref}
                     />
                   </TodoDotsButton>
                 </TodoButtonsContainer>

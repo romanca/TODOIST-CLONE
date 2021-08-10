@@ -95,6 +95,7 @@ const useVisibiltyState = () => {
     handleToggleClose,
     handleVisibleClose,
     handleDexpand,
+    handleOpenClose,
   ]);
 
   return {

@@ -69,8 +69,7 @@ const CancelButton = styled.button`
   color: ${(props) => props.theme.colors.text3};
   cursor: pointer;
   font-size: ${(props) => props.theme.spaces[36]};
-  padding: ${(props) => props.theme.spaces[39]}
-    ${(props) => props.theme.spaces[1]};
+  padding: ${(props) => props.theme.spaces[39]};
   border: ${(props) => props.theme.spaces[8]} solid transparent;
   outline: none;
   background-color: transparent;
@@ -113,7 +112,7 @@ const SubmitFormInput = () => {
   const [date, setDate] = React.useState("");
   const { createTodo } = useTodoActions();
   const [title, setTitle] = React.useState("");
-  const ref = React.useRef();
+  const inputRef = React.useRef();
   const projects = useDefaultTodos();
   const { id } = useParams();
   const project = id === todayId ? inboxId : id;
@@ -122,7 +121,7 @@ const SubmitFormInput = () => {
   const defaultPriority = priorities["priority4"];
   const [selectedPriority, setSelectedPriority] =
     React.useState(defaultPriority);
-  const { toggle, handleToggle } = useVisibiltyState();
+  const { toggle, handleToggle, ref } = useVisibiltyState();
   const projectId =
     (selectedOption && selectedOption.id) ||
     (defaultProject && defaultProject.id);
@@ -130,10 +129,10 @@ const SubmitFormInput = () => {
   React.useEffect(() => {
     if (toggle) {
       setTimeout(() => {
-        ref.current && ref.current.focus();
+        inputRef.current && inputRef.current.focus();
       }, 1);
     }
-  }, [ref, toggle]);
+  }, [inputRef, toggle]);
 
   const onOptionClicked = (i) => {
     setSelectedOption(i);
@@ -171,6 +170,7 @@ const SubmitFormInput = () => {
       setDate("");
       setSelectedOption(categoryId);
       setSelectedPriority(defaultPriority);
+      handleToggle();
     }
   }, [title, projectId, date, selectedPriority, createTodo, defaultPriority]);
 
@@ -182,14 +182,14 @@ const SubmitFormInput = () => {
           Add task
         </AddButton>
       ) : (
-        <Container>
+        <Container ref={ref}>
           <SubmitFormInputContainer>
             <FormInput
               placeholder="Task name"
               type="text"
               value={title}
               onChange={handleChange}
-              ref={ref}
+              ref={inputRef}
             />
             <SubmitFormContentButtonsContainer>
               <SubmitFormPickersContainer>

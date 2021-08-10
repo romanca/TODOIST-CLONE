@@ -16,23 +16,21 @@ import TodayItem from "./Components/Projects/TodayProject/TodayItem";
 import createHashSource from "hash-source";
 
 const App = () => {
-  let source = createHashSource();
-  let history = createHistory(source);
+  const source = createHashSource();
+  const history = createHistory(source);
 
   return (
     <ItemProvider>
       <Theme theme={theme}>
         <ModalProvider>
-          <LocationProvider history={history}>
-            <Router>
-              <Layout path="/">
-                <Redirect noThrow from="/" to="/project/inbox" />
-                <ProjectItem path="project/:id" />
-                <TodayItem path="today/:id" />
-                <Items path="filter/:id" />
-              </Layout>
-            </Router>
-          </LocationProvider>
+          <Router>
+            <Layout path="/">
+              <Redirect noThrow from="/" to="/project/inbox" />
+              <ProjectItem path="project/:id" />
+              <TodayItem path="today/:id" />
+              <Items path="filter/:id" />
+            </Layout>
+          </Router>
         </ModalProvider>
       </Theme>
     </ItemProvider>

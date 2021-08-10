@@ -2,7 +2,6 @@ import { Link } from "@reach/router";
 import React from "react";
 import styled from "styled-components";
 import { useDefaultTodos } from "../../hooks/selectors";
-import useVisibiltyState from "../../hooks/useVisibiltyState";
 import {
   useItems,
   useTodoActions,
@@ -10,7 +9,6 @@ import {
 } from "../../Providers/ItemProvider";
 import { useTodoDetailsDialog } from "../../Providers/ModalProvider";
 import Icon from "../../shared/Icon";
-// import { inboxId, todayId } from "../shared/constants";
 
 const SearchContainer = styled.div`
   justify-content: center;
@@ -28,8 +26,7 @@ const Input = styled.input`
   background: ${(props) => props.theme.colors.background};
   border: none;
   outline: none;
-  /* width: ${(props) => props.theme.spaces[27]}; */
-  width: 450px;
+  width: ${(props) => props.theme.spaces[27]};
   display: inline-block;
   text-align: start;
 `;
@@ -59,7 +56,6 @@ const CrossContainer = styled.div`
     background: ${(props) => props.theme.colors.muted3};
     border-radius: ${(props) => props.theme.spaces[0]};
     cursor: pointer;
-  }
 `;
 
 const Plus = styled.div`
@@ -97,6 +93,7 @@ const TitleContainer = styled.div`
   color: ${(props) => props.theme.colors.text};
   cursor: pointer;
   margin-right: ${(props) => props.theme.spaces[82]};
+  margin-left: -30px;
 `;
 
 const StyledLink = styled(Link)`
@@ -141,8 +138,10 @@ const ProjectTitleContainer = styled.div`
 const Container = styled.div``;
 
 const SearchInput = () => {
+  const [expand, setExpand] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const inputRef = React.useRef(null);
+  const expandedWidth = 450;
   const { todos } = useTodos();
   const projects = useDefaultTodos();
   const { projectsItems } = useItems();
@@ -152,7 +151,7 @@ const SearchInput = () => {
 
   React.useEffect(() => {
     if (document.activeElement === inputRef) {
-      setVisible(true);
+      setExpand(true);
     }
   }, []);
 
@@ -160,38 +159,62 @@ const SearchInput = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleVisibleTrue = () => {
-    setVisible(true);
+  const handleVisible = () => {
+    setVisible((current) => !current);
   };
 
-  const handleVisibleFalse = () => {
+  const handleExpandTrue = () => {
+    setExpand(true);
+    handleVisible();
+  };
+
+  const handleExpandFalse = () => {
+    setTimeout(() => {
+      setExpand(false);
+      handleVisibleClose();
+    }, 200);
+  };
+
+  const handleVisibleClose = () => {
     setVisible(false);
+  };
+
+  const handleClose = () => {
+    handleVisibleClose();
+    setExpand(false);
+    setSearchTerm("");
+  };
+
+  const handleCloseInput = () => {
+    setTimeout(() => {
+      handleClose();
+    }, 200);
   };
 
   const handleEditSelectedTodo = (i) => {
     handleSelectedTodo(i);
+    handleClose();
     openTododetailsModal();
-    handleVisibleFalse();
   };
 
   React.useEffect(() => {
     const handleClickOutside = (e) => {
       if (inputRef.current && !inputRef.current.contains(e.target)) {
-        handleVisibleFalse();
+        handleCloseInput();
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return function cleanup() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [inputRef, handleVisibleFalse]);
+  }, [inputRef, handleCloseInput]);
 
   const searchProjects = Object.values(projectsItems)
     .filter((i) => i.title.toLowerCase().includes(searchTerm.toLowerCase()))
     .map((i) => {
       const to = `project/${i.id}`;
       return (
-        <StyledLink to={to} onClick={handleVisibleFalse}>
+        <StyledLink to={to} onClick={handleClose}>
           <SearchItemContainer>
             <IconContainer>
               <Icon name="dot" color={i.color.color} />
@@ -203,18 +226,27 @@ const SearchInput = () => {
     });
 
   const searchTodos = Object.values(todos)
-    .filter((i) => i.title.toLowerCase().includes(searchTerm.toLowerCase()))
-    .map((i) => {
+    .filter((todo) =>
+      todo.title.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .map((todo) => {
       const project = Object.values(projects).find(
-        (p) => p.id === i.categoryId
+        (project) => project.id === todo.categoryId
       );
 
       return (
-        <SearchItemContainer onClick={() => handleEditSelectedTodo(i)}>
+        <SearchItemContainer onClick={() => handleEditSelectedTodo(todo)}>
           <IconContainer>
-            <CheckBoxIcon></CheckBoxIcon>
+            <CheckBoxIcon
+              style={{
+                border:
+                  todo.priority.id === "priority4"
+                    ? "1px solid grey"
+                    : `2px solid ${todo.priority.color}`,
+              }}
+            ></CheckBoxIcon>
           </IconContainer>
-          <TitleContainer>{i.title}</TitleContainer>
+          <TitleContainer>{todo.title}</TitleContainer>
           <ProjectTitleContainer>
             {project && project.title}
           </ProjectTitleContainer>
@@ -223,23 +255,25 @@ const SearchInput = () => {
     });
 
   return (
-    <SearchContainer style={{ width: 450 }}>
+    <SearchContainer style={{ width: expand && expandedWidth }}>
       <IconSearchContainer>
         <Icon name="search" />
       </IconSearchContainer>
       <Input
         placeholder="Find"
-        onClick={handleVisibleTrue}
+        onFocus={handleExpandTrue}
+        onBlur={handleExpandFalse}
+        ref={inputRef}
         value={searchTerm}
         onChange={handleChange}
       />
       {visible && (
-        <CrossContainer onClick={handleVisibleFalse}>
+        <CrossContainer onClick={handleClose}>
           <Plus>+</Plus>
         </CrossContainer>
       )}
       {searchTodos.length || searchProjects.length ? (
-        <Container ref={inputRef}>
+        <Container>
           {visible && (
             <CollapsiblePanelContainer>
               {searchProjects}
