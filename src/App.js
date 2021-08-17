@@ -23,15 +23,16 @@ const App = () => {
     <ItemProvider>
       <Theme theme={theme}>
         <ModalProvider>
-          <LocationProvider history={history}></LocationProvider>
-          <Router>
-            <Layout path="/">
-              <Redirect noThrow from="/" to="/project/inbox" />
-              <ProjectItem path="project/:id" />
-              <TodayItem path="today/:id" />
-              <Items path="filter/:id" />
-            </Layout>
-          </Router>
+          <LocationProvider history={history}>
+            <Router>
+              <Layout path="/">
+                <Redirect noThrow from="/" to="/project/inbox" />
+                <ProjectItem path="project/:id" />
+                <TodayItem path="today/:id" />
+                <Items path="filter/:id" />
+              </Layout>
+            </Router>
+          </LocationProvider>
         </ModalProvider>
       </Theme>
     </ItemProvider>
