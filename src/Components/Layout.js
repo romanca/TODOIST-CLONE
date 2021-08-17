@@ -12,6 +12,7 @@ const MainContentContainer = styled.div`
   display: flex;
   flex-grow: ${(props) => props.theme.spaces[35]};
   justify-content: center;
+  width: 100%;
 `;
 const ContentContainer = styled.div`
   display: flex;
@@ -24,6 +25,10 @@ const Container = styled.div``;
 
 const Content = styled.div`
   display: flex;
+  @media (max-width: 768px) {
+    display: flex;
+    width: 100%;
+  }
 `;
 
 const Layout = (props) => {

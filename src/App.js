@@ -23,6 +23,7 @@ const App = () => {
     <ItemProvider>
       <Theme theme={theme}>
         <ModalProvider>
+          <LocationProvider history={history}></LocationProvider>
           <Router>
             <Layout path="/">
               <Redirect noThrow from="/" to="/project/inbox" />

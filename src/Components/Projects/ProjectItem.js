@@ -32,6 +32,10 @@ const HeaderContent = styled.div`
     ${(props) => props.theme.spaces[57]};
   padding: ${(props) => props.theme.spaces[39]}
     ${(props) => props.theme.spaces[9]};
+  @media (max-width: 768px) {
+    display: flex;
+    width: 100%;
+  }
 `;
 
 const HeaderContentTitleContainer = styled.span`

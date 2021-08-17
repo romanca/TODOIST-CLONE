@@ -1,5 +1,5 @@
-import { getDay, getMonth, getYear } from "date-fns";
 import React from "react";
+import { getMonth, getYear } from "date-fns";
 import DatePickerRaw from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styled, { useTheme } from "styled-components";
@@ -29,7 +29,6 @@ const FormScheduleButton = styled.button`
 
 const TodoDateContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   margin: ${(props) => props.theme.spaces[28]};
   padding: ${(props) => props.theme.spaces[28]};
@@ -146,11 +145,6 @@ class DatePickerInput extends React.Component {
   }
 }
 
-const isWeekday = (date) => {
-  const day = getDay(date);
-  return day !== 0 && day !== 6;
-};
-
 const renderDayContents = (date) => {
   const tooltipText = `Tooltip for date: ${date}`;
   return <Container title={tooltipText}>{date}</Container>;
@@ -178,10 +172,9 @@ const DatePicker = ({ onChange, selected, placeholder }) => {
       <DatePickerRaw
         onChange={onChange}
         selected={selected}
-        // minDate={new Date()}
+        minDate={new Date()}
         customInput={<DatePickerInput placeholderText={placeholder} />}
         renderDayContents={renderDayContents}
-        // filterDate={isWeekday}
         renderCustomHeader={({ decreaseMonth, increaseMonth, date }) => (
           <DatePickerContainer>
             <FormatDateContainer>

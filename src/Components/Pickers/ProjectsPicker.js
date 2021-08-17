@@ -177,6 +177,23 @@ const ProjectsPicker = ({
       </ProjectsPickerBoxContentItemContainer>
     ));
 
+  const color = selectedOption?.color?.color || defaultProject?.color?.color;
+
+  const renderProjectIcon = () => {
+    if (color) {
+      return (
+        <Icon
+          name="dot"
+          style={{
+            fontSize: 10,
+          }}
+          color={color}
+        />
+      );
+    }
+    return null;
+  };
+
   return (
     <ContenContainer ref={ref}>
       <ProjectsPickerButton onClick={handleOpenClose}>
@@ -185,16 +202,7 @@ const ProjectsPicker = ({
             {usedOption.id === inboxId ? (
               <Icon name="inbox" color={colors["primary2"]} />
             ) : (
-              <Icon
-                name="dot"
-                style={{
-                  fontSize: 10,
-                }}
-                color={
-                  (selectedOption && selectedOption?.color?.color) ||
-                  (defaultProject && defaultProject?.color?.color)
-                }
-              />
+              renderProjectIcon()
             )}
           </Container>
         </ProjectPickerIconContainer>

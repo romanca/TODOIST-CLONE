@@ -14,11 +14,11 @@ const MainTodoItemContainer = styled.div`
   display: flex;
   align-items: stretch;
   position: relative;
-  padding: ${(props) => props.theme.spaces[28]};
   cursor: pointer;
   padding: ${(props) => props.theme.spaces[43]}
     ${(props) => props.theme.spaces[28]};
   margin-top: ${(props) => props.theme.spaces[62]};
+  width: 100%;
 `;
 
 const CheckBoxContainer = styled.div`
