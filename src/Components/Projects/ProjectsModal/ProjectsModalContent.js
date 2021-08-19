@@ -126,9 +126,6 @@ const InfoIconContainer = styled.div`
   color: ${(props) => props.theme.colors.text};
 `;
 
-//chcecked item background is background-color: #f3f3f3;;
-//if is checked and hovered background is #ccc
-
 const ProjectsModalContent = () => {
   const { closeModalDialog } = useModal();
   const { createProject } = useProjectActions();

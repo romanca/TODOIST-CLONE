@@ -8,6 +8,7 @@ import {
   LocationProvider,
   Redirect,
   Router,
+  BrowserRouter,
 } from "@reach/router";
 import ProjectItem from "./Components/Projects/ProjectItem";
 import Items from "./Components/Filters/Items";
@@ -23,16 +24,14 @@ const App = () => {
     <ItemProvider>
       <Theme theme={theme}>
         <ModalProvider>
-          <LocationProvider history={history}>
-            <Router>
-              <Layout path="/">
-                <Redirect noThrow from="/" to="/project/inbox" />
-                <ProjectItem path="project/:id" />
-                <TodayItem path="today/:id" />
-                <Items path="filter/:id" />
-              </Layout>
-            </Router>
-          </LocationProvider>
+          <Router>
+            <Layout exact path="/">
+              <Redirect noThrow from="/" to="/project/inbox" />
+              <ProjectItem path="project/:id" />
+              <TodayItem path="today/:id" />
+              <Items path="filter/:id" />
+            </Layout>
+          </Router>
         </ModalProvider>
       </Theme>
     </ItemProvider>
