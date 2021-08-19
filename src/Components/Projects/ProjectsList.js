@@ -28,7 +28,7 @@ const ProjectsList = () => {
       {filteredProjects && filteredProjects.length ? (
         <Container>
           {Object.values(filteredProjects).map((i) => {
-            const to = `project/${i.id}`;
+            const to = `app/project/${i.id}`;
             return (
               <Match path={to}>
                 {({ match }) => (

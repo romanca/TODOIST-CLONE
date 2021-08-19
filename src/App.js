@@ -8,7 +8,6 @@ import {
   LocationProvider,
   Redirect,
   Router,
-  BrowserRouter,
 } from "@reach/router";
 import ProjectItem from "./Components/Projects/ProjectItem";
 import Items from "./Components/Filters/Items";
@@ -21,20 +20,22 @@ const App = () => {
   const history = createHistory(source);
 
   return (
-    <ItemProvider>
-      <Theme theme={theme}>
-        <ModalProvider>
-          <Router>
-            <Layout exact path="/">
-              <Redirect noThrow from="/" to="/project/inbox" />
-              <ProjectItem path="project/:id" />
-              <TodayItem path="today/:id" />
-              <Items path="filter/:id" />
-            </Layout>
-          </Router>
-        </ModalProvider>
-      </Theme>
-    </ItemProvider>
+    <LocationProvider history={history} >
+      <ItemProvider>
+        <Theme theme={theme}>
+          <ModalProvider>
+            <Router>
+              <Layout exact path="/">
+                <Redirect noThrow from="/" to="/app/project/inbox" />
+                <ProjectItem path="/app/project/:id" />
+                <TodayItem path="/app/today/:id" />
+                <Items path="/app/filter/:id" />
+              </Layout>
+            </Router>
+          </ModalProvider>
+        </Theme>
+      </ItemProvider>
+    </LocationProvider>
   );
 };
 
