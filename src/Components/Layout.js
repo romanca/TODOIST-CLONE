@@ -6,6 +6,10 @@ import useVisibiltyState from "../hooks/useVisibiltyState";
 import { useProjectActions } from "../Providers/ItemProvider";
 import { useStaticProjectsItems } from "../hooks/selectors";
 import { hamburgerId } from "../shared/constants";
+import { Redirect, Router } from "@reach/router";
+import ProjectItem from "./Projects/ProjectItem";
+import TodayItem from "./Projects/TodayProject/TodayItem";
+import Items from "./Filters/Items";
 
 const MainContentContainer = styled.div`
   height: calc(100vh - 44px);
@@ -51,7 +55,15 @@ const Layout = (props) => {
             <Content>
               {!i.opened && <SideBar />}
               <MainContentContainer>
-                <ContentContainer>{props.children}</ContentContainer>
+                <ContentContainer>
+                  <Router>
+                    <Redirect noThrow from="/" to="project/inbox" />
+                    <ProjectItem path="project/:id" />
+                    <TodayItem path="today/:id" />
+                    <Items path="filter/:id" />
+                    <Redirect noThrow from="**" to="project/inbox" />
+                  </Router>
+                </ContentContainer>
               </MainContentContainer>
             </Content>
           </Container>

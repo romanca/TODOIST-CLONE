@@ -1,39 +1,29 @@
-import React from "react";
-import Theme from "./Providers/ThemeProvider";
-import Layout from "./Components/Layout";
-import ModalProvider from "./Providers/ModalProvider";
-import { theme } from "./shared/theme";
 import {
   createHistory,
-  LocationProvider,
-  Redirect,
-  Router,
+  LocationProvider
 } from "@reach/router";
-import ProjectItem from "./Components/Projects/ProjectItem";
-import Items from "./Components/Filters/Items";
-import ItemProvider from "./Providers/ItemProvider";
-import TodayItem from "./Components/Projects/TodayProject/TodayItem";
 import createHashSource from "hash-source";
+import React from "react";
+import Layout from "./Components/Layout";
+import ItemProvider from "./Providers/ItemProvider";
+import ModalProvider from "./Providers/ModalProvider";
+import Theme from "./Providers/ThemeProvider";
+import { theme } from "./shared/theme";
 
 const App = () => {
   const source = createHashSource();
   const history = createHistory(source);
 
   return (
-    <ItemProvider>
-      <Theme theme={theme}>
-        <ModalProvider>
-          <Router>
-            <Layout path="/">
-              <Redirect noThrow from="/" to="/project/inbox" />
-              <ProjectItem path="/project/:id" />
-              <TodayItem path="today/:id" />
-              <Items path="filter/:id" />
-            </Layout>
-          </Router>
-        </ModalProvider>
-      </Theme>
-    </ItemProvider>
+    <LocationProvider history={history} >
+      <ItemProvider>
+        <Theme theme={theme}>
+          <ModalProvider>
+              <Layout />
+          </ModalProvider>
+        </Theme>
+      </ItemProvider>
+    </LocationProvider>
   );
 };
 

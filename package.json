@@ -2,7 +2,7 @@
   "name": "todoist-clone",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://romanca.github.io/",
+  "homepage": "https://romanca.github.io/todoist-clone",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
     "@heroicons/react": "^1.0.1",
@@ -19,7 +19,6 @@
     "react-poppop": "^1.5.0",
     "react-scripts": "4.0.3",
     "react-styled-toggle": "^1.0.18",
-    "react-styleguidist": "^11.1.7",
     "styled-components": "^5.2.3",
     "web-vitals": "^1.0.1"
   },
