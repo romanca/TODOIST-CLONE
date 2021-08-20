@@ -1,5 +1,5 @@
 import React from "react";
-import { navigate } from "@reach/router";
+import { useNavigate } from "@reach/router";
 import styled, { useTheme } from "styled-components";
 import { useProjectActions } from "../../../Providers/ItemProvider";
 import { useModal } from "../../../Providers/ModalProvider";
@@ -155,6 +155,8 @@ const ProjectsModalContent = () => {
     setFavoriteItem((current) => !current);
   };
 
+  const navigate= useNavigate();
+
   const handleSubmitProject = React.useCallback(() => {
     const id = String(Date.now());
     const color = colors;
@@ -162,8 +164,8 @@ const ProjectsModalContent = () => {
     createProject(title, id, color, favorite);
     setTitle("");
     closeModalDialog();
-    navigate(`/project/${id}`);
-  }, [title, colors, closeModalDialog, createProject, favorteItem]);
+    navigate(`project/${id}`);
+  }, [title, colors, closeModalDialog, createProject, favorteItem, navigate]);
 
   return (
     <MainContentContainer onSubmit={handleSubmitProject}>

@@ -1,9 +1,9 @@
-import { Match, navigate } from "@reach/router";
+import { Match } from "@reach/router";
 import React from "react";
+import styled, { useTheme } from "styled-components";
 import { useDefaultTodos } from "../../hooks/selectors";
 import { inboxId, todayId } from "../../shared/constants";
 import ProjectTitle from "./ProjectTitle";
-import styled, { useTheme } from "styled-components";
 
 const Container = styled.div``;
 

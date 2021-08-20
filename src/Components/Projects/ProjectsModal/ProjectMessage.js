@@ -7,7 +7,7 @@ import {
 import { useModal } from "../../../Providers/ModalProvider";
 import Icon from "../../../shared/Icon";
 import styled from "styled-components";
-import { navigate } from "@reach/router";
+import { useNavigate } from "@reach/router";
 
 const DeleteButton = styled.button`
   background-color: ${(props) => props.theme.colors.accent1};
@@ -113,10 +113,12 @@ const ProjectMessage = () => {
     (i) => i.categoryId === selectedProject.id
   );
 
+  const navigate = useNavigate()
+
   const handleDelete = (id) => {
     removeProject(id);
     closeModalDialog();
-    navigate(`/project/inbox`);
+    navigate(`project/inbox`);
     removeTodo(todo);
   };
 
