@@ -20,22 +20,20 @@ const App = () => {
   const history = createHistory(source);
 
   return (
-    <LocationProvider history={history} >
-      <ItemProvider>
-        <Theme theme={theme}>
-          <ModalProvider>
-            <Router>
-              <Layout exact path="/">
-                <Redirect noThrow from="/" to="/app/project/inbox" />
-                <ProjectItem path="/app/project/:id" />
-                <TodayItem path="/app/today/:id" />
-                <Items path="/app/filter/:id" />
-              </Layout>
-            </Router>
-          </ModalProvider>
-        </Theme>
-      </ItemProvider>
-    </LocationProvider>
+    <ItemProvider>
+      <Theme theme={theme}>
+        <ModalProvider>
+          <Router>
+            <Layout path="/">
+              <Redirect noThrow from="/" to="/project/inbox" />
+              <ProjectItem path="/project/:id" />
+              <TodayItem path="today/:id" />
+              <Items path="filter/:id" />
+            </Layout>
+          </Router>
+        </ModalProvider>
+      </Theme>
+    </ItemProvider>
   );
 };
 

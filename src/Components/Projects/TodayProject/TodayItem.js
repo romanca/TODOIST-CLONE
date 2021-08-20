@@ -62,7 +62,6 @@ const HeaderContainer = styled.div`
 `;
 
 const TodayItem = (props) => {
-  console.log("halloo");
   const projectItems = useDefaultTodos();
   const item = React.useMemo(
     () => Object.values(projectItems).find((i) => i.id === props.id),

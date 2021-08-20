@@ -164,7 +164,7 @@ const InfoProjectsButton = () => {
           </BoxContainer>
         </MainBoxContainer>
       ) : (
-        ""
+        null
       )}
       <InfoProjectsButtonContainer
         onMouseEnter={handleOpen}
