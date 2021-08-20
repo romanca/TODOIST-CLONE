@@ -8,7 +8,7 @@ import { selectedItems } from "../../../shared/mockData";
 import ColorPicker from "../../Pickers/ColorPicker";
 import SwitchInput from "../../Inputs/SwitchInput";
 
-const MainContentContainer = styled.div`
+const MainContentContainer = styled.form`
   width: ${(props) => props.theme.spaces[23]};
 `;
 
@@ -166,7 +166,7 @@ const ProjectsModalContent = () => {
   }, [title, colors, closeModalDialog, createProject, favorteItem]);
 
   return (
-    <MainContentContainer>
+    <MainContentContainer onSubmit={handleSubmitProject}>
       <ContentHeader>
         <HeaderTitleContainer>
           <HeaderTitle>Add project</HeaderTitle>
@@ -196,14 +196,9 @@ const ProjectsModalContent = () => {
       <ContentFooter>
         <CancelButton onClick={closeModalDialog}>Cancel</CancelButton>
         {title ? (
-          <AddButton onClick={handleSubmitProject}>Add</AddButton>
+          <AddButton type="submit">Add</AddButton>
         ) : (
-          <AddButton
-            onClick={handleSubmitProject}
-            type="button"
-            style={{ opacity: spaces[87] }}
-            disabled
-          >
+          <AddButton type="button" style={{ opacity: spaces[87] }} disabled>
             Add
           </AddButton>
         )}

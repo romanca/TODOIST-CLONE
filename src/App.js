@@ -24,9 +24,9 @@ const App = () => {
       <Theme theme={theme}>
         <ModalProvider>
           <Router>
-            <Layout path="/">
-              <Redirect noThrow from="/" to="/project/inbox" />
-              <ProjectItem path="/project/:id" />
+            <Layout path="/" exact>
+              <Redirect noThrow from="/" to="project/inbox" />
+              <ProjectItem path="project/:id" />
               <TodayItem path="today/:id" />
               <Items path="filter/:id" />
             </Layout>

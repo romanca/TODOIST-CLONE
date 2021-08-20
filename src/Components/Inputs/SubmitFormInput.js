@@ -76,7 +76,7 @@ const CancelButton = styled.button`
   cursor: pointer;
 `;
 
-const MainToggleSubmitFormContainer = styled.div`
+const MainToggleSubmitFormContainer = styled.form`
   display: block;
   padding-bottom: ${(props) => props.theme.spaces[32]};
   margin-bottom: ${(props) => props.theme.spaces[32]};
@@ -175,7 +175,7 @@ const SubmitFormInput = () => {
   }, [title, projectId, date, selectedPriority, createTodo, defaultPriority]);
 
   return (
-    <MainToggleSubmitFormContainer>
+    <MainToggleSubmitFormContainer onSubmit={handleSubmit}>
       {!toggle ? (
         <AddButton onClick={handleToggleItem}>
           <AddButtonTitle>+</AddButtonTitle>
@@ -213,9 +213,7 @@ const SubmitFormInput = () => {
           </SubmitFormInputContainer>
           <FormSubmitButtonsContainer>
             {title ? (
-              <AddTaskButton onClick={handleSubmit} type="button">
-                Add task
-              </AddTaskButton>
+              <AddTaskButton type="submit">Add task</AddTaskButton>
             ) : (
               <AddTaskButton
                 onClick={handleSubmit}

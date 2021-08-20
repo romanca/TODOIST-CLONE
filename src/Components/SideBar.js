@@ -8,12 +8,12 @@ import Today from "./Projects/TodayProject/Today";
 
 const SideBarContainer = styled.div`
   height: calc(100vh - 44px);
-  width: ${(props) => props.theme.spaces[19]};
-  border-right: ${(props) => props.theme.spaces[8]} solid
-    ${(props) => props.theme.colors.text};
+  width: ${(props) => props.theme.spaces[108]};
+  border-right: ${(props) => props.theme.spaces[9]} solid
+    ${(props) => props.theme.colors.muted6};
   background-color: ${(props) => props.theme.colors.muted6};
-  // overflow-y: hidden;
-  // overflow-x: hidden;
+  overflow-y: hidden;
+  overflow-x: hidden;
 `;
 const MenuContainer = styled.div`
   box-sizing: border-box;
