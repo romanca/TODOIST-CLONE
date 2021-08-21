@@ -1,5 +1,5 @@
 import React from "react";
-import { navigate } from "@reach/router";
+import { useNavigate } from "@reach/router";
 import styled, { useTheme } from "styled-components";
 import { useProjectActions } from "../../../Providers/ItemProvider";
 import { useModal } from "../../../Providers/ModalProvider";
@@ -7,7 +7,7 @@ import Icon from "../../../shared/Icon";
 import { selectedItems } from "../../../shared/mockData";
 import ColorPicker from "../../Pickers/ColorPicker";
 import SwitchInput from "../../Inputs/SwitchInput";
-import { useNavigate } from "@reach/router";
+// import { useNavigate } from "@reach/router";
 
 const MainContentContainer = styled.form`
   width: ${(props) => props.theme.spaces[23]};
@@ -164,8 +164,8 @@ const ProjectsModalContent = (props) => {
     createProject(title, id, color, favorite);
     setTitle("");
     closeModalDialog();
-    navigate(`/project/${id}`, { replace: true });
-  }, [title, colors, closeModalDialog, createProject, favorteItem]);
+    navigate(`project/${id}`);
+  }, [title, colors, closeModalDialog, createProject, favorteItem, navigate]);
 
   return (
     <MainContentContainer onSubmit={handleSubmitProject}>
