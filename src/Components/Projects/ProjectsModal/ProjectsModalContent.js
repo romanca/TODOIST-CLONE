@@ -7,6 +7,7 @@ import Icon from "../../../shared/Icon";
 import { selectedItems } from "../../../shared/mockData";
 import ColorPicker from "../../Pickers/ColorPicker";
 import SwitchInput from "../../Inputs/SwitchInput";
+import { useNavigate } from "@reach/router";
 
 const MainContentContainer = styled.form`
   width: ${(props) => props.theme.spaces[23]};
@@ -126,7 +127,7 @@ const InfoIconContainer = styled.div`
   color: ${(props) => props.theme.colors.text};
 `;
 
-const ProjectsModalContent = () => {
+const ProjectsModalContent = (props) => {
   const { closeModalDialog } = useModal();
   const { createProject } = useProjectActions();
   const [title, setTitle] = React.useState("");
@@ -136,6 +137,7 @@ const ProjectsModalContent = () => {
   const [favorteItem, setFavoriteItem] = React.useState(false);
   const colors = selectedOption || defaultItem;
   const { spaces } = useTheme();
+  const navigate = useNavigate();
 
   const OptionClicked = (value) => () => {
     setSelectedOption(value);
@@ -162,7 +164,7 @@ const ProjectsModalContent = () => {
     createProject(title, id, color, favorite);
     setTitle("");
     closeModalDialog();
-    navigate(`/project/${id}`);
+    navigate(`/project/${id}`, { replace: true });
   }, [title, colors, closeModalDialog, createProject, favorteItem]);
 
   return (
